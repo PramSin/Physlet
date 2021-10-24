@@ -59,7 +59,7 @@ export default {
             this.$refs.form.validate((valid) => {
                 if (valid) {
                     this.$http
-                        .post('/physlet_api/login', this.form, {emulateJSON: true})
+                        .post('/physlet_api/login', this.form, /*{emulateJSON: true}*/)
                         .then(response => {
                             if (response.data.code !== 200) {
                                 this.$notify.error({

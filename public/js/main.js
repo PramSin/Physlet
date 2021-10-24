@@ -1783,7 +1783,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _mnt_f_PHP_Physlet_node_modules_babel_runtime_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator */ "./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js");
+/* harmony import */ var _Users_ivanfei_Desktop_projectPhy_Physlet_node_modules_babel_runtime_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator */ "./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js");
 /* harmony import */ var core_js_modules_es_regexp_exec_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! core-js/modules/es.regexp.exec.js */ "./node_modules/core-js/modules/es.regexp.exec.js");
 /* harmony import */ var core_js_modules_es_regexp_exec_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_regexp_exec_js__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var core_js_modules_es_string_split_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! core-js/modules/es.string.split.js */ "./node_modules/core-js/modules/es.string.split.js");
@@ -1863,9 +1863,9 @@ __webpack_require__.r(__webpack_exports__);
 
       this.$refs.form.validate(function (valid) {
         if (valid) {
-          _this.$http.post('/physlet_api/login', _this.form, {
-            emulateJSON: true
-          }).then(function (response) {
+          _this.$http.post('/physlet_api/login', _this.form
+          /*{emulateJSON: true}*/
+          ).then(function (response) {
             if (response.data.code !== 200) {
               _this.$notify.error({
                 title: '错误',
@@ -1906,7 +1906,7 @@ __webpack_require__.r(__webpack_exports__);
     loginPage: function loginPage() {
       var _this2 = this;
 
-      return Object(_mnt_f_PHP_Physlet_node_modules_babel_runtime_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_0__["default"])( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_4___default.a.mark(function _callee() {
+      return Object(_Users_ivanfei_Desktop_projectPhy_Physlet_node_modules_babel_runtime_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_0__["default"])( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_4___default.a.mark(function _callee() {
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_4___default.a.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
@@ -9815,7 +9815,7 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /mnt/f/PHP/Physlet/resources/js/main.js */"./resources/js/main.js");
+module.exports = __webpack_require__(/*! /Users/ivanfei/Desktop/projectPhy/Physlet/resources/js/main.js */"./resources/js/main.js");
 
 
 /***/ })
