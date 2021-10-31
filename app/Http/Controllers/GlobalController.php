@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use Illuminate\Http\Request;
 
 class GlobalController extends Controller
 {
-    protected function view(Request $request)
+    protected function view()
     {
-        return view('physlet');
+        return view('welcome');
     }
 }

@@ -16,12 +16,11 @@ class CreateSimulationWithVersionsTable extends Migration
         Schema::create('simulation_with_versions', function (Blueprint $table) {
             $table->id();
             $table->foreignId('simulation_id');
+            $table->foreignId('status_id');
             $table->string('name');
             $table->string('slug');
             $table->string('root_path');
             $table->text('synopsis');
-            $table->unsignedInteger('likes');
-            $table->unsignedInteger('shares');
             $table->timestamps();
         });
     }
