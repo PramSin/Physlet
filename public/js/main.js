@@ -1,65 +1,5 @@
 (window["webpackJsonp"] = window["webpackJsonp"] || []).push([["/js/main"],{
 
-/***/ "./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js":
-/*!*********************************************************************!*\
-  !*** ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js ***!
-  \*********************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return _asyncToGenerator; });
-function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {
-  try {
-    var info = gen[key](arg);
-    var value = info.value;
-  } catch (error) {
-    reject(error);
-    return;
-  }
-
-  if (info.done) {
-    resolve(value);
-  } else {
-    Promise.resolve(value).then(_next, _throw);
-  }
-}
-
-function _asyncToGenerator(fn) {
-  return function () {
-    var self = this,
-        args = arguments;
-    return new Promise(function (resolve, reject) {
-      var gen = fn.apply(self, args);
-
-      function _next(value) {
-        asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);
-      }
-
-      function _throw(err) {
-        asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);
-      }
-
-      _next(undefined);
-    });
-  };
-}
-
-/***/ }),
-
-/***/ "./node_modules/@babel/runtime/regenerator/index.js":
-/*!**********************************************************!*\
-  !*** ./node_modules/@babel/runtime/regenerator/index.js ***!
-  \**********************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__(/*! regenerator-runtime */ "./node_modules/regenerator-runtime/runtime.js");
-
-
-/***/ }),
-
 /***/ "./node_modules/async-validator/es/index.js":
 /*!**************************************************!*\
   !*** ./node_modules/async-validator/es/index.js ***!
@@ -1697,6 +1637,27 @@ function mergeFn (a, b) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var core_js_modules_es_regexp_exec_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! core-js/modules/es.regexp.exec.js */ "./node_modules/core-js/modules/es.regexp.exec.js");
+/* harmony import */ var core_js_modules_es_regexp_exec_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_regexp_exec_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var core_js_modules_es_string_replace_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! core-js/modules/es.string.replace.js */ "./node_modules/core-js/modules/es.string.replace.js");
+/* harmony import */ var core_js_modules_es_string_replace_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_string_replace_js__WEBPACK_IMPORTED_MODULE_1__);
+
+
+
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -1731,7 +1692,60 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
-  name: 'App'
+  name: 'App',
+  methods: {
+    handleCommand: function handleCommand(command) {
+      switch (command) {
+        case 'change_password':
+          this.$message('sdklafjhkd');
+          this.$router.push({
+            path: "/changepsw"
+          });
+          break;
+
+        case 'exit':
+          this.logout();
+          break;
+
+        case 'to_homepage':
+          this.$router.push({
+            path: "/me"
+          });
+      }
+    },
+    logout: function logout() {
+      var _this = this;
+
+      this.$http.get('/physlet_api/logout').then(function (response) {
+        if (response.data.code !== 200) {
+          _this.$notify.error({
+            title: '登出错误',
+            message: response.data.message
+          });
+        } else {
+          localStorage.clear();
+          console.log('111111111');
+
+          _this.$message('注销成功！');
+
+          _this.$router.replace({
+            path: '@/components/home'
+          });
+          /*console.log('2222222222222222')*/
+
+        }
+      })["catch"]().then(function () {});
+    }
+  },
+  computed: {
+    username: function username() {
+      if (localStorage.getItem('username')) {
+        return localStorage.getItem('username');
+      } else {
+        return '请登录';
+      }
+    }
+  }
 });
 
 /***/ }),
@@ -1749,8 +1763,163 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "About"
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Changepsw.vue?vue&type=script&lang=js&":
+/*!********************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Changepsw.vue?vue&type=script&lang=js& ***!
+  \********************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var core_js_modules_es_regexp_exec_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! core-js/modules/es.regexp.exec.js */ "./node_modules/core-js/modules/es.regexp.exec.js");
+/* harmony import */ var core_js_modules_es_regexp_exec_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_regexp_exec_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var core_js_modules_es_string_replace_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! core-js/modules/es.string.replace.js */ "./node_modules/core-js/modules/es.string.replace.js");
+/* harmony import */ var core_js_modules_es_string_replace_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_string_replace_js__WEBPACK_IMPORTED_MODULE_1__);
+
+
+
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  name: "Changepsw",
+  data: function data() {
+    var pswcheck = function pswcheck(rule, value, callback) {
+      if (value === localStorage.getItem('userpsw')) {
+        callback();
+      } else {
+        return callback(new Error('原密码错误！'));
+      }
+    };
+
+    return {
+      form: {
+        password: '',
+        ori_password: '',
+        password_confirm: ''
+      },
+      rules: {
+        password: [{
+          required: true,
+          validator: pswcheck,
+          message: '不能为空',
+          trigger: 'blur'
+        }],
+        ori_password: [{
+          required: true,
+          message: '密码不能为空',
+          trigger: 'blur'
+        }],
+        password_confirm: [{
+          required: true,
+          message: '密码不能为空',
+          trigger: 'blur'
+        }]
+      },
+      isRemember: false
+    };
+  },
+  mounted: function mounted() {},
+  methods: {
+    to_register: function to_register() {
+      this.$router.replace({
+        path: "/login"
+      });
+    },
+    onSubmit: function onSubmit() {
+      var _this = this;
+
+      this.$refs.form.validate(function (valid) {
+        if (valid) {
+          if (_this.$store.state.debug) {
+            _this.$router.replace({
+              path: '/home'
+            });
+          } else {
+            _this.$http.post('/physlet_api/changePassword', _this.form).then(function (response) {
+              if (response.data.code !== 200) {
+                _this.$notify.error({
+                  title: '错误',
+                  message: response.data.message
+                });
+              } else {
+                _this.$notify({
+                  type: 'success',
+                  title: response.data.message,
+                  message: null
+                });
+
+                if (_this.isRemember) {
+                  localStorage.setItem('username', _this.form.userName);
+                  localStorage.removeItem('userpsw');
+                  localStorage.setItem('userpsw', _this.form.userName);
+
+                  _this.$router.replace({
+                    path: '/home'
+                  });
+                } else {
+                  localStorage.removeItem('userpsw');
+                  localStorage.removeItem('username');
+
+                  _this.$router.replace({
+                    path: '/login'
+                  });
+                }
+              }
+            })["catch"]().then(function () {});
+          }
+        } else {
+          _this.$message.error('请确认表单填写正确后再试');
+
+          return false;
+        }
+      });
+    }
+  }
 });
 
 /***/ }),
@@ -1768,9 +1937,15 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
-  name: "Home"
-});
+  name: "Home",
+  mounted: function mounted() {}
+}); //这里需要展示头像、名字等
 
 /***/ }),
 
@@ -1783,18 +1958,10 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _mnt_f_PHP_Physlet_node_modules_babel_runtime_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator */ "./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js");
-/* harmony import */ var core_js_modules_es_regexp_exec_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! core-js/modules/es.regexp.exec.js */ "./node_modules/core-js/modules/es.regexp.exec.js");
-/* harmony import */ var core_js_modules_es_regexp_exec_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_regexp_exec_js__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var core_js_modules_es_string_split_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! core-js/modules/es.string.split.js */ "./node_modules/core-js/modules/es.string.split.js");
-/* harmony import */ var core_js_modules_es_string_split_js__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_string_split_js__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var core_js_modules_es_date_to_string_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! core-js/modules/es.date.to-string.js */ "./node_modules/core-js/modules/es.date.to-string.js");
-/* harmony import */ var core_js_modules_es_date_to_string_js__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_date_to_string_js__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
-/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_4__);
-
-
-
+/* harmony import */ var core_js_modules_es_regexp_exec_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! core-js/modules/es.regexp.exec.js */ "./node_modules/core-js/modules/es.regexp.exec.js");
+/* harmony import */ var core_js_modules_es_regexp_exec_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_regexp_exec_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var core_js_modules_es_string_replace_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! core-js/modules/es.string.replace.js */ "./node_modules/core-js/modules/es.string.replace.js");
+/* harmony import */ var core_js_modules_es_string_replace_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_string_replace_js__WEBPACK_IMPORTED_MODULE_1__);
 
 
 
@@ -1845,7 +2012,7 @@ __webpack_require__.r(__webpack_exports__);
           message: '邮箱不能为空',
           trigger: 'blur'
         }],
-        loginPwd: [{
+        password: [{
           required: true,
           message: '密码不能为空',
           trigger: 'blur'
@@ -1854,35 +2021,47 @@ __webpack_require__.r(__webpack_exports__);
       isRemember: false
     };
   },
-  mounted: function mounted() {
-    this.getCookie();
-  },
+  mounted: function mounted() {},
   methods: {
     onSubmit: function onSubmit() {
       var _this = this;
 
       this.$refs.form.validate(function (valid) {
         if (valid) {
-          _this.$http.post('/physlet_api/login', _this.form, {
-            emulateJSON: true
-          }).then(function (response) {
-            if (response.data.code !== 200) {
-              _this.$notify.error({
-                title: '错误',
-                message: response.data.message
-              });
-            } else {
-              _this.$notify({
-                type: 'success',
-                title: response.data.message,
-                message: null
-              });
+          if (_this.$store.state.debug) {
+            _this.$router.replace({
+              path: '/home'
+            });
+          } else {
+            _this.$http.post('/physlet_api/login', _this.form).then(function (response) {
+              if (response.data.code !== 200) {
+                _this.$notify.error({
+                  title: '错误',
+                  message: response.data.message
+                });
+              } else {
+                _this.$notify({
+                  type: 'success',
+                  title: response.data.message,
+                  message: null
+                }); //使用localstorage储存token
 
-              _this.$router.push({
-                path: '/home'
-              });
-            }
-          })["catch"]();
+
+                if (_this.isRemember) {
+                  localStorage.setItem('username', _this.form.emailOrUsername);
+                  localStorage.setItem('userpsw', _this.form.password);
+                  _this.$store.state.authorized = true;
+                } else {
+                  localStorage.setItem('username', _this.form.emailOrUsername);
+                  _this.$store.state.authorized = true;
+                }
+
+                _this.$router.replace({
+                  path: '/home'
+                });
+              }
+            })["catch"]().then(function () {});
+          }
         } else {
           _this.$message.error('请确认表单填写正确后再试');
 
@@ -1890,101 +2069,11 @@ __webpack_require__.r(__webpack_exports__);
         }
       });
     },
-
-    /*  第3步，当用户执行登录操作的时候，先看看用户名密码对不对
-              若不对，就提示登录错误
-              若对，就再看一下用户有没有勾选记住密码
-                    若没勾选，就及时清空cookie，回到最初始状态
-                    若勾选了，就把用户名和密码存到cookie中并设置7天有效期，以供使用
-                      （当然也有可能是更新之前的cookie时间）
-    */
     to_register: function to_register() {
-      this.$router.push({
-        path: "/register"
+      this.$router.replace({
+        path: "/login"
       });
-    },
-    loginPage: function loginPage() {
-      var _this2 = this;
-
-      return Object(_mnt_f_PHP_Physlet_node_modules_babel_runtime_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_0__["default"])( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_4___default.a.mark(function _callee() {
-        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_4___default.a.wrap(function _callee$(_context) {
-          while (1) {
-            switch (_context.prev = _context.next) {
-              case 0:
-                // 发请求看看用户输入的用户名和密码是否正确
-
-                /*const res = await this.$api.loginByUserName(this.form)
-                if(res.isSuccess === false){
-                  this.$message.error("登录错误")
-                }
-                else{
-                  const self = this;
-                  // 第4步，若复选框被勾选了，就调用设置cookie方法，把当前的用户名和密码和过期时间存到cookie中
-                  if (self.isRemember === true) {
-                    // 传入账号名，密码，和保存天数（过期时间）3个参数
-                    //  1/24/60 测试可用一分钟测试，这样看着会比较明显
-                    self.setCookie(this.form.emailOrUsername, this.form.loginPwd, 1/24/60);
-                    // self.setCookie(this.form.emailOrUsername, this.form.loginPwd, 7); // 这样就是7天过期时间
-                  }
-                  // 若没被勾选就及时清空Cookie，因为这个cookie有可能是上一次的未过期的cookie，所以要及时清除掉
-                  else {
-                    self.clearCookie();
-                  }
-                  // 当然，无论用户是否勾选了cookie，路由该跳转还是要跳转的
-                  this.$router.push({
-                    name: "Home",
-                  });
-                }*/
-                _this2.$router.push({
-                  path: "/about"
-                });
-
-              case 1:
-              case "end":
-                return _context.stop();
-            }
-          }
-        }, _callee);
-      }))();
-    },
-    // 设置cookie
-    setCookie: function setCookie(username, password, exdays) {
-      var exdate = new Date(); // 获取当前登录的时间
-
-      exdate.setTime(exdate.getTime() + 24 * 60 * 60 * 1000 * exdays); // 将当前登录的时间加上七天，就是cookie过期的时间，也就是保存的天数
-      // 字符串拼接cookie,因为cookie存储的形式是name=value的形式
-
-      window.document.cookie = "emailOrUsername" + "=" + username + ";path=/;expires=" + exdate.toGMTString();
-      window.document.cookie = "password" + "=" + password + ";path=/;expires=" + exdate.toGMTString();
-      window.document.cookie = "isRemember" + "=" + this.isRemember + ";path=/;expires=" + exdate.toGMTString();
-    },
-    // 第2步，若cookie中有用户名和密码的话，就通过两次切割取出来存到form表单中以供使用，若是没有就没有
-    getCookie: function getCookie() {
-      if (document.cookie.length > 0) {
-        var arr = document.cookie.split("; "); //因为是数组所以要切割。打印看一下就知道了
-        // console.log(arr,"切割");
-
-        for (var i = 0; i < arr.length; i++) {
-          var arr2 = arr[i].split("="); // 再次切割
-          // console.log(arr2,"切割2");
-          // // 判断查找相对应的值
-
-          if (arr2[0] === "emailOrUsername") {
-            this.form.emailOrUsername = arr2[1]; // 转存一份保存用户名和密码
-          } else if (arr2[0] === "password") {
-            this.form.password = arr2[1]; //可解密
-          } else if (arr2[0] === "isRemember") {
-            this.isRemember = Boolean(arr2[1]);
-          }
-        }
-      }
-    } // 清除cookie
-
-    /*clearCookie: fu![image](/img/bVcOHhz)*/
-
-    /*this.setCookie("", "", -1); */
-    // 清空并设置天数为负1天
-
+    }
   }
 });
 
@@ -2003,12 +2092,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var core_js_modules_es_string_starts_with_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_string_starts_with_js__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var core_js_modules_es_function_name_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! core-js/modules/es.function.name.js */ "./node_modules/core-js/modules/es.function.name.js");
 /* harmony import */ var core_js_modules_es_function_name_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_function_name_js__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var core_js_modules_es_array_find_index_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! core-js/modules/es.array.find-index.js */ "./node_modules/core-js/modules/es.array.find-index.js");
-/* harmony import */ var core_js_modules_es_array_find_index_js__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_array_find_index_js__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var core_js_modules_es_array_splice_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! core-js/modules/es.array.splice.js */ "./node_modules/core-js/modules/es.array.splice.js");
-/* harmony import */ var core_js_modules_es_array_splice_js__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_array_splice_js__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var core_js_modules_es_parse_int_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! core-js/modules/es.parse-int.js */ "./node_modules/core-js/modules/es.parse-int.js");
-/* harmony import */ var core_js_modules_es_parse_int_js__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_parse_int_js__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var core_js_modules_es_regexp_exec_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! core-js/modules/es.regexp.exec.js */ "./node_modules/core-js/modules/es.regexp.exec.js");
+/* harmony import */ var core_js_modules_es_regexp_exec_js__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_regexp_exec_js__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var core_js_modules_es_string_replace_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! core-js/modules/es.string.replace.js */ "./node_modules/core-js/modules/es.string.replace.js");
+/* harmony import */ var core_js_modules_es_string_replace_js__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_string_replace_js__WEBPACK_IMPORTED_MODULE_3__);
 
 
 
@@ -2016,37 +2103,6 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-
-
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 //
 //
 //
@@ -2140,6 +2196,7 @@ __webpack_require__.r(__webpack_exports__);
   name: "Me",
   data: function data() {
     return {
+      username: localStorage.getItem('username'),
       loading: false,
       loadingTree: false,
       defaultProps: {
@@ -2210,7 +2267,7 @@ __webpack_require__.r(__webpack_exports__);
       switch (command) {
         case 'change_password':
           this.$router.push({
-            name: 'change_password'
+            path: '/Changepsw'
           });
           break;
 
@@ -2222,186 +2279,97 @@ __webpack_require__.r(__webpack_exports__);
     logout: function logout() {
       var _this = this;
 
-      this.loggingOut = true;
-      this.$http.post('/workbench_api/logout').then(function (response) {
-        if (response.data.code !== 0) {
+      this.$http.get('/physlet_api/logout').then(function (response) {
+        if (response.data.code !== 200) {
           _this.$notify.error({
-            title: '错误',
+            title: '登出错误',
             message: response.data.message
           });
         } else {
-          _this.$store.commit('setActiveArticleId', null);
+          localStorage.clear();
+          console.log('111111111');
 
-          _this.$notify({
-            type: 'success',
-            title: '已登出'
-          });
+          _this.$message('注销成功！');
 
-          _this.$router.push({
-            name: 'login'
+          _this.$router.replace({
+            path: '/home'
           });
+          /*console.log('2222222222222222')*/
+
         }
-      })["catch"]().then(function () {
-        _this.loggingOut = false;
-      });
-    },
-    loadTree: function loadTree() {
-      var _this2 = this;
-
-      this.loadingTree = true;
-      this.$store.dispatch('loadTree')["catch"]().then(function () {
-        _this2.loadingTree = false;
-      });
-    },
-    treeAppendFolder: function treeAppendFolder(node, data) {
-      var _this3 = this;
-
-      this.$prompt(null, '请输入文件夹名称', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消'
-      }).then(function (_ref) {
-        var value = _ref.value;
-        _this3.loadingTree = true;
-
-        _this3.$http.post('/workbench_api/addFolder', {
-          parent_id: data.entity_id,
-          name: value
-        }).then(function (response) {
-          if (response.data && response.data.code === 0) {
-            if (!data.children) {
-              _this3.$set(data, 'children', []);
-            }
-
-            data.children.push(response.data.folder);
-          } else if (response.data && response.data.message) {
-            _this3.$notify.error(response.data.message);
-          }
-        })["catch"]().then(function () {
-          _this3.loadingTree = false;
-        });
-      })["catch"]();
-    },
-    treeAppend: function treeAppend(node, data) {
-      var _this4 = this;
-
-      this.$prompt(null, '请输入文件名称', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消'
-      }).then(function (_ref2) {
-        var value = _ref2.value;
-        _this4.loadingTree = true;
-
-        _this4.$http.post('/workbench_api/addArticle', {
-          parent_id: data.entity_id,
-          name: value
-        }).then(function (response) {
-          if (response.data && response.data.code === 0) {
-            if (!data.children) {
-              _this4.$set(data, 'children', []);
-            }
-
-            data.children.push(response.data.article);
-          } else if (response.data && response.data.message) {
-            _this4.$notify.error(response.data.message);
-          }
-        })["catch"]().then(function () {
-          _this4.loadingTree = false;
-        });
-      })["catch"]();
-    },
-    treeRename: function treeRename(node, data) {
-      var _this5 = this;
-
-      this.$prompt('', '请输入新的名称', {
-        inputValue: data.name,
-        confirmButtonText: '确认',
-        cancelButtonText: '取消'
-      }).then(function (_ref3) {
-        var value = _ref3.value;
-        var uri = _this5.isFolder(node) ? 'renameFolder' : 'renameArticle';
-        _this5.loadingTree = true;
-
-        _this5.$http.post('/workbench_api/' + uri, {
-          id: data.entity_id,
-          name: value
-        }).then(function (response) {
-          if (response.data && response.data.code === 0) {
-            var parent = node.parent;
-            var children = parent.data.children || parent.data;
-            var index = children.findIndex(function (d) {
-              return d.id === data.id;
-            });
-            children.splice(index, 1, _this5.isFolder(node) ? response.data.folder : response.data.article);
-          } else if (response.data && response.data.message) {
-            _this5.$notify.error(response.data.message);
-          }
-        })["catch"]().then(function () {
-          _this5.loadingTree = false;
-        });
-      })["catch"]();
-    },
-    treeRemove: function treeRemove(node, data) {
-      var _this6 = this;
-
-      if (!node.isLeaf) {
-        this.$alert('包含文件或文件夹，请清空后再试', '不能删除');
-      } else {
-        this.$confirm('此操作将删除该文件, 是否继续?', null, {
-          confirmButtonText: '确认删除',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(function () {
-          var uri = _this6.isFolder(node) ? 'deleteFolder' : 'deleteArticle';
-          _this6.loadingTree = true;
-
-          _this6.$http.post('/workbench_api/' + uri, {
-            id: data.entity_id
-          }).then(function (response) {
-            if (response.data && response.data.code === 0) {
-              var parent = node.parent;
-              var children = parent.data.children || parent.data;
-              var index = children.findIndex(function (d) {
-                return d.id === data.id;
-              });
-              children.splice(index, 1);
-
-              if (_this6.active_article_id === data.id) {
-                _this6.active_article_id = null;
-              }
-            } else if (response.data && response.data.message) {
-              _this6.$notify.error(response.data.message);
-            }
-          })["catch"]().then(function () {
-            _this6.loadingTree = false;
-          });
-        })["catch"]();
-      }
-    },
-    nodeClick: function nodeClick(data, node) {
-      var _this7 = this;
-
-      if (this.isArticle(node)) {
-        if (this.status.saving) {
-          this.$confirm('文档正在保存，现在切换可能丢失进度', '请确认', {
-            confirmButtonText: '继续切换',
-            cancelButtonText: '取消',
-            type: 'warning'
-          }).then(function () {
-            _this7.active_article_id = data.entity_id;
-          })["catch"]();
-        } else {
-          this.active_article_id = data.entity_id;
-        }
-      }
+      })["catch"]().then(function () {});
     }
   },
-  created: function created() {
-    if (this.user.name && this.$store.getters.opened_article_id) {
-      this.active_article_id = parseInt(this.$store.getters.opened_article_id);
-      this.$message('自动为您打开之前编辑中的文档');
-    }
+  loadTree: function loadTree() {
+    var _this2 = this;
 
-    this.loadTree();
+    this.loadingTree = true;
+    this.$store.dispatch('loadTree')["catch"]().then(function () {
+      _this2.loadingTree = false;
+    });
+  },
+  treeAppendFolder: function treeAppendFolder(node, data) {
+    var _this3 = this;
+
+    this.$prompt(null, '请输入文件夹名称', {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消'
+    }).then(function (_ref) {
+      var value = _ref.value;
+      _this3.loadingTree = true;
+
+      _this3.$http.post('/workbench_api/addFolder', {
+        parent_id: data.entity_id,
+        name: value
+      }).then(function (response) {
+        if (response.data && response.data.code === 0) {
+          if (!data.children) {
+            _this3.$set(data, 'children', []);
+          }
+
+          data.children.push(response.data.folder);
+        } else if (response.data && response.data.message) {
+          _this3.$notify.error(response.data.message);
+        }
+      })["catch"]().then(function () {
+        _this3.loadingTree = false;
+      });
+    })["catch"]();
+  },
+  treeAppend: function treeAppend(node, data) {
+    var _this4 = this;
+
+    this.$prompt(null, '请输入文件名称', {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消'
+    }).then(function (_ref2) {
+      var value = _ref2.value;
+      _this4.loadingTree = true;
+
+      _this4.$http.post('/workbench_api/addArticle', {
+        parent_id: data.entity_id,
+        name: value
+      }).then(function (response) {
+        if (response.data && response.data.code === 0) {
+          if (!data.children) {
+            _this4.$set(data, 'children', []);
+          }
+
+          data.children.push(response.data.article);
+        } else if (response.data && response.data.message) {
+          _this4.$notify.error(response.data.message);
+        }
+      })["catch"]().then(function () {
+        _this4.loadingTree = false;
+      });
+    })["catch"]();
+  },
+  mounted: function mounted() {
+    if (this.$store.state.authorized === false) {
+      this.$router.replace({
+        path: "/login"
+      });
+    }
   }
 });
 
@@ -4424,7 +4392,7 @@ exports = module.exports = __webpack_require__(/*! ../../node_modules/css-loader
 
 
 // module
-exports.push([module.i, "\n#app {\n    font-family: Avenir, Helvetica, Arial, sans-serif;\n    -webkit-font-smoothing: antialiased;\n    -moz-osx-font-smoothing: grayscale;\n    text-align: center;\n    color: #2c3e50;\n    margin-top: 60px;\n}\n", ""]);
+exports.push([module.i, "\n#app {\n  font-family: Avenir, Helvetica, Arial, sans-serif;\n  -webkit-font-smoothing: antialiased;\n  -moz-osx-font-smoothing: grayscale;\n  text-align: center;\n  color: #2c3e50;\n  margin-top: 60px;\n}\n", ""]);
 
 // exports
 
@@ -4443,7 +4411,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n.header {\n    padding: 5px 15px;\n    background-color: #f6f6f6;\n    line-height: 50px;\n}\n.saving-state {\n    font-size: .8rem;\n    margin-right: 10px;\n}\n.el-main {\n    padding: 5px 15px 0;\n}\n.el-container {\n    padding: 0;\n    margin: 0;\n    height: calc(100% - 60px);\n}\n.footer {\n    margin-bottom: -60px;\n    padding: 0 15px;\n    background-color: #f6f6f6;\n    text-align: right;\n    line-height: 60px;\n    font-size: 12px;\n}\n.footer-item {\n    margin-left: 5px;\n    color: #888;\n}\n.selected-node {\n    background-color: #fadab8;\n}\n.tree-node {\n    width: 100%;\n    height: 26px;\n    line-height: 26px;\n    font-size: 14px;\n}\n.tree-node .pull-right {\n    float: right;\n}\n.tree-node .actions {\n    transition: opacity .3s;\n    opacity: 0;\n}\n.tree-node:hover .actions {\n    opacity: 1;\n}\n\n", ""]);
+exports.push([module.i, "\n.header {\n  padding: 5px 15px;\n  background-color: #f6f6f6;\n  line-height: 50px;\n}\n.saving-state {\n  font-size: .8rem;\n  margin-right: 10px;\n}\n.el-main {\n  padding: 5px 15px 0;\n}\n.el-container {\n  padding: 0;\n  margin: 0;\n  height: calc(100% - 60px);\n}\n.footer {\n  margin-bottom: -60px;\n  padding: 0 15px;\n  background-color: #f6f6f6;\n  text-align: right;\n  line-height: 60px;\n  font-size: 12px;\n}\n.footer-item {\n  margin-left: 5px;\n  color: #888;\n}\n.selected-node {\n  background-color: #fadab8;\n}\n.tree-node {\n  width: 100%;\n  height: 26px;\n  line-height: 26px;\n  font-size: 14px;\n}\n.tree-node .pull-right {\n  float: right;\n}\n.tree-node .actions {\n  transition: opacity .3s;\n  opacity: 0;\n}\n.tree-node:hover .actions {\n  opacity: 1;\n}\n\n", ""]);
 
 // exports
 
@@ -5492,771 +5460,6 @@ process.chdir = function (dir) {
     throw new Error('process.chdir is not supported');
 };
 process.umask = function() { return 0; };
-
-
-/***/ }),
-
-/***/ "./node_modules/regenerator-runtime/runtime.js":
-/*!*****************************************************!*\
-  !*** ./node_modules/regenerator-runtime/runtime.js ***!
-  \*****************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-/**
- * Copyright (c) 2014-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- */
-
-var runtime = (function (exports) {
-  "use strict";
-
-  var Op = Object.prototype;
-  var hasOwn = Op.hasOwnProperty;
-  var undefined; // More compressible than void 0.
-  var $Symbol = typeof Symbol === "function" ? Symbol : {};
-  var iteratorSymbol = $Symbol.iterator || "@@iterator";
-  var asyncIteratorSymbol = $Symbol.asyncIterator || "@@asyncIterator";
-  var toStringTagSymbol = $Symbol.toStringTag || "@@toStringTag";
-
-  function define(obj, key, value) {
-    Object.defineProperty(obj, key, {
-      value: value,
-      enumerable: true,
-      configurable: true,
-      writable: true
-    });
-    return obj[key];
-  }
-  try {
-    // IE 8 has a broken Object.defineProperty that only works on DOM objects.
-    define({}, "");
-  } catch (err) {
-    define = function(obj, key, value) {
-      return obj[key] = value;
-    };
-  }
-
-  function wrap(innerFn, outerFn, self, tryLocsList) {
-    // If outerFn provided and outerFn.prototype is a Generator, then outerFn.prototype instanceof Generator.
-    var protoGenerator = outerFn && outerFn.prototype instanceof Generator ? outerFn : Generator;
-    var generator = Object.create(protoGenerator.prototype);
-    var context = new Context(tryLocsList || []);
-
-    // The ._invoke method unifies the implementations of the .next,
-    // .throw, and .return methods.
-    generator._invoke = makeInvokeMethod(innerFn, self, context);
-
-    return generator;
-  }
-  exports.wrap = wrap;
-
-  // Try/catch helper to minimize deoptimizations. Returns a completion
-  // record like context.tryEntries[i].completion. This interface could
-  // have been (and was previously) designed to take a closure to be
-  // invoked without arguments, but in all the cases we care about we
-  // already have an existing method we want to call, so there's no need
-  // to create a new function object. We can even get away with assuming
-  // the method takes exactly one argument, since that happens to be true
-  // in every case, so we don't have to touch the arguments object. The
-  // only additional allocation required is the completion record, which
-  // has a stable shape and so hopefully should be cheap to allocate.
-  function tryCatch(fn, obj, arg) {
-    try {
-      return { type: "normal", arg: fn.call(obj, arg) };
-    } catch (err) {
-      return { type: "throw", arg: err };
-    }
-  }
-
-  var GenStateSuspendedStart = "suspendedStart";
-  var GenStateSuspendedYield = "suspendedYield";
-  var GenStateExecuting = "executing";
-  var GenStateCompleted = "completed";
-
-  // Returning this object from the innerFn has the same effect as
-  // breaking out of the dispatch switch statement.
-  var ContinueSentinel = {};
-
-  // Dummy constructor functions that we use as the .constructor and
-  // .constructor.prototype properties for functions that return Generator
-  // objects. For full spec compliance, you may wish to configure your
-  // minifier not to mangle the names of these two functions.
-  function Generator() {}
-  function GeneratorFunction() {}
-  function GeneratorFunctionPrototype() {}
-
-  // This is a polyfill for %IteratorPrototype% for environments that
-  // don't natively support it.
-  var IteratorPrototype = {};
-  define(IteratorPrototype, iteratorSymbol, function () {
-    return this;
-  });
-
-  var getProto = Object.getPrototypeOf;
-  var NativeIteratorPrototype = getProto && getProto(getProto(values([])));
-  if (NativeIteratorPrototype &&
-      NativeIteratorPrototype !== Op &&
-      hasOwn.call(NativeIteratorPrototype, iteratorSymbol)) {
-    // This environment has a native %IteratorPrototype%; use it instead
-    // of the polyfill.
-    IteratorPrototype = NativeIteratorPrototype;
-  }
-
-  var Gp = GeneratorFunctionPrototype.prototype =
-    Generator.prototype = Object.create(IteratorPrototype);
-  GeneratorFunction.prototype = GeneratorFunctionPrototype;
-  define(Gp, "constructor", GeneratorFunctionPrototype);
-  define(GeneratorFunctionPrototype, "constructor", GeneratorFunction);
-  GeneratorFunction.displayName = define(
-    GeneratorFunctionPrototype,
-    toStringTagSymbol,
-    "GeneratorFunction"
-  );
-
-  // Helper for defining the .next, .throw, and .return methods of the
-  // Iterator interface in terms of a single ._invoke method.
-  function defineIteratorMethods(prototype) {
-    ["next", "throw", "return"].forEach(function(method) {
-      define(prototype, method, function(arg) {
-        return this._invoke(method, arg);
-      });
-    });
-  }
-
-  exports.isGeneratorFunction = function(genFun) {
-    var ctor = typeof genFun === "function" && genFun.constructor;
-    return ctor
-      ? ctor === GeneratorFunction ||
-        // For the native GeneratorFunction constructor, the best we can
-        // do is to check its .name property.
-        (ctor.displayName || ctor.name) === "GeneratorFunction"
-      : false;
-  };
-
-  exports.mark = function(genFun) {
-    if (Object.setPrototypeOf) {
-      Object.setPrototypeOf(genFun, GeneratorFunctionPrototype);
-    } else {
-      genFun.__proto__ = GeneratorFunctionPrototype;
-      define(genFun, toStringTagSymbol, "GeneratorFunction");
-    }
-    genFun.prototype = Object.create(Gp);
-    return genFun;
-  };
-
-  // Within the body of any async function, `await x` is transformed to
-  // `yield regeneratorRuntime.awrap(x)`, so that the runtime can test
-  // `hasOwn.call(value, "__await")` to determine if the yielded value is
-  // meant to be awaited.
-  exports.awrap = function(arg) {
-    return { __await: arg };
-  };
-
-  function AsyncIterator(generator, PromiseImpl) {
-    function invoke(method, arg, resolve, reject) {
-      var record = tryCatch(generator[method], generator, arg);
-      if (record.type === "throw") {
-        reject(record.arg);
-      } else {
-        var result = record.arg;
-        var value = result.value;
-        if (value &&
-            typeof value === "object" &&
-            hasOwn.call(value, "__await")) {
-          return PromiseImpl.resolve(value.__await).then(function(value) {
-            invoke("next", value, resolve, reject);
-          }, function(err) {
-            invoke("throw", err, resolve, reject);
-          });
-        }
-
-        return PromiseImpl.resolve(value).then(function(unwrapped) {
-          // When a yielded Promise is resolved, its final value becomes
-          // the .value of the Promise<{value,done}> result for the
-          // current iteration.
-          result.value = unwrapped;
-          resolve(result);
-        }, function(error) {
-          // If a rejected Promise was yielded, throw the rejection back
-          // into the async generator function so it can be handled there.
-          return invoke("throw", error, resolve, reject);
-        });
-      }
-    }
-
-    var previousPromise;
-
-    function enqueue(method, arg) {
-      function callInvokeWithMethodAndArg() {
-        return new PromiseImpl(function(resolve, reject) {
-          invoke(method, arg, resolve, reject);
-        });
-      }
-
-      return previousPromise =
-        // If enqueue has been called before, then we want to wait until
-        // all previous Promises have been resolved before calling invoke,
-        // so that results are always delivered in the correct order. If
-        // enqueue has not been called before, then it is important to
-        // call invoke immediately, without waiting on a callback to fire,
-        // so that the async generator function has the opportunity to do
-        // any necessary setup in a predictable way. This predictability
-        // is why the Promise constructor synchronously invokes its
-        // executor callback, and why async functions synchronously
-        // execute code before the first await. Since we implement simple
-        // async functions in terms of async generators, it is especially
-        // important to get this right, even though it requires care.
-        previousPromise ? previousPromise.then(
-          callInvokeWithMethodAndArg,
-          // Avoid propagating failures to Promises returned by later
-          // invocations of the iterator.
-          callInvokeWithMethodAndArg
-        ) : callInvokeWithMethodAndArg();
-    }
-
-    // Define the unified helper method that is used to implement .next,
-    // .throw, and .return (see defineIteratorMethods).
-    this._invoke = enqueue;
-  }
-
-  defineIteratorMethods(AsyncIterator.prototype);
-  define(AsyncIterator.prototype, asyncIteratorSymbol, function () {
-    return this;
-  });
-  exports.AsyncIterator = AsyncIterator;
-
-  // Note that simple async functions are implemented on top of
-  // AsyncIterator objects; they just return a Promise for the value of
-  // the final result produced by the iterator.
-  exports.async = function(innerFn, outerFn, self, tryLocsList, PromiseImpl) {
-    if (PromiseImpl === void 0) PromiseImpl = Promise;
-
-    var iter = new AsyncIterator(
-      wrap(innerFn, outerFn, self, tryLocsList),
-      PromiseImpl
-    );
-
-    return exports.isGeneratorFunction(outerFn)
-      ? iter // If outerFn is a generator, return the full iterator.
-      : iter.next().then(function(result) {
-          return result.done ? result.value : iter.next();
-        });
-  };
-
-  function makeInvokeMethod(innerFn, self, context) {
-    var state = GenStateSuspendedStart;
-
-    return function invoke(method, arg) {
-      if (state === GenStateExecuting) {
-        throw new Error("Generator is already running");
-      }
-
-      if (state === GenStateCompleted) {
-        if (method === "throw") {
-          throw arg;
-        }
-
-        // Be forgiving, per 25.3.3.3.3 of the spec:
-        // https://people.mozilla.org/~jorendorff/es6-draft.html#sec-generatorresume
-        return doneResult();
-      }
-
-      context.method = method;
-      context.arg = arg;
-
-      while (true) {
-        var delegate = context.delegate;
-        if (delegate) {
-          var delegateResult = maybeInvokeDelegate(delegate, context);
-          if (delegateResult) {
-            if (delegateResult === ContinueSentinel) continue;
-            return delegateResult;
-          }
-        }
-
-        if (context.method === "next") {
-          // Setting context._sent for legacy support of Babel's
-          // function.sent implementation.
-          context.sent = context._sent = context.arg;
-
-        } else if (context.method === "throw") {
-          if (state === GenStateSuspendedStart) {
-            state = GenStateCompleted;
-            throw context.arg;
-          }
-
-          context.dispatchException(context.arg);
-
-        } else if (context.method === "return") {
-          context.abrupt("return", context.arg);
-        }
-
-        state = GenStateExecuting;
-
-        var record = tryCatch(innerFn, self, context);
-        if (record.type === "normal") {
-          // If an exception is thrown from innerFn, we leave state ===
-          // GenStateExecuting and loop back for another invocation.
-          state = context.done
-            ? GenStateCompleted
-            : GenStateSuspendedYield;
-
-          if (record.arg === ContinueSentinel) {
-            continue;
-          }
-
-          return {
-            value: record.arg,
-            done: context.done
-          };
-
-        } else if (record.type === "throw") {
-          state = GenStateCompleted;
-          // Dispatch the exception by looping back around to the
-          // context.dispatchException(context.arg) call above.
-          context.method = "throw";
-          context.arg = record.arg;
-        }
-      }
-    };
-  }
-
-  // Call delegate.iterator[context.method](context.arg) and handle the
-  // result, either by returning a { value, done } result from the
-  // delegate iterator, or by modifying context.method and context.arg,
-  // setting context.delegate to null, and returning the ContinueSentinel.
-  function maybeInvokeDelegate(delegate, context) {
-    var method = delegate.iterator[context.method];
-    if (method === undefined) {
-      // A .throw or .return when the delegate iterator has no .throw
-      // method always terminates the yield* loop.
-      context.delegate = null;
-
-      if (context.method === "throw") {
-        // Note: ["return"] must be used for ES3 parsing compatibility.
-        if (delegate.iterator["return"]) {
-          // If the delegate iterator has a return method, give it a
-          // chance to clean up.
-          context.method = "return";
-          context.arg = undefined;
-          maybeInvokeDelegate(delegate, context);
-
-          if (context.method === "throw") {
-            // If maybeInvokeDelegate(context) changed context.method from
-            // "return" to "throw", let that override the TypeError below.
-            return ContinueSentinel;
-          }
-        }
-
-        context.method = "throw";
-        context.arg = new TypeError(
-          "The iterator does not provide a 'throw' method");
-      }
-
-      return ContinueSentinel;
-    }
-
-    var record = tryCatch(method, delegate.iterator, context.arg);
-
-    if (record.type === "throw") {
-      context.method = "throw";
-      context.arg = record.arg;
-      context.delegate = null;
-      return ContinueSentinel;
-    }
-
-    var info = record.arg;
-
-    if (! info) {
-      context.method = "throw";
-      context.arg = new TypeError("iterator result is not an object");
-      context.delegate = null;
-      return ContinueSentinel;
-    }
-
-    if (info.done) {
-      // Assign the result of the finished delegate to the temporary
-      // variable specified by delegate.resultName (see delegateYield).
-      context[delegate.resultName] = info.value;
-
-      // Resume execution at the desired location (see delegateYield).
-      context.next = delegate.nextLoc;
-
-      // If context.method was "throw" but the delegate handled the
-      // exception, let the outer generator proceed normally. If
-      // context.method was "next", forget context.arg since it has been
-      // "consumed" by the delegate iterator. If context.method was
-      // "return", allow the original .return call to continue in the
-      // outer generator.
-      if (context.method !== "return") {
-        context.method = "next";
-        context.arg = undefined;
-      }
-
-    } else {
-      // Re-yield the result returned by the delegate method.
-      return info;
-    }
-
-    // The delegate iterator is finished, so forget it and continue with
-    // the outer generator.
-    context.delegate = null;
-    return ContinueSentinel;
-  }
-
-  // Define Generator.prototype.{next,throw,return} in terms of the
-  // unified ._invoke helper method.
-  defineIteratorMethods(Gp);
-
-  define(Gp, toStringTagSymbol, "Generator");
-
-  // A Generator should always return itself as the iterator object when the
-  // @@iterator function is called on it. Some browsers' implementations of the
-  // iterator prototype chain incorrectly implement this, causing the Generator
-  // object to not be returned from this call. This ensures that doesn't happen.
-  // See https://github.com/facebook/regenerator/issues/274 for more details.
-  define(Gp, iteratorSymbol, function() {
-    return this;
-  });
-
-  define(Gp, "toString", function() {
-    return "[object Generator]";
-  });
-
-  function pushTryEntry(locs) {
-    var entry = { tryLoc: locs[0] };
-
-    if (1 in locs) {
-      entry.catchLoc = locs[1];
-    }
-
-    if (2 in locs) {
-      entry.finallyLoc = locs[2];
-      entry.afterLoc = locs[3];
-    }
-
-    this.tryEntries.push(entry);
-  }
-
-  function resetTryEntry(entry) {
-    var record = entry.completion || {};
-    record.type = "normal";
-    delete record.arg;
-    entry.completion = record;
-  }
-
-  function Context(tryLocsList) {
-    // The root entry object (effectively a try statement without a catch
-    // or a finally block) gives us a place to store values thrown from
-    // locations where there is no enclosing try statement.
-    this.tryEntries = [{ tryLoc: "root" }];
-    tryLocsList.forEach(pushTryEntry, this);
-    this.reset(true);
-  }
-
-  exports.keys = function(object) {
-    var keys = [];
-    for (var key in object) {
-      keys.push(key);
-    }
-    keys.reverse();
-
-    // Rather than returning an object with a next method, we keep
-    // things simple and return the next function itself.
-    return function next() {
-      while (keys.length) {
-        var key = keys.pop();
-        if (key in object) {
-          next.value = key;
-          next.done = false;
-          return next;
-        }
-      }
-
-      // To avoid creating an additional object, we just hang the .value
-      // and .done properties off the next function object itself. This
-      // also ensures that the minifier will not anonymize the function.
-      next.done = true;
-      return next;
-    };
-  };
-
-  function values(iterable) {
-    if (iterable) {
-      var iteratorMethod = iterable[iteratorSymbol];
-      if (iteratorMethod) {
-        return iteratorMethod.call(iterable);
-      }
-
-      if (typeof iterable.next === "function") {
-        return iterable;
-      }
-
-      if (!isNaN(iterable.length)) {
-        var i = -1, next = function next() {
-          while (++i < iterable.length) {
-            if (hasOwn.call(iterable, i)) {
-              next.value = iterable[i];
-              next.done = false;
-              return next;
-            }
-          }
-
-          next.value = undefined;
-          next.done = true;
-
-          return next;
-        };
-
-        return next.next = next;
-      }
-    }
-
-    // Return an iterator with no values.
-    return { next: doneResult };
-  }
-  exports.values = values;
-
-  function doneResult() {
-    return { value: undefined, done: true };
-  }
-
-  Context.prototype = {
-    constructor: Context,
-
-    reset: function(skipTempReset) {
-      this.prev = 0;
-      this.next = 0;
-      // Resetting context._sent for legacy support of Babel's
-      // function.sent implementation.
-      this.sent = this._sent = undefined;
-      this.done = false;
-      this.delegate = null;
-
-      this.method = "next";
-      this.arg = undefined;
-
-      this.tryEntries.forEach(resetTryEntry);
-
-      if (!skipTempReset) {
-        for (var name in this) {
-          // Not sure about the optimal order of these conditions:
-          if (name.charAt(0) === "t" &&
-              hasOwn.call(this, name) &&
-              !isNaN(+name.slice(1))) {
-            this[name] = undefined;
-          }
-        }
-      }
-    },
-
-    stop: function() {
-      this.done = true;
-
-      var rootEntry = this.tryEntries[0];
-      var rootRecord = rootEntry.completion;
-      if (rootRecord.type === "throw") {
-        throw rootRecord.arg;
-      }
-
-      return this.rval;
-    },
-
-    dispatchException: function(exception) {
-      if (this.done) {
-        throw exception;
-      }
-
-      var context = this;
-      function handle(loc, caught) {
-        record.type = "throw";
-        record.arg = exception;
-        context.next = loc;
-
-        if (caught) {
-          // If the dispatched exception was caught by a catch block,
-          // then let that catch block handle the exception normally.
-          context.method = "next";
-          context.arg = undefined;
-        }
-
-        return !! caught;
-      }
-
-      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
-        var entry = this.tryEntries[i];
-        var record = entry.completion;
-
-        if (entry.tryLoc === "root") {
-          // Exception thrown outside of any try block that could handle
-          // it, so set the completion value of the entire function to
-          // throw the exception.
-          return handle("end");
-        }
-
-        if (entry.tryLoc <= this.prev) {
-          var hasCatch = hasOwn.call(entry, "catchLoc");
-          var hasFinally = hasOwn.call(entry, "finallyLoc");
-
-          if (hasCatch && hasFinally) {
-            if (this.prev < entry.catchLoc) {
-              return handle(entry.catchLoc, true);
-            } else if (this.prev < entry.finallyLoc) {
-              return handle(entry.finallyLoc);
-            }
-
-          } else if (hasCatch) {
-            if (this.prev < entry.catchLoc) {
-              return handle(entry.catchLoc, true);
-            }
-
-          } else if (hasFinally) {
-            if (this.prev < entry.finallyLoc) {
-              return handle(entry.finallyLoc);
-            }
-
-          } else {
-            throw new Error("try statement without catch or finally");
-          }
-        }
-      }
-    },
-
-    abrupt: function(type, arg) {
-      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
-        var entry = this.tryEntries[i];
-        if (entry.tryLoc <= this.prev &&
-            hasOwn.call(entry, "finallyLoc") &&
-            this.prev < entry.finallyLoc) {
-          var finallyEntry = entry;
-          break;
-        }
-      }
-
-      if (finallyEntry &&
-          (type === "break" ||
-           type === "continue") &&
-          finallyEntry.tryLoc <= arg &&
-          arg <= finallyEntry.finallyLoc) {
-        // Ignore the finally entry if control is not jumping to a
-        // location outside the try/catch block.
-        finallyEntry = null;
-      }
-
-      var record = finallyEntry ? finallyEntry.completion : {};
-      record.type = type;
-      record.arg = arg;
-
-      if (finallyEntry) {
-        this.method = "next";
-        this.next = finallyEntry.finallyLoc;
-        return ContinueSentinel;
-      }
-
-      return this.complete(record);
-    },
-
-    complete: function(record, afterLoc) {
-      if (record.type === "throw") {
-        throw record.arg;
-      }
-
-      if (record.type === "break" ||
-          record.type === "continue") {
-        this.next = record.arg;
-      } else if (record.type === "return") {
-        this.rval = this.arg = record.arg;
-        this.method = "return";
-        this.next = "end";
-      } else if (record.type === "normal" && afterLoc) {
-        this.next = afterLoc;
-      }
-
-      return ContinueSentinel;
-    },
-
-    finish: function(finallyLoc) {
-      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
-        var entry = this.tryEntries[i];
-        if (entry.finallyLoc === finallyLoc) {
-          this.complete(entry.completion, entry.afterLoc);
-          resetTryEntry(entry);
-          return ContinueSentinel;
-        }
-      }
-    },
-
-    "catch": function(tryLoc) {
-      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
-        var entry = this.tryEntries[i];
-        if (entry.tryLoc === tryLoc) {
-          var record = entry.completion;
-          if (record.type === "throw") {
-            var thrown = record.arg;
-            resetTryEntry(entry);
-          }
-          return thrown;
-        }
-      }
-
-      // The context.catch method must only be called with a location
-      // argument that corresponds to a known catch block.
-      throw new Error("illegal catch attempt");
-    },
-
-    delegateYield: function(iterable, resultName, nextLoc) {
-      this.delegate = {
-        iterator: values(iterable),
-        resultName: resultName,
-        nextLoc: nextLoc
-      };
-
-      if (this.method === "next") {
-        // Deliberately forget the last sent value so that we don't
-        // accidentally pass it on to the delegate.
-        this.arg = undefined;
-      }
-
-      return ContinueSentinel;
-    }
-  };
-
-  // Regardless of whether this script is executing as a CommonJS module
-  // or not, return the runtime object so that we can declare the variable
-  // regeneratorRuntime in the outer scope, which allows this module to be
-  // injected easily by `bin/regenerator --include-runtime script.js`.
-  return exports;
-
-}(
-  // If this script is executing as a CommonJS module, use module.exports
-  // as the regeneratorRuntime namespace. Otherwise create a new empty
-  // object. Either way, the resulting object will be used to initialize
-  // the regeneratorRuntime variable at the top of this file.
-   true ? module.exports : undefined
-));
-
-try {
-  regeneratorRuntime = runtime;
-} catch (accidentalStrictMode) {
-  // This module should not be running in strict mode, so the above
-  // assignment should always work unless something is misconfigured. Just
-  // in case runtime.js accidentally runs in strict mode, in modern engines
-  // we can explicitly access globalThis. In older engines we can escape
-  // strict mode using a global Function call. This could conceivably fail
-  // if a Content Security Policy forbids using Function, but in that case
-  // the proper solution is to fix the accidental strict mode problem. If
-  // you've misconfigured your bundler to force strict mode and applied a
-  // CSP to forbid Function, and you're not willing to fix either of those
-  // problems, please detail your unique predicament in a GitHub issue.
-  if (typeof globalThis === "object") {
-    globalThis.regeneratorRuntime = runtime;
-  } else {
-    Function("r", "regeneratorRuntime = r")(runtime);
-  }
-}
 
 
 /***/ }),
@@ -8228,7 +7431,64 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
-    _vm._m(0),
+    _c(
+      "div",
+      { staticClass: "row" },
+      [
+        _c(
+          "el-container",
+          [
+            _c(
+              "el-header",
+              { staticStyle: { "text-align": "right", "font-size": "12px" } },
+              [
+                _c(
+                  "el-dropdown",
+                  { on: { command: _vm.handleCommand } },
+                  [
+                    _c("i", {
+                      staticClass: "el-icon-setting",
+                      staticStyle: { "margin-right": "15px" }
+                    }),
+                    _vm._v(" "),
+                    _c(
+                      "el-dropdown-menu",
+                      { attrs: { slot: "dropdown" }, slot: "dropdown" },
+                      [
+                        _c(
+                          "el-dropdown-item",
+                          { attrs: { command: "to_homepage" } },
+                          [_vm._v("查看")]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "el-dropdown-item",
+                          { attrs: { command: "change_password" } },
+                          [_vm._v("修改密码")]
+                        ),
+                        _vm._v(" "),
+                        _c("el-dropdown-item", { attrs: { command: "exit" } }, [
+                          _vm._v("登出")
+                        ])
+                      ],
+                      1
+                    )
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c("span", [_vm._v(_vm._s(_vm.username))])
+              ],
+              1
+            )
+          ],
+          1
+        ),
+        _vm._v(" "),
+        _vm._m(0)
+      ],
+      1
+    ),
     _vm._v(" "),
     _c("div", { staticClass: "row" }, [
       _c("div", { staticClass: "col-xs-2 col-xs-offset-2" }, [
@@ -8289,11 +7549,9 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "row" }, [
-      _c("div", { staticClass: "col-xs-offset-2 col-xs-8" }, [
-        _c("div", { staticClass: "page-header" }, [
-          _c("h2", [_vm._v("实验中心（不是）")])
-        ])
+    return _c("div", { staticClass: "col-xs-offset-2 col-xs-8" }, [
+      _c("div", { staticClass: "page-header" }, [
+        _c("h2", [_vm._v("实验中心（不是）")])
       ])
     ])
   }
@@ -8319,7 +7577,135 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("h2", [_vm._v("这是相关介绍，联系我们啥的")])
+  return _c("h2", [_vm._v("相关介绍")])
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Changepsw.vue?vue&type=template&id=7fd33949&":
+/*!************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Changepsw.vue?vue&type=template&id=7fd33949& ***!
+  \************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "el-form",
+    {
+      ref: "form",
+      attrs: { model: _vm.form, "label-position": "top", rules: _vm.rules },
+      nativeOn: {
+        submit: function($event) {
+          $event.preventDefault()
+        }
+      }
+    },
+    [
+      _c(
+        "el-form-item",
+        { attrs: { label: "原密码", prop: "ori_password" } },
+        [
+          _c("el-input", {
+            attrs: { clearable: "", "show-password": "" },
+            model: {
+              value: _vm.form.ori_password,
+              callback: function($$v) {
+                _vm.$set(
+                  _vm.form,
+                  "ori_password",
+                  typeof $$v === "string" ? $$v.trim() : $$v
+                )
+              },
+              expression: "form.ori_password"
+            }
+          })
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "el-form-item",
+        { attrs: { label: "密码", prop: "password" } },
+        [
+          _c("el-input", {
+            attrs: { clearable: "", "show-password": "" },
+            model: {
+              value: _vm.form.password,
+              callback: function($$v) {
+                _vm.$set(
+                  _vm.form,
+                  "password",
+                  typeof $$v === "string" ? $$v.trim() : $$v
+                )
+              },
+              expression: "form.password"
+            }
+          })
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "el-form-item",
+        { attrs: { label: "密码确认", prop: "password_confirm" } },
+        [
+          _c("el-input", {
+            attrs: { clearable: "", "show-password": "" },
+            model: {
+              value: _vm.form.password_confirm,
+              callback: function($$v) {
+                _vm.$set(
+                  _vm.form,
+                  "password_confirm",
+                  typeof $$v === "string" ? $$v.trim() : $$v
+                )
+              },
+              expression: "form.password_confirm"
+            }
+          })
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c("br"),
+      _c("br"),
+      _vm._v(" "),
+      _c("el-checkbox", {
+        attrs: { label: "记住账号" },
+        model: {
+          value: _vm.isRemember,
+          callback: function($$v) {
+            _vm.isRemember = $$v
+          },
+          expression: "isRemember"
+        }
+      }),
+      _vm._v(" "),
+      _c("br"),
+      _vm._v(" "),
+      _c(
+        "el-button",
+        {
+          attrs: { type: "primary", "native-type": "submit" },
+          on: { click: _vm.onSubmit }
+        },
+        [_vm._v("改变密码")]
+      )
+    ],
+    1
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -8343,7 +7729,13 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("h2", [_vm._v("我们的主页信息啥的，可以展示现有的实验模拟")])
+  return _c("div", [
+    _c("h2", [_vm._v("我们的主页信息啥的，可以展示现有的实验模拟")]),
+    _vm._v(" "),
+    this.$store.state.authorized
+      ? _c("h3", [_vm._v("登录了显示信息")])
+      : _vm._e()
+  ])
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -8481,423 +7873,7 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    { staticStyle: { width: "100%" } },
-    [
-      _c(
-        "el-header",
-        { staticClass: "header" },
-        [
-          _c(
-            "el-row",
-            [
-              _c(
-                "el-col",
-                { staticStyle: { "text-align": "right" }, attrs: { span: 12 } },
-                [
-                  _vm.active_article_id
-                    ? _c(
-                        "span",
-                        {
-                          staticClass: "saving-state",
-                          style: {
-                            color: _vm.status.saving ? "#E6A23C" : "#67C23A"
-                          }
-                        },
-                        [
-                          _c("i", {
-                            class: _vm.status.saving
-                              ? "el-icon-loading"
-                              : "el-icon-circle-check"
-                          }),
-                          _vm._v(
-                            "\n                    " +
-                              _vm._s(_vm.status.saving ? "保存中" : "已保存") +
-                              "\n                "
-                          )
-                        ]
-                      )
-                    : _vm._e(),
-                  _vm._v(" "),
-                  _vm.active_article_id &&
-                  _vm.status.updater_name &&
-                  _vm.status.updated_at
-                    ? _c(
-                        "span",
-                        {
-                          staticClass: "saving-state",
-                          staticStyle: { color: "#888" }
-                        },
-                        [
-                          _vm._v(
-                            "\n                    " +
-                              _vm._s(_vm.status.updater_name) +
-                              " @ " +
-                              _vm._s(
-                                _vm
-                                  .$dayjs(_vm.status.updated_at)
-                                  .format("MM月DD日 HH:mm:ss")
-                              ) +
-                              "\n                "
-                          )
-                        ]
-                      )
-                    : _vm._e(),
-                  _vm._v(" "),
-                  _c(
-                    "el-dropdown",
-                    { on: { command: _vm.handleDropdownCommand } },
-                    [
-                      _c(
-                        "el-button",
-                        {
-                          attrs: { type: "primary", size: "medium", plain: "" }
-                        },
-                        [
-                          _vm._v(
-                            "\n                        " +
-                              _vm._s(_vm.user.name || "N/A")
-                          ),
-                          _c("i", {
-                            staticClass: "el-icon-arrow-down el-icon--right"
-                          })
-                        ]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "el-dropdown-menu",
-                        { attrs: { slot: "dropdown" }, slot: "dropdown" },
-                        [
-                          _c(
-                            "el-dropdown-item",
-                            { attrs: { command: "change_password" } },
-                            [_vm._v("修改密码")]
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "el-dropdown-item",
-                            {
-                              attrs: {
-                                command: "exit",
-                                divided: "",
-                                loading: _vm.loggingOut
-                              }
-                            },
-                            [_vm._v("登出\n                        ")]
-                          )
-                        ],
-                        1
-                      )
-                    ],
-                    1
-                  )
-                ],
-                1
-              )
-            ],
-            1
-          )
-        ],
-        1
-      ),
-      _vm._v(" "),
-      _c(
-        "el-container",
-        [
-          _c(
-            "el-aside",
-            { attrs: { width: "200px" } },
-            [
-              _c("el-tree", {
-                staticStyle: { "margin-top": "5px" },
-                attrs: {
-                  loading: _vm.loadingTree,
-                  data: _vm.tree,
-                  props: _vm.defaultProps,
-                  "empty-text": _vm.loadingTree
-                    ? "文件树加载中"
-                    : "未获取到文件树",
-                  "node-key": "id",
-                  "default-expand-all": "",
-                  indent: 8,
-                  "highlight-current": true
-                },
-                on: { "node-click": _vm.nodeClick },
-                scopedSlots: _vm._u([
-                  {
-                    key: "default",
-                    fn: function(ref) {
-                      var node = ref.node
-                      var data = ref.data
-                      return _c(
-                        "span",
-                        {
-                          staticClass: "tree-node",
-                          class: {
-                            "selected-node":
-                              _vm.isArticle(node) &&
-                              _vm.active_article_id === data.entity_id
-                          }
-                        },
-                        [
-                          _c(
-                            "span",
-                            [
-                              _c("i", { class: _vm.getNodeIcon(node) }),
-                              _vm._v(" "),
-                              _c(
-                                "el-tooltip",
-                                {
-                                  attrs: {
-                                    content: _vm.getTooltipContent(node),
-                                    placement: "top",
-                                    "open-delay": 1000
-                                  }
-                                },
-                                [
-                                  _c(
-                                    "span",
-                                    [
-                                      _vm._v(
-                                        "\n                                " +
-                                          _vm._s(data.name) +
-                                          "\n                                "
-                                      ),
-                                      data.owner
-                                        ? _c(
-                                            "el-tag",
-                                            {
-                                              attrs: {
-                                                type: "info",
-                                                size: "mini"
-                                              }
-                                            },
-                                            [_vm._v(_vm._s(data.owner))]
-                                          )
-                                        : _vm._e()
-                                    ],
-                                    1
-                                  )
-                                ]
-                              )
-                            ],
-                            1
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "span",
-                            { staticClass: "pull-right actions" },
-                            [
-                              _vm.canAudit(node)
-                                ? _c(
-                                    "el-button-group",
-                                    [
-                                      _c(
-                                        "el-tooltip",
-                                        {
-                                          attrs: {
-                                            content: "创建目录",
-                                            placement: "top",
-                                            "open-delay": 500,
-                                            "hide-after": 5000
-                                          }
-                                        },
-                                        [
-                                          _vm.isFolder(node)
-                                            ? _c(
-                                                "el-button",
-                                                {
-                                                  attrs: {
-                                                    type: "text",
-                                                    size: "small"
-                                                  },
-                                                  on: {
-                                                    click: function($event) {
-                                                      $event.stopPropagation()
-                                                      return function() {
-                                                        return _vm.treeAppendFolder(
-                                                          node,
-                                                          data
-                                                        )
-                                                      }.apply(null, arguments)
-                                                    }
-                                                  }
-                                                },
-                                                [
-                                                  _c("i", {
-                                                    staticClass:
-                                                      "el-icon-folder-add"
-                                                  })
-                                                ]
-                                              )
-                                            : _vm._e()
-                                        ],
-                                        1
-                                      ),
-                                      _vm._v(" "),
-                                      _c(
-                                        "el-tooltip",
-                                        {
-                                          attrs: {
-                                            content: "创建文档",
-                                            placement: "top",
-                                            "open-delay": 500,
-                                            "hide-after": 5000
-                                          }
-                                        },
-                                        [
-                                          _vm.isFolder(node)
-                                            ? _c(
-                                                "el-button",
-                                                {
-                                                  attrs: {
-                                                    type: "text",
-                                                    size: "small"
-                                                  },
-                                                  on: {
-                                                    click: function($event) {
-                                                      $event.stopPropagation()
-                                                      return function() {
-                                                        return _vm.treeAppend(
-                                                          node,
-                                                          data
-                                                        )
-                                                      }.apply(null, arguments)
-                                                    }
-                                                  }
-                                                },
-                                                [
-                                                  _c("i", {
-                                                    staticClass:
-                                                      "el-icon-document-add"
-                                                  })
-                                                ]
-                                              )
-                                            : _vm._e()
-                                        ],
-                                        1
-                                      ),
-                                      _vm._v(" "),
-                                      _c(
-                                        "el-tooltip",
-                                        {
-                                          attrs: {
-                                            content: "重命名",
-                                            placement: "top",
-                                            "open-delay": 500,
-                                            "hide-after": 5000
-                                          }
-                                        },
-                                        [
-                                          _c(
-                                            "el-button",
-                                            {
-                                              attrs: {
-                                                type: "text",
-                                                size: "small"
-                                              },
-                                              on: {
-                                                click: function($event) {
-                                                  $event.stopPropagation()
-                                                  return function() {
-                                                    return _vm.treeRename(
-                                                      node,
-                                                      data
-                                                    )
-                                                  }.apply(null, arguments)
-                                                }
-                                              }
-                                            },
-                                            [
-                                              _c("i", {
-                                                staticClass: "el-icon-edit"
-                                              })
-                                            ]
-                                          )
-                                        ],
-                                        1
-                                      ),
-                                      _vm._v(" "),
-                                      _c(
-                                        "el-tooltip",
-                                        {
-                                          attrs: {
-                                            content: "删除",
-                                            placement: "top",
-                                            "open-delay": 500,
-                                            "hide-after": 5000
-                                          }
-                                        },
-                                        [
-                                          _c(
-                                            "el-button",
-                                            {
-                                              attrs: {
-                                                type: "text",
-                                                size: "small"
-                                              },
-                                              on: {
-                                                click: function($event) {
-                                                  $event.stopPropagation()
-                                                  return function() {
-                                                    return _vm.treeRemove(
-                                                      node,
-                                                      data
-                                                    )
-                                                  }.apply(null, arguments)
-                                                }
-                                              }
-                                            },
-                                            [
-                                              _c("i", {
-                                                staticClass: "el-icon-delete"
-                                              })
-                                            ]
-                                          )
-                                        ],
-                                        1
-                                      )
-                                    ],
-                                    1
-                                  )
-                                : _vm._e()
-                            ],
-                            1
-                          )
-                        ]
-                      )
-                    }
-                  }
-                ])
-              })
-            ],
-            1
-          ),
-          _vm._v(" "),
-          _c(
-            "el-container",
-            [
-              _c("el-main", [_c("WorkbenchEditor")], 1),
-              _vm._v(" "),
-              _c("el-footer", { staticClass: "footer" }, [
-                _c("span", { staticClass: "footer-item" }, [
-                  _vm._v("沪ICP备18033591号-1")
-                ]),
-                _vm._v(" "),
-                _c("span", { staticClass: "footer-item" }, [
-                  _vm._v("Copyright @ Arrakis 2020")
-                ])
-              ])
-            ],
-            1
-          )
-        ],
-        1
-      )
-    ],
-    1
-  )
+  return _c("div", { staticStyle: { width: "100%" } })
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -9427,6 +8403,75 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/Changepsw.vue":
+/*!***********************************************!*\
+  !*** ./resources/js/components/Changepsw.vue ***!
+  \***********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _Changepsw_vue_vue_type_template_id_7fd33949___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Changepsw.vue?vue&type=template&id=7fd33949& */ "./resources/js/components/Changepsw.vue?vue&type=template&id=7fd33949&");
+/* harmony import */ var _Changepsw_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Changepsw.vue?vue&type=script&lang=js& */ "./resources/js/components/Changepsw.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _Changepsw_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _Changepsw_vue_vue_type_template_id_7fd33949___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _Changepsw_vue_vue_type_template_id_7fd33949___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/Changepsw.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/Changepsw.vue?vue&type=script&lang=js&":
+/*!************************************************************************!*\
+  !*** ./resources/js/components/Changepsw.vue?vue&type=script&lang=js& ***!
+  \************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Changepsw_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./Changepsw.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Changepsw.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Changepsw_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/Changepsw.vue?vue&type=template&id=7fd33949&":
+/*!******************************************************************************!*\
+  !*** ./resources/js/components/Changepsw.vue?vue&type=template&id=7fd33949& ***!
+  \******************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Changepsw_vue_vue_type_template_id_7fd33949___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./Changepsw.vue?vue&type=template&id=7fd33949& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Changepsw.vue?vue&type=template&id=7fd33949&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Changepsw_vue_vue_type_template_id_7fd33949___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Changepsw_vue_vue_type_template_id_7fd33949___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
 /***/ "./resources/js/components/Home.vue":
 /*!******************************************!*\
   !*** ./resources/js/components/Home.vue ***!
@@ -9732,17 +8777,19 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
-/* harmony import */ var _App_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./App.vue */ "./resources/js/App.vue");
-/* harmony import */ var vue_router__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vue-router */ "./node_modules/vue-router/dist/vue-router.esm.js");
-/* harmony import */ var _router__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./router */ "./resources/js/router/index.js");
-/* harmony import */ var element_ui__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! element-ui */ "./node_modules/element-ui/lib/element-ui.common.js");
-/* harmony import */ var element_ui__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(element_ui__WEBPACK_IMPORTED_MODULE_5__);
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_6__);
-/* harmony import */ var vue_axios__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! vue-axios */ "./node_modules/vue-axios/dist/vue-axios.esm.min.js");
-/* harmony import */ var element_ui_lib_theme_chalk_index_css__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! element-ui/lib/theme-chalk/index.css */ "./node_modules/element-ui/lib/theme-chalk/index.css");
-/* harmony import */ var element_ui_lib_theme_chalk_index_css__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(element_ui_lib_theme_chalk_index_css__WEBPACK_IMPORTED_MODULE_8__);
+/* harmony import */ var _App_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./App.vue */ "./resources/js/App.vue");
+/* harmony import */ var vue_router__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vue-router */ "./node_modules/vue-router/dist/vue-router.esm.js");
+/* harmony import */ var _router__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./router */ "./resources/js/router/index.js");
+/* harmony import */ var element_ui__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! element-ui */ "./node_modules/element-ui/lib/element-ui.common.js");
+/* harmony import */ var element_ui__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(element_ui__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var element_ui_lib_theme_chalk_index_css__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! element-ui/lib/theme-chalk/index.css */ "./node_modules/element-ui/lib/theme-chalk/index.css");
+/* harmony import */ var element_ui_lib_theme_chalk_index_css__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(element_ui_lib_theme_chalk_index_css__WEBPACK_IMPORTED_MODULE_6__);
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_7__);
+/* harmony import */ var vue_axios__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! vue-axios */ "./node_modules/vue-axios/dist/vue-axios.esm.min.js");
+/* harmony import */ var _store__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./store */ "./resources/js/store/index.js");
+
 
 
 
@@ -9753,15 +8800,16 @@ __webpack_require__.r(__webpack_exports__);
 
 
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.config.productionTip = false;
-vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_router__WEBPACK_IMPORTED_MODULE_3__["default"]);
-vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(element_ui__WEBPACK_IMPORTED_MODULE_5___default.a);
-vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__["default"]);
-vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_axios__WEBPACK_IMPORTED_MODULE_7__["default"], axios__WEBPACK_IMPORTED_MODULE_6___default.a);
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_router__WEBPACK_IMPORTED_MODULE_2__["default"]);
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(element_ui__WEBPACK_IMPORTED_MODULE_4___default.a);
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_5__["default"]);
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_axios__WEBPACK_IMPORTED_MODULE_8__["default"], axios__WEBPACK_IMPORTED_MODULE_7___default.a);
 new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
   render: function render(h) {
-    return h(_App_vue__WEBPACK_IMPORTED_MODULE_2__["default"]);
+    return h(_App_vue__WEBPACK_IMPORTED_MODULE_1__["default"]);
   },
-  router: _router__WEBPACK_IMPORTED_MODULE_4__["default"]
+  router: _router__WEBPACK_IMPORTED_MODULE_3__["default"],
+  store: _store__WEBPACK_IMPORTED_MODULE_9__["default"]
 }).$mount('#app');
 
 /***/ }),
@@ -9781,6 +8829,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_Login__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../components/Login */ "./resources/js/components/Login.vue");
 /* harmony import */ var _components_Me__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../components/Me */ "./resources/js/components/Me.vue");
 /* harmony import */ var _components_Register__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../components/Register */ "./resources/js/components/Register.vue");
+/* harmony import */ var _components_Changepsw__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../components/Changepsw */ "./resources/js/components/Changepsw.vue");
+
 
 
 
@@ -9803,7 +8853,39 @@ __webpack_require__.r(__webpack_exports__);
   }, {
     path: '/register',
     component: _components_Register__WEBPACK_IMPORTED_MODULE_5__["default"]
+  }, {
+    path: '/changepsw',
+    component: _components_Changepsw__WEBPACK_IMPORTED_MODULE_6__["default"]
   }]
+}));
+
+/***/ }),
+
+/***/ "./resources/js/store/index.js":
+/*!*************************************!*\
+  !*** ./resources/js/store/index.js ***!
+  \*************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+
+
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__["default"]);
+var actions = {};
+var mutations = {};
+var state = {
+  debug: 0,
+  authorized: false
+};
+/* harmony default export */ __webpack_exports__["default"] = (new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
+  actions: actions,
+  mutations: mutations,
+  state: state
 }));
 
 /***/ }),

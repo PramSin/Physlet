@@ -6,11 +6,12 @@
       @submit.native.prevent
       :rules="rules"
   >
-    <el-form-item label="邮箱" prop="emailOrUsername" >
-        <el-input
-            v-model.trim="form.emailOrUsername"
-            clearable
-        ></el-input>
+    <el-form-item label="原密码" prop="ori_password">
+      <el-input
+          v-model.trim="form.ori_password"
+          clearable
+          show-password
+      ></el-input>
     </el-form-item>
     <el-form-item label="密码" prop="password">
       <el-input
@@ -19,12 +20,17 @@
           show-password
       ></el-input>
     </el-form-item>
+    <el-form-item label="密码确认" prop="password_confirm">
+      <el-input
+          v-model.trim="form.password_confirm"
+          clearable
+          show-password
+      ></el-input>
+    </el-form-item>
     <br/><br/>
     <el-checkbox label="记住账号" v-model="isRemember"></el-checkbox>
     <br/>
-    <el-button type="text" @click="to_register">没有帐号？点击注册</el-button>
-    <br/>
-    <el-button type="primary" native-type="submit" @click="onSubmit">登录</el-button>
+    <el-button type="primary" native-type="submit" @click="onSubmit">改变密码</el-button>
   </el-form>
 
 </template>
@@ -34,18 +40,32 @@
 
 
 export default {
-  name: "Login",
+  name: "Changepsw",
   data() {
+    let pswcheck= (rule, value, callback) => {
+      if (value === localStorage.getItem('userpsw')) {
+        callback()
+      }
+      else {
+        return callback(new Error('原密码错误！'))
+        }
+      }
+
     return {
+
       form: {
-        emailOrUsername: '',
         password: '',
+        ori_password: '',
+        password_confirm: '',
       },
       rules: {
-        emailOrUsername: [
-          {required: true, message: '邮箱不能为空', trigger: 'blur'},
-        ],
         password: [
+          {required: true, validator: pswcheck, message: '不能为空', trigger: 'blur'},
+        ],
+        ori_password: [
+          {required: true, message: '密码不能为空', trigger: 'blur'},
+        ],
+        password_confirm: [
           {required: true, message: '密码不能为空', trigger: 'blur'},
         ],
       },
@@ -56,6 +76,11 @@ export default {
 
   },
   methods: {
+      to_register() {
+      this.$router.replace({
+        path: "/login",
+      });
+    },
     onSubmit() {
       this.$refs.form.validate((valid) => {
         if (valid) {
@@ -64,37 +89,37 @@ export default {
           }
           else {
             this.$http
-                .post('/physlet_api/login', this.form)
+                .post('/physlet_api/changePassword', this.form)
                 .then(response => {
                   if (response.data.code !== 200) {
                     this.$notify.error({
                       title: '错误',
                       message: response.data.message,
                     });
-                  }
-                  else {
+                  } else {
                     this.$notify({
                       type: 'success',
                       title: response.data.message,
                       message: null,
-                    });
 
-                    //使用localstorage储存token
+                    });
                     if (this.isRemember) {
-                      localStorage.setItem('username',this.form.emailOrUsername)
-                      localStorage.setItem('userpsw',this.form.password)
-                      this.$store.state.authorized = true
+                      localStorage.setItem('username',this.form.userName)
+                      localStorage.removeItem('userpsw')
+                      localStorage.setItem('userpsw',this.form.userName)
+                      this.$router.replace({path: '/home'})
                     }
                     else {
-                      localStorage.setItem('username',this.form.emailOrUsername)
-                      this.$store.state.authorized = true
+                      localStorage.removeItem('userpsw')
+                      localStorage.removeItem('username')
+                      this.$router.replace({path: '/login'})
                     }
-                    this.$router.replace({path: '/home'})
                   }
                 })
                 .catch()
                 .then(() => {
                 });
+
           }
         } else {
           this.$message.error('请确认表单填写正确后再试');
@@ -103,11 +128,6 @@ export default {
       });
     },
 
-    to_register() {
-      this.$router.replace({
-        path: "/login",
-      });
-    },
 
   },
 }
