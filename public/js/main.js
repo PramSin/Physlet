@@ -9489,6 +9489,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 /* harmony default export */ __webpack_exports__["default"] = (new vue_router__WEBPACK_IMPORTED_MODULE_0__["default"]({
+  mode: 'history',
   routes: [{
     path: '/about',
     component: _components_About__WEBPACK_IMPORTED_MODULE_2__["default"]

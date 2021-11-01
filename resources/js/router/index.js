@@ -7,6 +7,7 @@ import Register from "../components/Register";
 
 
 export default new VueRouter({
+    mode: 'history',
     routes: [
         {
             path: '/about',
