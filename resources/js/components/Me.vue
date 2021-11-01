@@ -82,18 +82,13 @@
                   <span class="footer-item">Copyright @ Arrakis 2020</span>
                 </el-footer>
               </el-container>
-            </el-container>-->
-        <input type="file" @change="uploadFile" ref="file">
-        <button @click="submitFile">Upload!</button>
-
-        <el-upload
+            </el-container>-->     <el-upload
             class="upload-demo"
             action=""
             :http-request="submitFile"
             :before-remove="beforeRemove"
             :file-list="fileList">
             <el-button size="small" type="primary">点击上传</el-button>
-            <el-button style="margin-left: 10px;" size="small" type="success" @click="submitFile">上传到服务器</el-button>
             <div slot="tip" class="el-upload__tip">不超过500kb</div>
         </el-upload>
     </div>

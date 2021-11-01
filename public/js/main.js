@@ -2185,11 +2185,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "Me",
   data: function data() {
@@ -8550,14 +8545,6 @@ var render = function() {
     "div",
     { staticStyle: { width: "100%" } },
     [
-      _c("input", {
-        ref: "file",
-        attrs: { type: "file" },
-        on: { change: _vm.uploadFile }
-      }),
-      _vm._v(" "),
-      _c("button", { on: { click: _vm.submitFile } }, [_vm._v("Upload!")]),
-      _vm._v(" "),
       _c(
         "el-upload",
         {
@@ -8573,16 +8560,6 @@ var render = function() {
           _c("el-button", { attrs: { size: "small", type: "primary" } }, [
             _vm._v("点击上传")
           ]),
-          _vm._v(" "),
-          _c(
-            "el-button",
-            {
-              staticStyle: { "margin-left": "10px" },
-              attrs: { size: "small", type: "success" },
-              on: { click: _vm.submitFile }
-            },
-            [_vm._v("上传到服务器")]
-          ),
           _vm._v(" "),
           _c(
             "div",
