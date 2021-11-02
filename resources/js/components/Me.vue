@@ -94,7 +94,7 @@
             <el-button size="small" type="primary">点击上传</el-button>
             <div slot="tip" class="el-upload__tip">不超过500kb</div>
         </el-upload>
-
+        <iframe :src="demosrc" ref="iframe"></iframe>
     </div>
 </template>
 
@@ -104,6 +104,7 @@ export default {
     name: "Me",
     data() {
         return {
+            demosrc: 'https://www.openstreetmap.org/export/embed.html?bbox=-0.004017949104309083%2C51.47612752641776%2C0.00030577182769775396%2C51.478569861898606&layer=mapnik',
             fileList: [{name: 'food.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}],
             show_file: false,
             username: localStorage.getItem('username'),

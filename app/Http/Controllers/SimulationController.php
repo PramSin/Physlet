@@ -40,8 +40,8 @@ class SimulationController extends Controller
             $synopsis = $request->post('synopsis');
             $access = $request->post('access');
 
-            if ($request->hasFile('package')) {
-                $package = $request->file('package')->store(Category::findOrFail($category)->name);
+            if ($request->hasFile('file')) {
+                $package = $request->file('file')->store(Category::findOrFail($category)->name);
             } else {
                 $this->r['code'] = 400;
                 $this->r['message'] = "Cannot receive file";
