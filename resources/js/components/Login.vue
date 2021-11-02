@@ -32,6 +32,37 @@
 
 <script>
 
+        this.getCookie();
+    },
+    methods: {
+        onSubmit() {
+            this.$refs.form.validate((valid) => {
+                if (valid) {
+                    this.$http
+                        .post('/physlet_api/login', this.form, /*{emulateJSON: true}*/)
+                        .then(response => {
+                            if (response.data.code !== 200) {
+                                this.$notify.error({
+                                    title: '错误',
+                                    message: response.data.message,
+                                });
+                            } else {
+                                this.$notify({
+                                    type: 'success',
+                                    title: response.data.message,
+                                    message: null,
+                                });
+                                this.$router.push({path: '/home'});
+                            }
+                        })
+                        .catch()
+                } else {
+                    this.$message.error('请确认表单填写正确后再试');
+                    return false;
+                }
+            });
+        },
+
 
 export default {
   name: "Login",
@@ -81,14 +112,14 @@ export default {
 
                     //使用localstorage储存token
                     if (this.isRemember) {
-                      localStorage.setItem('username',this.form.emailOrUsername)
-                      localStorage.setItem('userpsw',this.form.password)
-                      this.$store.state.authorized = true
+                        localStorage.setItem('username',this.form.emailOrUsername)
+                        localStorage.setItem('userpsw',this.form.password)
                     }
                     else {
                       localStorage.setItem('username',this.form.emailOrUsername)
                       this.$store.state.authorized = true
                     }
+                    localStorage.setItem('is_authorized', 'true')
                     this.$router.replace({path: '/home'})
                   }
                 })
