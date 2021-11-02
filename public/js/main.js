@@ -2421,7 +2421,7 @@ __webpack_require__.r(__webpack_exports__);
   mounted: function mounted() {
     this.$refs.upload.clearFiles();
 
-    if (localStorage.getItem('is_authorized') !== true) {
+    if (localStorage.getItem('is_authorized') !== 'true') {
       this.$router.replace({
         path: "/login"
       });
