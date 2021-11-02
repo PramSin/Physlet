@@ -2242,13 +2242,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "Me",
   data: function data() {
     return {
-      demosrc: 'https://www.openstreetmap.org/export/embed.html?bbox=-0.004017949104309083%2C51.47612752641776%2C0.00030577182769775396%2C51.478569861898606&layer=mapnik',
+      value: '',
+      synopsis_list: [],
       fileList: [{
         name: 'food.jpeg',
         url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'
@@ -2301,8 +2300,8 @@ __webpack_require__.r(__webpack_exports__);
       var formData = new FormData(); // const name = localStorage.getItem('username')
 
       formData.append('name', localStorage.getItem('username'));
-      formData.append('category', '1');
-      formData.append('synopsis', 'cajhsjdhasca');
+      formData.append('category', this.value);
+      formData.append('synopsis', 'sadkfuha;sdifh');
       formData.append('access', '0'); // const file = this.Images
 
       console.log(this.Images);
@@ -2396,63 +2395,9 @@ __webpack_require__.r(__webpack_exports__);
       _this2.loadingTree = false;
     });
   },
-  treeAppendFolder: function treeAppendFolder(node, data) {
+  mounted: function mounted() {
     var _this3 = this;
 
-    this.$prompt(null, '请输入文件夹名称', {
-      confirmButtonText: '确定',
-      cancelButtonText: '取消'
-    }).then(function (_ref) {
-      var value = _ref.value;
-      _this3.loadingTree = true;
-
-      _this3.$http.post('/workbench_api/addFolder', {
-        parent_id: data.entity_id,
-        name: value
-      }).then(function (response) {
-        if (response.data && response.data.code === 0) {
-          if (!data.children) {
-            _this3.$set(data, 'children', []);
-          }
-
-          data.children.push(response.data.folder);
-        } else if (response.data && response.data.message) {
-          _this3.$notify.error(response.data.message);
-        }
-      })["catch"]().then(function () {
-        _this3.loadingTree = false;
-      });
-    })["catch"]();
-  },
-  treeAppend: function treeAppend(node, data) {
-    var _this4 = this;
-
-    this.$prompt(null, '请输入文件名称', {
-      confirmButtonText: '确定',
-      cancelButtonText: '取消'
-    }).then(function (_ref2) {
-      var value = _ref2.value;
-      _this4.loadingTree = true;
-
-      _this4.$http.post('/workbench_api/addArticle', {
-        parent_id: data.entity_id,
-        name: value
-      }).then(function (response) {
-        if (response.data && response.data.code === 0) {
-          if (!data.children) {
-            _this4.$set(data, 'children', []);
-          }
-
-          data.children.push(response.data.article);
-        } else if (response.data && response.data.message) {
-          _this4.$notify.error(response.data.message);
-        }
-      })["catch"]().then(function () {
-        _this4.loadingTree = false;
-      });
-    })["catch"]();
-  },
-  mounted: function mounted() {
     this.$refs.upload.clearFiles();
 
     if (localStorage.getItem('is_authorized') !== 'true') {
@@ -2460,6 +2405,20 @@ __webpack_require__.r(__webpack_exports__);
         path: "/login"
       });
     }
+
+    this.axios.get('/physlet_api/getCategories').then(function (response) {
+      var data = response.data.data;
+
+      for (var syn = 0; syn < data.length; syn++) {
+        var synopsis = {};
+        synopsis.label = data[syn].name;
+        synopsis.value = data[syn].id;
+
+        _this3.synopsis_list.push(synopsis);
+      }
+
+      console.log(_this3.synopsis_list);
+    });
   }
 });
 
@@ -8040,7 +7999,7 @@ var render = function() {
         _c(
           "el-select",
           {
-            attrs: { multiple: "", placeholder: "请选择" },
+            attrs: { placeholder: "请选择" },
             model: {
               value: _vm.value,
               callback: function($$v) {
@@ -8049,10 +8008,9 @@ var render = function() {
               expression: "value"
             }
           },
-          _vm._l(_vm.options, function(item) {
+          _vm._l(_vm.synopsis_list, function(item) {
             return _c("el-option", {
-              key: item.value,
-              attrs: { label: item.label, value: item.value }
+              attrs: { value: item.value, label: item.label }
             })
           }),
           1
@@ -8089,9 +8047,7 @@ var render = function() {
           )
         ],
         1
-      ),
-      _vm._v(" "),
-      _c("iframe", { ref: "iframe", attrs: { src: _vm.demosrc } })
+      )
     ],
     2
   )

@@ -84,27 +84,25 @@
               </el-container>
             </el-container>-->
         <template>
-            <el-select v-model="value" multiple placeholder="请选择">
+            <el-select v-model="value" placeholder="请选择">
                 <el-option
-                    v-for="item in options"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value">
+                    v-for="item in synopsis_list"
+                    :value="item.value"
+                    :label="item.label">
                 </el-option>
             </el-select>
         </template>
         <el-upload ref="upload"
-            class="upload-demo"
-            action=""
-            :show-file-list="show_file"
-            :http-request="submitFile"
-            :before-remove="beforeRemove"
-            :file-list="fileList"
-            :on-change="uploadFile">
+                   class="upload-demo"
+                   action=""
+                   :show-file-list="show_file"
+                   :http-request="submitFile"
+                   :before-remove="beforeRemove"
+                   :file-list="fileList"
+                   :on-change="uploadFile">
             <el-button size="small" type="primary">点击上传</el-button>
             <div slot="tip" class="el-upload__tip">不超过500kb</div>
         </el-upload>
-        <iframe :src="demosrc" ref="iframe"></iframe>
     </div>
 </template>
 
@@ -114,8 +112,12 @@ export default {
     name: "Me",
     data() {
         return {
-            demosrc: 'https://www.openstreetmap.org/export/embed.html?bbox=-0.004017949104309083%2C51.47612752641776%2C0.00030577182769775396%2C51.478569861898606&layer=mapnik',
-            fileList: [{name: 'food.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}],
+            value: '',
+            synopsis_list: [],
+            fileList: [{
+                name: 'food.jpeg',
+                url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'
+            }],
             show_file: false,
             username: localStorage.getItem('username'),
             loading: false,
@@ -168,8 +170,8 @@ export default {
             const formData = new FormData();
             // const name = localStorage.getItem('username')
             formData.append('name', localStorage.getItem('username'))
-            formData.append('category', '1')
-            formData.append('synopsis', 'cajhsjdhasca')
+            formData.append('category', this.value)
+            formData.append('synopsis', 'sadkfuha;sdifh')
             formData.append('access', '0')
             // const file = this.Images
             console.log(this.Images)
@@ -261,60 +263,6 @@ export default {
                 this.loadingTree = false;
             });
     },
-    treeAppendFolder(node, data) {
-        this.$prompt(null, '请输入文件夹名称', {
-            confirmButtonText: '确定',
-            cancelButtonText: '取消',
-        }).then(({value}) => {
-            this.loadingTree = true;
-            this.$http
-                .post('/workbench_api/addFolder', {
-                    parent_id: data.entity_id,
-                    name: value,
-                })
-                .then(response => {
-                    if (response.data && response.data.code === 0) {
-                        if (!data.children) {
-                            this.$set(data, 'children', []);
-                        }
-                        data.children.push(response.data.folder);
-                    } else if (response.data && response.data.message) {
-                        this.$notify.error(response.data.message);
-                    }
-                })
-                .catch()
-                .then(() => {
-                    this.loadingTree = false;
-                });
-        }).catch();
-    },
-    treeAppend(node, data) {
-        this.$prompt(null, '请输入文件名称', {
-            confirmButtonText: '确定',
-            cancelButtonText: '取消',
-        }).then(({value}) => {
-            this.loadingTree = true;
-            this.$http
-                .post('/workbench_api/addArticle', {
-                    parent_id: data.entity_id,
-                    name: value,
-                })
-                .then(response => {
-                    if (response.data && response.data.code === 0) {
-                        if (!data.children) {
-                            this.$set(data, 'children', []);
-                        }
-                        data.children.push(response.data.article);
-                    } else if (response.data && response.data.message) {
-                        this.$notify.error(response.data.message);
-                    }
-                })
-                .catch()
-                .then(() => {
-                    this.loadingTree = false;
-                });
-        }).catch();
-    },
     mounted() {
         this.$refs.upload.clearFiles()
         if (localStorage.getItem('is_authorized') !== 'true') {
@@ -322,6 +270,19 @@ export default {
                 path: "/login",
             });
         }
+        this.axios
+            .get('/physlet_api/getCategories')
+            .then(response => {
+                let data = response.data.data;
+                for (let syn = 0; syn < data.length; syn++) {
+                    let synopsis = {};
+                    synopsis.label = data[syn].name
+                    synopsis.value = data[syn].id
+                    this.synopsis_list.push(synopsis)
+                }
+                console.log(this.synopsis_list)
+
+            })
     }
 }
 </script>
