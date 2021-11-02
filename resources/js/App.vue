@@ -83,14 +83,11 @@ export default {
             }
         }
     }
-
-
 }
 
 </script>
 
 <style>
-
 html,
 body {
     padding: 0px;

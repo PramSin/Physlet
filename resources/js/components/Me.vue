@@ -115,7 +115,7 @@ export default {
             defaultProps: {
                 label: 'name',
             },
-
+            fileList: [{}],
             loggingOut: false,
         };
     },
@@ -152,7 +152,6 @@ export default {
             this.Images = file;
             this.fileList = fileList;
             /*console.log(this.Images)*/
-
         },
         submitFile(event) {
             const formData = new FormData();
@@ -173,8 +172,6 @@ export default {
                 res.status; // HTTP status
             });
         },
-
-
         isFolder(node) {
             return (node.key && node.key.startsWith('F_'));
         },
