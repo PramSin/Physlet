@@ -83,6 +83,16 @@
         </el-footer>
       </el-container>
     </el-container>-->
+      <el-upload
+          class="upload-demo"
+          action=""
+          :http-request="submitFile"
+          :before-remove="beforeRemove"
+          :file-list="fileList">
+          <el-button size="small" type="primary">点击上传</el-button>
+          <div slot="tip" class="el-upload__tip">不超过500kb</div>
+      </el-upload>
+
   </div>
 </template>
 
@@ -92,6 +102,7 @@ export default {
   name: "Me",
   data() {
     return {
+        fileList: [{}],
       username:localStorage.getItem('username'),
       loading: false,
 
@@ -129,7 +140,35 @@ export default {
     },
   },
   methods: {
-    isFolder(node) {
+      beforeRemove(file, fileList) {
+          return this.$confirm(`确定移除 ${ file.name }？`);
+      },
+      uploadFile(event) {
+          this.Images = this.$refs.file.files[0];
+          console.log(this.Images)
+      },
+      submitFile() {
+          const formData = new FormData();
+          // const name = localStorage.getItem('username')
+          formData.append('name', localStorage.getItem('username'))
+          formData.append('category', '1')
+          formData.append('synopsis', 'cajhsjdhasca')
+          formData.append('access', '0')
+          // const file = this.Images
+          console.log(this.Images)
+          formData.append('file', this.Images);
+          const headers = {'Content-Type': 'multipart/form-data;boundary=","'};
+          this.axios.post('/physlet_api/uploadSimulation',
+              formData,
+              {headers},
+          ).then((res) => {
+              res.data.files; // binary representation of the file
+              res.status; // HTTP status
+          });
+      },
+
+
+      isFolder(node) {
       return (node.key && node.key.startsWith('F_'));
     },
     isShareFolder(node) {
