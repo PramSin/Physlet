@@ -81,9 +81,9 @@ export default {
 
                     //使用localstorage储存token
                     if (this.isRemember) {
-                      localStorage.setItem('username',this.form.emailOrUsername)
-                      localStorage.setItem('userpsw',this.form.password)
-                      this.$store.state.authorized = true
+                        localStorage.setItem('username',this.form.emailOrUsername)
+                        localStorage.setItem('userpsw',this.form.password)
+                        localStorage.setItem('is_authorized', 'true')
                     }
                     else {
                       localStorage.setItem('username',this.form.emailOrUsername)
