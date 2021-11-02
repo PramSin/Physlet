@@ -72,55 +72,70 @@ class UserAuthController extends Controller
 
     protected function login(Request $request): array
     {
-        $emailOrUsername = $request->post('emailOrUsername');
-        $password = $request->post('password');
+        try {
+            $emailOrUsername = $request->post('emailOrUsername');
+            $password = $request->post('password');
 
-        if (User::whereUsername($emailOrUsername)->exists()) {
-            $email = User::whereUsername($emailOrUsername)->first()->email;
-        } elseif (User::whereEmail($emailOrUsername)->exists()) {
-            $email = $emailOrUsername;
-        } else {
+            if (User::whereUsername($emailOrUsername)->exists()) {
+                $email = User::whereUsername($emailOrUsername)->first()->email;
+            } elseif (User::whereEmail($emailOrUsername)->exists()) {
+                $email = $emailOrUsername;
+            } else {
+                $this->r['code'] = 400;
+                $this->r['message'] = "用户名或邮箱未注册";
+
+                return $this->r;
+            }
+
+            if (Auth::attempt(['email' => $email, 'password' => $password], true)) {
+                $this->r['code'] = 200;
+                $this->r['message'] = "登陆成功";
+                $this->r['data'] = User::whereEmail($email)->first();
+            } else {
+                $this->r['code'] = 400;
+                $this->r['message'] = "密码错误";
+            }
+        } catch (Exception $e) {
             $this->r['code'] = 400;
-            $this->r['message'] = "用户名或邮箱未注册";
-
-            return $this->r;
-        }
-
-        if (Auth::attempt(['email' => $email, 'password' => $password], true)) {
-            $this->r['code'] = 200;
-            $this->r['message'] = "登陆成功";
-        } else {
-            $this->r['code'] = 400;
-            $this->r['message'] = "密码错误";
+            $this->r['message'] = $e->getMessage();
         }
 
         return $this->r;
     }
 
-    protected function logout(Request $request): array
+    protected function logout(): array
     {
-        Auth::logout();
-        $this->r['code'] = 200;
-        $this->r['message'] = '注销成功';
-
+        try {
+            Auth::logout();
+            $this->r['code'] = 200;
+            $this->r['message'] = '注销成功';
+        } catch (Exception $e) {
+            $this->r['code'] = 400;
+            $this->r['message'] = $e->getMessage();
+        }
         return $this->r;
     }
 
     protected function changePassword(Request $request): array
     {
-        $user = $request->user();
-        $ori_password = $request->post('ori_password');
-        $password = $request->post('password');
-        if (!Auth::once(['email' => $user->email, 'password' => $ori_password])) {
-            $this->r['code'] = 400;
-            $this->r['message'] = "原密码错误";
-        } else {
-            $user->password = Hash::make($password);
-            $user->save();
+        try {
+            $user = $request->user();
+            $ori_password = $request->post('ori_password');
+            $password = $request->post('password');
+            if (!Auth::once(['email' => $user->email, 'password' => $ori_password])) {
+                $this->r['code'] = 400;
+                $this->r['message'] = "原密码错误";
+            } else {
+                $user->password = Hash::make($password);
+                $user->save();
 
-            Auth::logout();
-            $this->r['code'] = 200;
-            $this->r['message'] = "密码修改成功";
+                Auth::logout();
+                $this->r['code'] = 200;
+                $this->r['message'] = "密码修改成功";
+            }
+        } catch (Exception $e) {
+            $this->r['code'] = 400;
+            $this->r['message'] = $e->getMessage();
         }
 
         return $this->r;

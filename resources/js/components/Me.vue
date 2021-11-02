@@ -82,15 +82,19 @@
                   <span class="footer-item">Copyright @ Arrakis 2020</span>
                 </el-footer>
               </el-container>
-            </el-container>-->     <el-upload
+            </el-container>-->
+        <el-upload ref="upload"
             class="upload-demo"
             action=""
+            :show-file-list="show_file"
             :http-request="submitFile"
             :before-remove="beforeRemove"
-            :file-list="fileList">
+            :file-list="fileList"
+            :on-change="uploadFile">
             <el-button size="small" type="primary">点击上传</el-button>
             <div slot="tip" class="el-upload__tip">不超过500kb</div>
         </el-upload>
+        <iframe :src="demosrc" ref="iframe"></iframe>
     </div>
 </template>
 
@@ -100,7 +104,9 @@ export default {
     name: "Me",
     data() {
         return {
-            header: {'Content-Type': 'multipart/form-data;boundary=","'},
+            demosrc: 'https://www.openstreetmap.org/export/embed.html?bbox=-0.004017949104309083%2C51.47612752641776%2C0.00030577182769775396%2C51.478569861898606&layer=mapnik',
+            fileList: [{name: 'food.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}],
+            show_file: false,
             username: localStorage.getItem('username'),
             loading: false,
 
@@ -139,13 +145,15 @@ export default {
     },
     methods: {
         beforeRemove(file, fileList) {
-            return this.$confirm(`确定移除 ${ file.name }？`);
+            return this.$confirm(`确定移除 ${file.name}？`);
         },
-        uploadFile(event) {
-            this.Images = this.$refs.file.files[0];
-            console.log(this.Images)
+        uploadFile(file, fileList) {
+            this.show_file = true;
+            this.Images = file;
+            this.fileList = fileList;
+            /*console.log(this.Images)*/
         },
-        submitFile() {
+        submitFile(event) {
             const formData = new FormData();
             // const name = localStorage.getItem('username')
             formData.append('name', localStorage.getItem('username'))
@@ -154,7 +162,7 @@ export default {
             formData.append('access', '0')
             // const file = this.Images
             console.log(this.Images)
-            formData.append('file', this.Images);
+            formData.append('file', this.Images.raw);
             const headers = {'Content-Type': 'multipart/form-data;boundary=","'};
             this.axios.post('/physlet_api/uploadSimulation',
                 formData,
@@ -295,7 +303,8 @@ export default {
         }).catch();
     },
     mounted() {
-        if (localStorage.getItem('is_authorized') === 'false') {
+        this.$refs.upload.clearFiles()
+        if (localStorage.getItem('is_authorized') !== 'true') {
             this.$router.replace({
                 path: "/login",
             });

@@ -7,13 +7,12 @@
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Arrakis</title>
-    <link rel="icon" type="image/png" href="/favicon.png">
+    <title>Physlet</title>
     <link rel="stylesheet" href="{{ mix('/css/bootstrap.css') }}">
 </head>
 <body>
 <div id="app">
-    <arrakis>载入中...</arrakis>
+    <physlet>载入中...</physlet>
 </div>
 <script type="text/javascript">
     const arrakis_authenticated = {{ Auth::user() ? 'true' : 'false'}};

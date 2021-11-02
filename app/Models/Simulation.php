@@ -12,6 +12,18 @@ class Simulation extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'user_id',
+        'category_id',
+        'slug',
+        'access'
+    ];
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
+
     public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class);
@@ -19,7 +31,7 @@ class Simulation extends Model
 
     public function version(): HasOne
     {
-        return $this->hasOne(SimulationWithVersion::class);
+        return $this->hasOne(SimulationWithVersion::class, 'status_id');
     }
 
     public function versions(): HasMany

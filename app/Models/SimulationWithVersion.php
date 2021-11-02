@@ -11,9 +11,23 @@ class SimulationWithVersion extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'simulation_id',
+        'status_id',
+        'name',
+        'slug',
+        'root_path',
+        'synopsis',
+    ];
+
     public function simulation(): BelongsTo
     {
         return $this->belongsTo(Simulation::class);
+    }
+
+    public function status(): BelongsTo
+    {
+        return $this->belongsTo(Simulation::class, 'status_id');
     }
 
     /*    public function projects()

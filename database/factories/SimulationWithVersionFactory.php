@@ -22,14 +22,14 @@ class SimulationWithVersionFactory extends Factory
      */
     public function definition()
     {
+        $sim = Simulation::factory()->create();
         return [
             'name' => $this->faker->word(),
             'slug' => $this->faker->slug(),
-            'simulation_id' => Simulation::factory()->create(),
+            'simulation_id' => $sim,
+            'status_id' => $sim,
             'synopsis' => $this->faker->sentence(),
             'root_path' => $this->faker->filePath(),
-            'likes' => 0,
-            'shares' => 0,
         ];
     }
 }
