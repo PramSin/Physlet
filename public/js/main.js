@@ -2056,11 +2056,12 @@ __webpack_require__.r(__webpack_exports__);
                 if (_this.isRemember) {
                   localStorage.setItem('username', _this.form.emailOrUsername);
                   localStorage.setItem('userpsw', _this.form.password);
-                  localStorage.setItem('is_authorized', 'true');
                 } else {
                   localStorage.setItem('username', _this.form.emailOrUsername);
                   _this.$store.state.authorized = true;
                 }
+
+                localStorage.setItem('is_authorized', 'true');
 
                 _this.$router.replace({
                   path: '/home'
@@ -2208,11 +2209,17 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "Me",
   data: function data() {
     return {
-      fileList: [{}],
+      fileList: [{
+        name: 'food.jpeg',
+        url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'
+      }],
+      show_file: false,
       username: localStorage.getItem('username'),
       loading: false,
       loadingTree: false,
@@ -2250,11 +2257,13 @@ __webpack_require__.r(__webpack_exports__);
     beforeRemove: function beforeRemove(file, fileList) {
       return this.$confirm("\u786E\u5B9A\u79FB\u9664 ".concat(file.name, "\uFF1F"));
     },
-    uploadFile: function uploadFile(event) {
-      this.Images = this.$refs.file.files[0];
-      console.log(this.Images);
+    uploadFile: function uploadFile(file, fileList) {
+      this.show_file = true;
+      this.Images = file;
+      this.fileList = fileList;
+      /*console.log(this.Images)*/
     },
-    submitFile: function submitFile() {
+    submitFile: function submitFile(event) {
       var formData = new FormData(); // const name = localStorage.getItem('username')
 
       formData.append('name', localStorage.getItem('username'));
@@ -2263,7 +2272,7 @@ __webpack_require__.r(__webpack_exports__);
       formData.append('access', '0'); // const file = this.Images
 
       console.log(this.Images);
-      formData.append('file', this.Images);
+      formData.append('file', this.Images.raw);
       var headers = {
         'Content-Type': 'multipart/form-data;boundary=","'
       };
@@ -2410,7 +2419,9 @@ __webpack_require__.r(__webpack_exports__);
     })["catch"]();
   },
   mounted: function mounted() {
-    if (this.$store.state.authorized === false) {
+    this.$refs.upload.clearFiles();
+
+    if (localStorage.getItem('is_authorized') !== true) {
       this.$router.replace({
         path: "/login"
       });
@@ -4456,7 +4467,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n.header {\n  padding: 5px 15px;\n  background-color: #f6f6f6;\n  line-height: 50px;\n}\n.saving-state {\n  font-size: .8rem;\n  margin-right: 10px;\n}\n.el-main {\n  padding: 5px 15px 0;\n}\n.el-container {\n  padding: 0;\n  margin: 0;\n  height: calc(100% - 60px);\n}\n.footer {\n  margin-bottom: -60px;\n  padding: 0 15px;\n  background-color: #f6f6f6;\n  text-align: right;\n  line-height: 60px;\n  font-size: 12px;\n}\n.footer-item {\n  margin-left: 5px;\n  color: #888;\n}\n.selected-node {\n  background-color: #fadab8;\n}\n.tree-node {\n  width: 100%;\n  height: 26px;\n  line-height: 26px;\n  font-size: 14px;\n}\n.tree-node .pull-right {\n  float: right;\n}\n.tree-node .actions {\n  transition: opacity .3s;\n  opacity: 0;\n}\n.tree-node:hover .actions {\n  opacity: 1;\n}\n\n", ""]);
+exports.push([module.i, "\n.header {\n    padding: 5px 15px;\n    background-color: #f6f6f6;\n    line-height: 50px;\n}\n.saving-state {\n    font-size: .8rem;\n    margin-right: 10px;\n}\n.el-main {\n    padding: 5px 15px 0;\n}\n.el-container {\n    padding: 0;\n    margin: 0;\n    height: calc(100% - 60px);\n}\n.footer {\n    margin-bottom: -60px;\n    padding: 0 15px;\n    background-color: #f6f6f6;\n    text-align: right;\n    line-height: 60px;\n    font-size: 12px;\n}\n.footer-item {\n    margin-left: 5px;\n    color: #888;\n}\n.selected-node {\n    background-color: #fadab8;\n}\n.tree-node {\n    width: 100%;\n    height: 26px;\n    line-height: 26px;\n    font-size: 14px;\n}\n.tree-node .pull-right {\n    float: right;\n}\n.tree-node .actions {\n    transition: opacity .3s;\n    opacity: 0;\n}\n.tree-node:hover .actions {\n    opacity: 1;\n}\n\n", ""]);
 
 // exports
 
@@ -7925,12 +7936,15 @@ var render = function() {
       _c(
         "el-upload",
         {
+          ref: "upload",
           staticClass: "upload-demo",
           attrs: {
             action: "",
+            "show-file-list": _vm.show_file,
             "http-request": _vm.submitFile,
             "before-remove": _vm.beforeRemove,
-            "file-list": _vm.fileList
+            "file-list": _vm.fileList,
+            "on-change": _vm.uploadFile
           }
         },
         [
@@ -8917,6 +8931,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 /* harmony default export */ __webpack_exports__["default"] = (new vue_router__WEBPACK_IMPORTED_MODULE_0__["default"]({
+  mode: 'history',
   routes: [{
     path: '/about',
     component: _components_About__WEBPACK_IMPORTED_MODULE_2__["default"]

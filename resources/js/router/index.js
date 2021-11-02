@@ -9,6 +9,7 @@ import Changepsw from  "../components/Changepsw";
 
 
 export default new VueRouter({
+    mode: 'history',
     routes:[
         {
             path:'/about',

@@ -83,12 +83,12 @@ export default {
                     if (this.isRemember) {
                         localStorage.setItem('username',this.form.emailOrUsername)
                         localStorage.setItem('userpsw',this.form.password)
-                        localStorage.setItem('is_authorized', 'true')
                     }
                     else {
                       localStorage.setItem('username',this.form.emailOrUsername)
                       this.$store.state.authorized = true
                     }
+                    localStorage.setItem('is_authorized', 'true')
                     this.$router.replace({path: '/home'})
                   }
                 })
