@@ -83,6 +83,16 @@
                 </el-footer>
               </el-container>
             </el-container>-->
+        <template>
+            <el-select v-model="value" multiple placeholder="请选择">
+                <el-option
+                    v-for="item in options"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value">
+                </el-option>
+            </el-select>
+        </template>
         <el-upload ref="upload"
             class="upload-demo"
             action=""
