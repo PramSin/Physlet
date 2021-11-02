@@ -6,8 +6,11 @@ use App\Models\Category;
 use App\Models\Simulation;
 use App\Models\SimulationWithVersion;
 use Exception;
+use Illuminate\Contracts\Filesystem\FileExistsException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Symfony\Component\HttpFoundation\File\Exception\UnexpectedTypeException;
+use ZipArchive;
 
 class SimulationController extends Controller
 {
@@ -15,6 +18,34 @@ class SimulationController extends Controller
         'code' => -1,
         'message' => 'unknown error',
     ];
+
+    /**
+     * @throws FileExistsException
+     * @throws Exception
+     */
+    protected static function unzip_file(string $filename): string
+    {
+        $ext = substr($filename, strrpos($filename, '.') + 1);
+        $directory = substr($filename, 0, strrpos($filename, '.')) . "/";
+
+        if (!is_file($filename)) {
+            throw new FileExistsException("文件 $filename 不存在");
+        }
+        if ($ext !== 'zip') {
+            throw new UnexpectedTypeException($filename, "zip");
+        }
+        if (!is_dir($directory)) {
+            mkdir($directory, 0777, true);
+        }
+        $zip = new ZipArchive();
+        if ($zip->open($filename)) {
+            $zip->extractTo($directory);
+            $zip->close();
+            return $directory . "index.html";
+        } else {
+            throw new Exception();
+        }
+    }
 
     public function getCategories(): array
     {
@@ -40,11 +71,12 @@ class SimulationController extends Controller
             $synopsis = $request->post('synopsis');
             $access = $request->post('access');
 
-            if ($request->hasFile('package')) {
-                $package = $request->file('package')->store(Category::findOrFail($category)->name);
+            if ($request->hasFile('file')) {
+                $package = $request->file('file')->store(Category::findOrFail($category)->name);
+                $file = self::unzip_file($package);
             } else {
                 $this->r['code'] = 400;
-                $this->r['message'] = "Cannot receive file";
+                $this->r['message'] = $_FILES['file'];
                 return $this->r;
             }
 
@@ -60,7 +92,7 @@ class SimulationController extends Controller
                 'status_id' => $sim->id,
                 'name' => $name,
                 "slug" => "abc-1",
-                'root_path' => $package,
+                'root_path' => $file,
                 'synopsis' => $synopsis,
             ]);
 

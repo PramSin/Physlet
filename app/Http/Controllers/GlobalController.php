@@ -6,6 +6,6 @@ class GlobalController extends Controller
 {
     protected function view()
     {
-        return view('physlet');
+        return view('welcome');
     }
 }
