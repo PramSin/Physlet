@@ -8897,7 +8897,7 @@ var state = {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /mnt/f/PHP/Physlet/resources/js/main.js */"./resources/js/main.js");
+module.exports = __webpack_require__(/*! /Users/ivanfei/Desktop/projectPhy/Physlet/resources/js/main.js */"./resources/js/main.js");
 
 
 /***/ })
