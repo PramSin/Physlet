@@ -1697,6 +1697,27 @@ function mergeFn (a, b) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var core_js_modules_es_regexp_exec_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! core-js/modules/es.regexp.exec.js */ "./node_modules/core-js/modules/es.regexp.exec.js");
+/* harmony import */ var core_js_modules_es_regexp_exec_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_regexp_exec_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var core_js_modules_es_string_replace_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! core-js/modules/es.string.replace.js */ "./node_modules/core-js/modules/es.string.replace.js");
+/* harmony import */ var core_js_modules_es_string_replace_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_string_replace_js__WEBPACK_IMPORTED_MODULE_1__);
+
+
+
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -1731,7 +1752,60 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
-  name: 'App'
+  name: 'App',
+  methods: {
+    handleCommand: function handleCommand(command) {
+      switch (command) {
+        case 'change_password':
+          this.$message('sdklafjhkd');
+          this.$router.push({
+            path: "/changepsw"
+          });
+          break;
+
+        case 'exit':
+          this.logout();
+          break;
+
+        case 'to_homepage':
+          this.$router.push({
+            path: "/me"
+          });
+      }
+    },
+    logout: function logout() {
+      var _this = this;
+
+      this.$http.get('/physlet_api/logout').then(function (response) {
+        if (response.data.code !== 200) {
+          _this.$notify.error({
+            title: '登出错误',
+            message: response.data.message
+          });
+        } else {
+          localStorage.clear();
+          console.log('111111111');
+
+          _this.$message('注销成功！');
+
+          _this.$router.replace({
+            path: '@/components/home'
+          });
+          /*console.log('2222222222222222')*/
+
+        }
+      })["catch"]().then(function () {});
+    }
+  },
+  computed: {
+    username: function username() {
+      if (localStorage.getItem('username')) {
+        return localStorage.getItem('username');
+      } else {
+        return '请登录';
+      }
+    }
+  }
 });
 
 /***/ }),
@@ -1783,7 +1857,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _mnt_f_PHP_Physlet_node_modules_babel_runtime_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator */ "./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js");
+/* harmony import */ var _Users_ivanfei_Desktop_projectPhy_Physlet_node_modules_babel_runtime_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator */ "./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js");
 /* harmony import */ var core_js_modules_es_regexp_exec_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! core-js/modules/es.regexp.exec.js */ "./node_modules/core-js/modules/es.regexp.exec.js");
 /* harmony import */ var core_js_modules_es_regexp_exec_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_regexp_exec_js__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var core_js_modules_es_string_split_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! core-js/modules/es.string.split.js */ "./node_modules/core-js/modules/es.string.split.js");
@@ -1863,9 +1937,9 @@ __webpack_require__.r(__webpack_exports__);
 
       this.$refs.form.validate(function (valid) {
         if (valid) {
-          _this.$http.post('/physlet_api/login', _this.form, {
-            emulateJSON: true
-          }).then(function (response) {
+          _this.$http.post('/physlet_api/login', _this.form
+          /*{emulateJSON: true}*/
+          ).then(function (response) {
             if (response.data.code !== 200) {
               _this.$notify.error({
                 title: '错误',
@@ -1906,7 +1980,7 @@ __webpack_require__.r(__webpack_exports__);
     loginPage: function loginPage() {
       var _this2 = this;
 
-      return Object(_mnt_f_PHP_Physlet_node_modules_babel_runtime_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_0__["default"])( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_4___default.a.mark(function _callee() {
+      return Object(_Users_ivanfei_Desktop_projectPhy_Physlet_node_modules_babel_runtime_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_0__["default"])( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_4___default.a.mark(function _callee() {
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_4___default.a.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
@@ -2001,14 +2075,12 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var core_js_modules_es_string_starts_with_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! core-js/modules/es.string.starts-with.js */ "./node_modules/core-js/modules/es.string.starts-with.js");
 /* harmony import */ var core_js_modules_es_string_starts_with_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_string_starts_with_js__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var core_js_modules_es_function_name_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! core-js/modules/es.function.name.js */ "./node_modules/core-js/modules/es.function.name.js");
-/* harmony import */ var core_js_modules_es_function_name_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_function_name_js__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var core_js_modules_es_array_find_index_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! core-js/modules/es.array.find-index.js */ "./node_modules/core-js/modules/es.array.find-index.js");
-/* harmony import */ var core_js_modules_es_array_find_index_js__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_array_find_index_js__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var core_js_modules_es_array_splice_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! core-js/modules/es.array.splice.js */ "./node_modules/core-js/modules/es.array.splice.js");
-/* harmony import */ var core_js_modules_es_array_splice_js__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_array_splice_js__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var core_js_modules_es_parse_int_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! core-js/modules/es.parse-int.js */ "./node_modules/core-js/modules/es.parse-int.js");
-/* harmony import */ var core_js_modules_es_parse_int_js__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_parse_int_js__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var core_js_modules_es_regexp_exec_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! core-js/modules/es.regexp.exec.js */ "./node_modules/core-js/modules/es.regexp.exec.js");
+/* harmony import */ var core_js_modules_es_regexp_exec_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_regexp_exec_js__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var core_js_modules_es_string_replace_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! core-js/modules/es.string.replace.js */ "./node_modules/core-js/modules/es.string.replace.js");
+/* harmony import */ var core_js_modules_es_string_replace_js__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_string_replace_js__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var core_js_modules_es_function_name_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! core-js/modules/es.function.name.js */ "./node_modules/core-js/modules/es.function.name.js");
+/* harmony import */ var core_js_modules_es_function_name_js__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_function_name_js__WEBPACK_IMPORTED_MODULE_3__);
 
 
 
@@ -2016,29 +2088,6 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-
-
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 //
 //
 //
@@ -2140,11 +2189,16 @@ __webpack_require__.r(__webpack_exports__);
   name: "Me",
   data: function data() {
     return {
+      header: {
+        'Content-Type': 'multipart/form-data;boundary=","'
+      },
+      username: localStorage.getItem('username'),
       loading: false,
       loadingTree: false,
       defaultProps: {
         label: 'name'
       },
+      fileList: [{}],
       loggingOut: false
     };
   },
@@ -2173,6 +2227,34 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   methods: {
+    beforeRemove: function beforeRemove(file, fileList) {
+      return this.$confirm("\u786E\u5B9A\u79FB\u9664 ".concat(file.name, "\uFF1F"));
+    },
+    uploadFile: function uploadFile(event) {
+      this.Images = this.$refs.file.files[0];
+      console.log(this.Images);
+    },
+    submitFile: function submitFile() {
+      var formData = new FormData(); // const name = localStorage.getItem('username')
+
+      formData.append('name', localStorage.getItem('username'));
+      formData.append('category', '1');
+      formData.append('synopsis', 'cajhsjdhasca');
+      formData.append('access', '0'); // const file = this.Images
+
+      console.log(this.Images);
+      formData.append('file', this.Images);
+      var headers = {
+        'Content-Type': 'multipart/form-data;boundary=","'
+      };
+      this.axios.post('/physlet_api/uploadSimulation', formData, {
+        headers: headers
+      }).then(function (res) {
+        res.data.files; // binary representation of the file
+
+        res.status; // HTTP status
+      });
+    },
     isFolder: function isFolder(node) {
       return node.key && node.key.startsWith('F_');
     },
@@ -2210,7 +2292,7 @@ __webpack_require__.r(__webpack_exports__);
       switch (command) {
         case 'change_password':
           this.$router.push({
-            name: 'change_password'
+            path: '/Changepsw'
           });
           break;
 
@@ -2222,186 +2304,97 @@ __webpack_require__.r(__webpack_exports__);
     logout: function logout() {
       var _this = this;
 
-      this.loggingOut = true;
-      this.$http.post('/workbench_api/logout').then(function (response) {
-        if (response.data.code !== 0) {
+      this.$http.get('/physlet_api/logout').then(function (response) {
+        if (response.data.code !== 200) {
           _this.$notify.error({
-            title: '错误',
+            title: '登出错误',
             message: response.data.message
           });
         } else {
-          _this.$store.commit('setActiveArticleId', null);
+          localStorage.clear();
+          console.log('111111111');
 
-          _this.$notify({
-            type: 'success',
-            title: '已登出'
-          });
+          _this.$message('注销成功！');
 
-          _this.$router.push({
-            name: 'login'
+          _this.$router.replace({
+            path: '/home'
           });
+          /*console.log('2222222222222222')*/
+
         }
-      })["catch"]().then(function () {
-        _this.loggingOut = false;
-      });
-    },
-    loadTree: function loadTree() {
-      var _this2 = this;
-
-      this.loadingTree = true;
-      this.$store.dispatch('loadTree')["catch"]().then(function () {
-        _this2.loadingTree = false;
-      });
-    },
-    treeAppendFolder: function treeAppendFolder(node, data) {
-      var _this3 = this;
-
-      this.$prompt(null, '请输入文件夹名称', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消'
-      }).then(function (_ref) {
-        var value = _ref.value;
-        _this3.loadingTree = true;
-
-        _this3.$http.post('/workbench_api/addFolder', {
-          parent_id: data.entity_id,
-          name: value
-        }).then(function (response) {
-          if (response.data && response.data.code === 0) {
-            if (!data.children) {
-              _this3.$set(data, 'children', []);
-            }
-
-            data.children.push(response.data.folder);
-          } else if (response.data && response.data.message) {
-            _this3.$notify.error(response.data.message);
-          }
-        })["catch"]().then(function () {
-          _this3.loadingTree = false;
-        });
-      })["catch"]();
-    },
-    treeAppend: function treeAppend(node, data) {
-      var _this4 = this;
-
-      this.$prompt(null, '请输入文件名称', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消'
-      }).then(function (_ref2) {
-        var value = _ref2.value;
-        _this4.loadingTree = true;
-
-        _this4.$http.post('/workbench_api/addArticle', {
-          parent_id: data.entity_id,
-          name: value
-        }).then(function (response) {
-          if (response.data && response.data.code === 0) {
-            if (!data.children) {
-              _this4.$set(data, 'children', []);
-            }
-
-            data.children.push(response.data.article);
-          } else if (response.data && response.data.message) {
-            _this4.$notify.error(response.data.message);
-          }
-        })["catch"]().then(function () {
-          _this4.loadingTree = false;
-        });
-      })["catch"]();
-    },
-    treeRename: function treeRename(node, data) {
-      var _this5 = this;
-
-      this.$prompt('', '请输入新的名称', {
-        inputValue: data.name,
-        confirmButtonText: '确认',
-        cancelButtonText: '取消'
-      }).then(function (_ref3) {
-        var value = _ref3.value;
-        var uri = _this5.isFolder(node) ? 'renameFolder' : 'renameArticle';
-        _this5.loadingTree = true;
-
-        _this5.$http.post('/workbench_api/' + uri, {
-          id: data.entity_id,
-          name: value
-        }).then(function (response) {
-          if (response.data && response.data.code === 0) {
-            var parent = node.parent;
-            var children = parent.data.children || parent.data;
-            var index = children.findIndex(function (d) {
-              return d.id === data.id;
-            });
-            children.splice(index, 1, _this5.isFolder(node) ? response.data.folder : response.data.article);
-          } else if (response.data && response.data.message) {
-            _this5.$notify.error(response.data.message);
-          }
-        })["catch"]().then(function () {
-          _this5.loadingTree = false;
-        });
-      })["catch"]();
-    },
-    treeRemove: function treeRemove(node, data) {
-      var _this6 = this;
-
-      if (!node.isLeaf) {
-        this.$alert('包含文件或文件夹，请清空后再试', '不能删除');
-      } else {
-        this.$confirm('此操作将删除该文件, 是否继续?', null, {
-          confirmButtonText: '确认删除',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(function () {
-          var uri = _this6.isFolder(node) ? 'deleteFolder' : 'deleteArticle';
-          _this6.loadingTree = true;
-
-          _this6.$http.post('/workbench_api/' + uri, {
-            id: data.entity_id
-          }).then(function (response) {
-            if (response.data && response.data.code === 0) {
-              var parent = node.parent;
-              var children = parent.data.children || parent.data;
-              var index = children.findIndex(function (d) {
-                return d.id === data.id;
-              });
-              children.splice(index, 1);
-
-              if (_this6.active_article_id === data.id) {
-                _this6.active_article_id = null;
-              }
-            } else if (response.data && response.data.message) {
-              _this6.$notify.error(response.data.message);
-            }
-          })["catch"]().then(function () {
-            _this6.loadingTree = false;
-          });
-        })["catch"]();
-      }
-    },
-    nodeClick: function nodeClick(data, node) {
-      var _this7 = this;
-
-      if (this.isArticle(node)) {
-        if (this.status.saving) {
-          this.$confirm('文档正在保存，现在切换可能丢失进度', '请确认', {
-            confirmButtonText: '继续切换',
-            cancelButtonText: '取消',
-            type: 'warning'
-          }).then(function () {
-            _this7.active_article_id = data.entity_id;
-          })["catch"]();
-        } else {
-          this.active_article_id = data.entity_id;
-        }
-      }
+      })["catch"]().then(function () {});
     }
   },
-  created: function created() {
-    if (this.user.name && this.$store.getters.opened_article_id) {
-      this.active_article_id = parseInt(this.$store.getters.opened_article_id);
-      this.$message('自动为您打开之前编辑中的文档');
-    }
+  loadTree: function loadTree() {
+    var _this2 = this;
 
-    this.loadTree();
+    this.loadingTree = true;
+    this.$store.dispatch('loadTree')["catch"]().then(function () {
+      _this2.loadingTree = false;
+    });
+  },
+  treeAppendFolder: function treeAppendFolder(node, data) {
+    var _this3 = this;
+
+    this.$prompt(null, '请输入文件夹名称', {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消'
+    }).then(function (_ref) {
+      var value = _ref.value;
+      _this3.loadingTree = true;
+
+      _this3.$http.post('/workbench_api/addFolder', {
+        parent_id: data.entity_id,
+        name: value
+      }).then(function (response) {
+        if (response.data && response.data.code === 0) {
+          if (!data.children) {
+            _this3.$set(data, 'children', []);
+          }
+
+          data.children.push(response.data.folder);
+        } else if (response.data && response.data.message) {
+          _this3.$notify.error(response.data.message);
+        }
+      })["catch"]().then(function () {
+        _this3.loadingTree = false;
+      });
+    })["catch"]();
+  },
+  treeAppend: function treeAppend(node, data) {
+    var _this4 = this;
+
+    this.$prompt(null, '请输入文件名称', {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消'
+    }).then(function (_ref2) {
+      var value = _ref2.value;
+      _this4.loadingTree = true;
+
+      _this4.$http.post('/workbench_api/addArticle', {
+        parent_id: data.entity_id,
+        name: value
+      }).then(function (response) {
+        if (response.data && response.data.code === 0) {
+          if (!data.children) {
+            _this4.$set(data, 'children', []);
+          }
+
+          data.children.push(response.data.article);
+        } else if (response.data && response.data.message) {
+          _this4.$notify.error(response.data.message);
+        }
+      })["catch"]().then(function () {
+        _this4.loadingTree = false;
+      });
+    })["catch"]();
+  },
+  mounted: function mounted() {
+    if (localStorage.getItem('is_authorized') === 'false') {
+      this.$router.replace({
+        path: "/login"
+      });
+    }
   }
 });
 
@@ -4424,7 +4417,7 @@ exports = module.exports = __webpack_require__(/*! ../../node_modules/css-loader
 
 
 // module
-exports.push([module.i, "\n#app {\n    font-family: Avenir, Helvetica, Arial, sans-serif;\n    -webkit-font-smoothing: antialiased;\n    -moz-osx-font-smoothing: grayscale;\n    text-align: center;\n    color: #2c3e50;\n    margin-top: 60px;\n}\n", ""]);
+exports.push([module.i, "\n#app {\n  font-family: Avenir, Helvetica, Arial, sans-serif;\n  -webkit-font-smoothing: antialiased;\n  -moz-osx-font-smoothing: grayscale;\n  text-align: center;\n  color: #2c3e50;\n  margin-top: 60px;\n}\n", ""]);
 
 // exports
 
@@ -8228,7 +8221,76 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
-    _vm._m(0),
+    _c(
+      "div",
+      { staticClass: "row" },
+      [
+        _c(
+          "el-container",
+          [
+            _c(
+              "el-header",
+              {
+                staticStyle: {
+                  "text-align": "right",
+                  "font-size": "20px",
+                  "margin-top": "20px",
+                  "margin-right": "20px"
+                }
+              },
+              [
+                _c("span", { staticStyle: { "margin-right": "8px" } }, [
+                  _vm._v(_vm._s(_vm.username))
+                ]),
+                _vm._v(" "),
+                _c(
+                  "el-dropdown",
+                  { on: { command: _vm.handleCommand } },
+                  [
+                    _c("i", {
+                      staticClass: "el-icon-setting",
+                      staticStyle: {
+                        "margin-right": "12px",
+                        "font-size": "20px"
+                      }
+                    }),
+                    _vm._v(" "),
+                    _c(
+                      "el-dropdown-menu",
+                      { attrs: { slot: "dropdown" }, slot: "dropdown" },
+                      [
+                        _c(
+                          "el-dropdown-item",
+                          { attrs: { command: "to_homepage" } },
+                          [_vm._v("查看")]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "el-dropdown-item",
+                          { attrs: { command: "change_password" } },
+                          [_vm._v("修改密码")]
+                        ),
+                        _vm._v(" "),
+                        _c("el-dropdown-item", { attrs: { command: "exit" } }, [
+                          _vm._v("登出")
+                        ])
+                      ],
+                      1
+                    )
+                  ],
+                  1
+                )
+              ],
+              1
+            )
+          ],
+          1
+        ),
+        _vm._v(" "),
+        _vm._m(0)
+      ],
+      1
+    ),
     _vm._v(" "),
     _c("div", { staticClass: "row" }, [
       _c("div", { staticClass: "col-xs-2 col-xs-offset-2" }, [
@@ -8289,11 +8351,9 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "row" }, [
-      _c("div", { staticClass: "col-xs-offset-2 col-xs-8" }, [
-        _c("div", { staticClass: "page-header" }, [
-          _c("h2", [_vm._v("实验中心（不是）")])
-        ])
+    return _c("div", { staticClass: "col-xs-offset-2 col-xs-8" }, [
+      _c("div", { staticClass: "page-header" }, [
+        _c("h2", [_vm._v("实验中心（不是）")])
       ])
     ])
   }
@@ -8486,411 +8546,29 @@ var render = function() {
     { staticStyle: { width: "100%" } },
     [
       _c(
-        "el-header",
-        { staticClass: "header" },
+        "el-upload",
+        {
+          staticClass: "upload-demo",
+          attrs: {
+            action: "",
+            "http-request": _vm.submitFile,
+            "before-remove": _vm.beforeRemove,
+            "file-list": _vm.fileList
+          }
+        },
         [
-          _c(
-            "el-row",
-            [
-              _c(
-                "el-col",
-                { staticStyle: { "text-align": "right" }, attrs: { span: 12 } },
-                [
-                  _vm.active_article_id
-                    ? _c(
-                        "span",
-                        {
-                          staticClass: "saving-state",
-                          style: {
-                            color: _vm.status.saving ? "#E6A23C" : "#67C23A"
-                          }
-                        },
-                        [
-                          _c("i", {
-                            class: _vm.status.saving
-                              ? "el-icon-loading"
-                              : "el-icon-circle-check"
-                          }),
-                          _vm._v(
-                            "\n                    " +
-                              _vm._s(_vm.status.saving ? "保存中" : "已保存") +
-                              "\n                "
-                          )
-                        ]
-                      )
-                    : _vm._e(),
-                  _vm._v(" "),
-                  _vm.active_article_id &&
-                  _vm.status.updater_name &&
-                  _vm.status.updated_at
-                    ? _c(
-                        "span",
-                        {
-                          staticClass: "saving-state",
-                          staticStyle: { color: "#888" }
-                        },
-                        [
-                          _vm._v(
-                            "\n                    " +
-                              _vm._s(_vm.status.updater_name) +
-                              " @ " +
-                              _vm._s(
-                                _vm
-                                  .$dayjs(_vm.status.updated_at)
-                                  .format("MM月DD日 HH:mm:ss")
-                              ) +
-                              "\n                "
-                          )
-                        ]
-                      )
-                    : _vm._e(),
-                  _vm._v(" "),
-                  _c(
-                    "el-dropdown",
-                    { on: { command: _vm.handleDropdownCommand } },
-                    [
-                      _c(
-                        "el-button",
-                        {
-                          attrs: { type: "primary", size: "medium", plain: "" }
-                        },
-                        [
-                          _vm._v(
-                            "\n                        " +
-                              _vm._s(_vm.user.name || "N/A")
-                          ),
-                          _c("i", {
-                            staticClass: "el-icon-arrow-down el-icon--right"
-                          })
-                        ]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "el-dropdown-menu",
-                        { attrs: { slot: "dropdown" }, slot: "dropdown" },
-                        [
-                          _c(
-                            "el-dropdown-item",
-                            { attrs: { command: "change_password" } },
-                            [_vm._v("修改密码")]
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "el-dropdown-item",
-                            {
-                              attrs: {
-                                command: "exit",
-                                divided: "",
-                                loading: _vm.loggingOut
-                              }
-                            },
-                            [_vm._v("登出\n                        ")]
-                          )
-                        ],
-                        1
-                      )
-                    ],
-                    1
-                  )
-                ],
-                1
-              )
-            ],
-            1
-          )
-        ],
-        1
-      ),
-      _vm._v(" "),
-      _c(
-        "el-container",
-        [
-          _c(
-            "el-aside",
-            { attrs: { width: "200px" } },
-            [
-              _c("el-tree", {
-                staticStyle: { "margin-top": "5px" },
-                attrs: {
-                  loading: _vm.loadingTree,
-                  data: _vm.tree,
-                  props: _vm.defaultProps,
-                  "empty-text": _vm.loadingTree
-                    ? "文件树加载中"
-                    : "未获取到文件树",
-                  "node-key": "id",
-                  "default-expand-all": "",
-                  indent: 8,
-                  "highlight-current": true
-                },
-                on: { "node-click": _vm.nodeClick },
-                scopedSlots: _vm._u([
-                  {
-                    key: "default",
-                    fn: function(ref) {
-                      var node = ref.node
-                      var data = ref.data
-                      return _c(
-                        "span",
-                        {
-                          staticClass: "tree-node",
-                          class: {
-                            "selected-node":
-                              _vm.isArticle(node) &&
-                              _vm.active_article_id === data.entity_id
-                          }
-                        },
-                        [
-                          _c(
-                            "span",
-                            [
-                              _c("i", { class: _vm.getNodeIcon(node) }),
-                              _vm._v(" "),
-                              _c(
-                                "el-tooltip",
-                                {
-                                  attrs: {
-                                    content: _vm.getTooltipContent(node),
-                                    placement: "top",
-                                    "open-delay": 1000
-                                  }
-                                },
-                                [
-                                  _c(
-                                    "span",
-                                    [
-                                      _vm._v(
-                                        "\n                                " +
-                                          _vm._s(data.name) +
-                                          "\n                                "
-                                      ),
-                                      data.owner
-                                        ? _c(
-                                            "el-tag",
-                                            {
-                                              attrs: {
-                                                type: "info",
-                                                size: "mini"
-                                              }
-                                            },
-                                            [_vm._v(_vm._s(data.owner))]
-                                          )
-                                        : _vm._e()
-                                    ],
-                                    1
-                                  )
-                                ]
-                              )
-                            ],
-                            1
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "span",
-                            { staticClass: "pull-right actions" },
-                            [
-                              _vm.canAudit(node)
-                                ? _c(
-                                    "el-button-group",
-                                    [
-                                      _c(
-                                        "el-tooltip",
-                                        {
-                                          attrs: {
-                                            content: "创建目录",
-                                            placement: "top",
-                                            "open-delay": 500,
-                                            "hide-after": 5000
-                                          }
-                                        },
-                                        [
-                                          _vm.isFolder(node)
-                                            ? _c(
-                                                "el-button",
-                                                {
-                                                  attrs: {
-                                                    type: "text",
-                                                    size: "small"
-                                                  },
-                                                  on: {
-                                                    click: function($event) {
-                                                      $event.stopPropagation()
-                                                      return function() {
-                                                        return _vm.treeAppendFolder(
-                                                          node,
-                                                          data
-                                                        )
-                                                      }.apply(null, arguments)
-                                                    }
-                                                  }
-                                                },
-                                                [
-                                                  _c("i", {
-                                                    staticClass:
-                                                      "el-icon-folder-add"
-                                                  })
-                                                ]
-                                              )
-                                            : _vm._e()
-                                        ],
-                                        1
-                                      ),
-                                      _vm._v(" "),
-                                      _c(
-                                        "el-tooltip",
-                                        {
-                                          attrs: {
-                                            content: "创建文档",
-                                            placement: "top",
-                                            "open-delay": 500,
-                                            "hide-after": 5000
-                                          }
-                                        },
-                                        [
-                                          _vm.isFolder(node)
-                                            ? _c(
-                                                "el-button",
-                                                {
-                                                  attrs: {
-                                                    type: "text",
-                                                    size: "small"
-                                                  },
-                                                  on: {
-                                                    click: function($event) {
-                                                      $event.stopPropagation()
-                                                      return function() {
-                                                        return _vm.treeAppend(
-                                                          node,
-                                                          data
-                                                        )
-                                                      }.apply(null, arguments)
-                                                    }
-                                                  }
-                                                },
-                                                [
-                                                  _c("i", {
-                                                    staticClass:
-                                                      "el-icon-document-add"
-                                                  })
-                                                ]
-                                              )
-                                            : _vm._e()
-                                        ],
-                                        1
-                                      ),
-                                      _vm._v(" "),
-                                      _c(
-                                        "el-tooltip",
-                                        {
-                                          attrs: {
-                                            content: "重命名",
-                                            placement: "top",
-                                            "open-delay": 500,
-                                            "hide-after": 5000
-                                          }
-                                        },
-                                        [
-                                          _c(
-                                            "el-button",
-                                            {
-                                              attrs: {
-                                                type: "text",
-                                                size: "small"
-                                              },
-                                              on: {
-                                                click: function($event) {
-                                                  $event.stopPropagation()
-                                                  return function() {
-                                                    return _vm.treeRename(
-                                                      node,
-                                                      data
-                                                    )
-                                                  }.apply(null, arguments)
-                                                }
-                                              }
-                                            },
-                                            [
-                                              _c("i", {
-                                                staticClass: "el-icon-edit"
-                                              })
-                                            ]
-                                          )
-                                        ],
-                                        1
-                                      ),
-                                      _vm._v(" "),
-                                      _c(
-                                        "el-tooltip",
-                                        {
-                                          attrs: {
-                                            content: "删除",
-                                            placement: "top",
-                                            "open-delay": 500,
-                                            "hide-after": 5000
-                                          }
-                                        },
-                                        [
-                                          _c(
-                                            "el-button",
-                                            {
-                                              attrs: {
-                                                type: "text",
-                                                size: "small"
-                                              },
-                                              on: {
-                                                click: function($event) {
-                                                  $event.stopPropagation()
-                                                  return function() {
-                                                    return _vm.treeRemove(
-                                                      node,
-                                                      data
-                                                    )
-                                                  }.apply(null, arguments)
-                                                }
-                                              }
-                                            },
-                                            [
-                                              _c("i", {
-                                                staticClass: "el-icon-delete"
-                                              })
-                                            ]
-                                          )
-                                        ],
-                                        1
-                                      )
-                                    ],
-                                    1
-                                  )
-                                : _vm._e()
-                            ],
-                            1
-                          )
-                        ]
-                      )
-                    }
-                  }
-                ])
-              })
-            ],
-            1
-          ),
+          _c("el-button", { attrs: { size: "small", type: "primary" } }, [
+            _vm._v("点击上传")
+          ]),
           _vm._v(" "),
           _c(
-            "el-container",
-            [
-              _c("el-main", [_c("WorkbenchEditor")], 1),
-              _vm._v(" "),
-              _c("el-footer", { staticClass: "footer" }, [
-                _c("span", { staticClass: "footer-item" }, [
-                  _vm._v("沪ICP备18033591号-1")
-                ]),
-                _vm._v(" "),
-                _c("span", { staticClass: "footer-item" }, [
-                  _vm._v("Copyright @ Arrakis 2020")
-                ])
-              ])
-            ],
-            1
+            "div",
+            {
+              staticClass: "el-upload__tip",
+              attrs: { slot: "tip" },
+              slot: "tip"
+            },
+            [_vm._v("不超过500kb")]
           )
         ],
         1
@@ -9788,6 +9466,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 /* harmony default export */ __webpack_exports__["default"] = (new vue_router__WEBPACK_IMPORTED_MODULE_0__["default"]({
+  mode: 'history',
   routes: [{
     path: '/about',
     component: _components_About__WEBPACK_IMPORTED_MODULE_2__["default"]
@@ -9815,7 +9494,7 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /mnt/f/PHP/Physlet/resources/js/main.js */"./resources/js/main.js");
+module.exports = __webpack_require__(/*! /Users/ivanfei/Desktop/projectPhy/Physlet/resources/js/main.js */"./resources/js/main.js");
 
 
 /***/ })
