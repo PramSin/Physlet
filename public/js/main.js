@@ -7574,18 +7574,22 @@ var render = function() {
         [
           _c(
             "el-header",
-            { staticStyle: { "text-align": "right", "font-size": "20px" } },
+            { staticStyle: { "text-align": "right" } },
             [
               _vm.is_authorized
                 ? _c(
                     "el-dropdown",
-                    { on: { command: _vm.handleCommand } },
+                    {
+                      staticStyle: { "margin-top": "30px" },
+                      on: { command: _vm.handleCommand }
+                    },
                     [
                       _c("i", {
                         staticClass: "el-icon-setting",
                         staticStyle: {
                           "margin-right": "15px",
-                          "font-size": "20px"
+                          "font-size": "20px",
+                          "margin-top": "30px"
                         }
                       }),
                       _vm._v(" "),
@@ -7621,7 +7625,7 @@ var render = function() {
               _c(
                 "el-link",
                 {
-                  staticStyle: { "font-size": "20px" },
+                  staticStyle: { "font-size": "20px", "margin-top": "-5px" },
                   attrs: { underline: false },
                   on: { click: _vm.to_login }
                 },
