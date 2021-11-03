@@ -82,12 +82,24 @@
                   <span class="footer-item">Copyright @ Arrakis 2020</span>
                 </el-footer>
               </el-container>
-            </el-container>-->     <el-upload
-            class="upload-demo"
-            action=""
-            :http-request="submitFile"
-            :before-remove="beforeRemove"
-            :file-list="fileList">
+            </el-container>-->
+        <template>
+            <el-select v-model="value" placeholder="请选择">
+                <el-option
+                    v-for="item in synopsis_list"
+                    :value="item.value"
+                    :label="item.label">
+                </el-option>
+            </el-select>
+        </template>
+        <el-upload ref="upload"
+                   class="upload-demo"
+                   action=""
+                   :show-file-list="show_file"
+                   :http-request="submitFile"
+                   :before-remove="beforeRemove"
+                   :file-list="fileList"
+                   :on-change="uploadFile">
             <el-button size="small" type="primary">点击上传</el-button>
             <div slot="tip" class="el-upload__tip">不超过500kb</div>
         </el-upload>
@@ -100,7 +112,13 @@ export default {
     name: "Me",
     data() {
         return {
-            header: {'Content-Type': 'multipart/form-data;boundary=","'},
+            value: '',
+            synopsis_list: [],
+            fileList: [{
+                name: 'food.jpeg',
+                url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'
+            }],
+            show_file: false,
             username: localStorage.getItem('username'),
             loading: false,
 
@@ -109,7 +127,7 @@ export default {
             defaultProps: {
                 label: 'name',
             },
-            fileList: [{}],
+
             loggingOut: false,
         };
     },
@@ -139,22 +157,25 @@ export default {
     },
     methods: {
         beforeRemove(file, fileList) {
-            return this.$confirm(`确定移除 ${ file.name }？`);
+            return this.$confirm(`确定移除 ${file.name}？`);
         },
-        uploadFile(event) {
-            this.Images = this.$refs.file.files[0];
-            console.log(this.Images)
+        uploadFile(file, fileList) {
+            this.show_file = true;
+            this.Images = file;
+            this.fileList = fileList;
+            /*console.log(this.Images)*/
+
         },
-        submitFile() {
+        submitFile(event) {
             const formData = new FormData();
             // const name = localStorage.getItem('username')
             formData.append('name', localStorage.getItem('username'))
-            formData.append('category', '1')
-            formData.append('synopsis', 'cajhsjdhasca')
+            formData.append('category', this.value)
+            formData.append('synopsis', 'sadkfuha;sdifh')
             formData.append('access', '0')
             // const file = this.Images
             console.log(this.Images)
-            formData.append('file', this.Images);
+            formData.append('file', this.Images.raw);
             const headers = {'Content-Type': 'multipart/form-data;boundary=","'};
             this.axios.post('/physlet_api/uploadSimulation',
                 formData,
@@ -164,6 +185,8 @@ export default {
                 res.status; // HTTP status
             });
         },
+
+
         isFolder(node) {
             return (node.key && node.key.startsWith('F_'));
         },
@@ -240,66 +263,26 @@ export default {
                 this.loadingTree = false;
             });
     },
-    treeAppendFolder(node, data) {
-        this.$prompt(null, '请输入文件夹名称', {
-            confirmButtonText: '确定',
-            cancelButtonText: '取消',
-        }).then(({value}) => {
-            this.loadingTree = true;
-            this.$http
-                .post('/workbench_api/addFolder', {
-                    parent_id: data.entity_id,
-                    name: value,
-                })
-                .then(response => {
-                    if (response.data && response.data.code === 0) {
-                        if (!data.children) {
-                            this.$set(data, 'children', []);
-                        }
-                        data.children.push(response.data.folder);
-                    } else if (response.data && response.data.message) {
-                        this.$notify.error(response.data.message);
-                    }
-                })
-                .catch()
-                .then(() => {
-                    this.loadingTree = false;
-                });
-        }).catch();
-    },
-    treeAppend(node, data) {
-        this.$prompt(null, '请输入文件名称', {
-            confirmButtonText: '确定',
-            cancelButtonText: '取消',
-        }).then(({value}) => {
-            this.loadingTree = true;
-            this.$http
-                .post('/workbench_api/addArticle', {
-                    parent_id: data.entity_id,
-                    name: value,
-                })
-                .then(response => {
-                    if (response.data && response.data.code === 0) {
-                        if (!data.children) {
-                            this.$set(data, 'children', []);
-                        }
-                        data.children.push(response.data.article);
-                    } else if (response.data && response.data.message) {
-                        this.$notify.error(response.data.message);
-                    }
-                })
-                .catch()
-                .then(() => {
-                    this.loadingTree = false;
-                });
-        }).catch();
-    },
     mounted() {
-        if (localStorage.getItem('is_authorized') === 'false') {
+        this.$refs.upload.clearFiles()
+        if (localStorage.getItem('is_authorized') !== 'true') {
             this.$router.replace({
                 path: "/login",
             });
         }
+        this.axios
+            .get('/physlet_api/getCategories')
+            .then(response => {
+                let data = response.data.data;
+                for (let syn = 0; syn < data.length; syn++) {
+                    let synopsis = {};
+                    synopsis.label = data[syn].name
+                    synopsis.value = data[syn].id
+                    this.synopsis_list.push(synopsis)
+                }
+                console.log(this.synopsis_list)
+
+            })
     }
 }
 </script>

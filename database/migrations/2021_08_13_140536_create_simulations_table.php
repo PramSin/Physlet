@@ -19,6 +19,8 @@ class CreateSimulationsTable extends Migration
             $table->foreignId('category_id');
             $table->string('slug');
             $table->unsignedInteger('access');
+            $table->unsignedInteger('likes')->default(0);
+            $table->unsignedInteger('shares')->default(0);
             $table->timestamps();
         });
     }
