@@ -9,15 +9,15 @@
             <el-container>
                 <el-header style="text-align: right;">
 <!--                    <h2>实验中心（不是）</h2>-->
-                    <el-dropdown v-if="is_authorized" @command='handleCommand' style="margin-top: 30px">
-                        <i class="el-icon-setting" style="margin-right: 15px; font-size: 20px; margin-top: 30px"></i>
+                    <el-dropdown v-if="is_authorized" @command='handleCommand' style="margin-top: 20px">
+                        <i class="el-icon-setting" style=" margin-right: 10px; font-size: 20px"></i>
                         <el-dropdown-menu slot="dropdown">
                             <el-dropdown-item command="to_homepage">查看</el-dropdown-item>
                             <el-dropdown-item command="change_password">修改密码</el-dropdown-item>
                             <el-dropdown-item command="exit">登出</el-dropdown-item>
                         </el-dropdown-menu>
                     </el-dropdown>
-                    <el-link :underline='false' @click="to_login" style="font-size: 20px;margin-top: -5px">{{ username }}</el-link>
+                    <el-link :underline='false' @click="to_login" style="font-size: 20px;margin-top: 15px;vertical-align: top;">{{ username }}</el-link>
                 </el-header>
                 <el-main>
                     <router-view></router-view>

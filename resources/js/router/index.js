@@ -7,6 +7,7 @@ import Me from "../components/Me";
 import Register from "../components/Register";
 import Changepsw from  "../components/Changepsw";
 import Demo from "../components/Demo"
+import PageNotFound from "../components/PageNotFound";
 
 
 export default new VueRouter({//TODO 在不存在页面时跳转404
@@ -39,6 +40,7 @@ export default new VueRouter({//TODO 在不存在页面时跳转404
         {
             path:'/changepsw',
             component:Changepsw
-        }
+        },
+        { path: "*", component: PageNotFound }
     ]
 });

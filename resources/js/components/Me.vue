@@ -83,15 +83,14 @@
                 </el-footer>
               </el-container>
             </el-container>-->
-        <template>
-            <el-select v-model="value" placeholder="请选择">
-                <el-option
-                    v-for="item in synopsis_list"
-                    :value="item.value"
-                    :label="item.label">
-                </el-option>
-            </el-select>
-        </template>
+        <el-select v-model="value" placeholder="请选择">
+            <el-option
+                v-for="item in synopsis_list"
+                :value="item.value"
+                :label="item.label">
+            </el-option>
+        </el-select>
+        <br/>
         <el-upload ref="upload"
                    class="upload-demo"
                    action=""
@@ -99,7 +98,8 @@
                    :http-request="submitFile"
                    :before-remove="beforeRemove"
                    :file-list="fileList"
-                   :on-change="uploadFile">
+                   :on-change="uploadFile"
+                   style="margin-top: 15px">
             <el-button size="small" type="primary">点击上传</el-button>
             <div slot="tip" class="el-upload__tip">不超过500kb</div>
         </el-upload>
@@ -280,7 +280,6 @@ export default {
                     synopsis.value = data[syn].id
                     this.synopsis_list.push(synopsis)
                 }
-                console.log(this.synopsis_list)
 
             })
     }
