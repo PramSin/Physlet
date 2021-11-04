@@ -26,7 +26,7 @@
             "user_id",
             "category_id", // belongTo->Category
             "access",
-            "version", // hasOne->SWVersion
+            "version", // hasOne->SWVersion //visible
             "versions", // hasMany->SWVersions
             "likes",
             "comments", // hasMany->Comments

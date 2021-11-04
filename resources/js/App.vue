@@ -4,21 +4,20 @@
                 <router-link class="list-group-item" active-class="active" to="/about">About</router-link>
                 <router-link class="list-group-item" active-class="active" to="/home">Home</router-link>
                 <router-link class="list-group-item" active-class="active" to="/me">Me</router-link>
-                <router-link class="list-group-item" active-class="active" to="/login">Login</router-link>
             </el-aside>
 
             <el-container>
-                <el-header style="text-align: right; font-size: 20px">
+                <el-header style="text-align: right;">
 <!--                    <h2>实验中心（不是）</h2>-->
-                    <el-dropdown @command='handleCommand'>
-                        <i class="el-icon-setting" style="margin-right: 15px; font-size: 20px"></i>
+                    <el-dropdown v-if="is_authorized" @command='handleCommand' style="margin-top: 20px">
+                        <i class="el-icon-setting" style=" margin-right: 10px; font-size: 20px"></i>
                         <el-dropdown-menu slot="dropdown">
                             <el-dropdown-item command="to_homepage">查看</el-dropdown-item>
                             <el-dropdown-item command="change_password">修改密码</el-dropdown-item>
                             <el-dropdown-item command="exit">登出</el-dropdown-item>
                         </el-dropdown-menu>
                     </el-dropdown>
-                    <span>{{ username }}</span>
+                    <el-link :underline='false' @click="to_login" style="font-size: 20px;margin-top: 15px;vertical-align: top;">{{ username }}</el-link>
                 </el-header>
                 <el-main>
                     <router-view></router-view>
@@ -32,8 +31,27 @@
 
 export default {
     name: 'App',
+    data() {
+        return {
+            is_authorized: false
+        }
 
+
+    },
+    mounted() {
+        if (localStorage.getItem('is_authorized') === 'true') {
+            this.is_authorized = true
+        }
+    },
     methods: {
+        to_login() {
+            if (localStorage.getItem('is_authorized') === 'true') {
+                this.$router.push({path: "/me"});
+            }
+            else {
+                this.$router.push({path: "/login"});
+            }
+        },
         handleCommand(command) {
             if (localStorage.getItem('is_authorized') === false) {
                 this.$router.push({path: "/login"})
@@ -62,8 +80,8 @@ export default {
                         });
                     } else {
                         localStorage.clear()
-                        console.log('111111111')
                         this.$message('注销成功！');
+                        location.reload()
                         this.$router.replace({path: '@/components/home'})
                         /*console.log('2222222222222222')*/
                     }
@@ -87,51 +105,40 @@ export default {
 
 </script>
 
-<style>
-html,
-body {
-    padding: 0px;
-    margin: 0px;
+<style scoped>
+.el-container {
+    padding: 0;
+    margin: 0;
     height: 100%;
-
 }
 
-#App {
-    font-family: Avenir, Helvetica, Arial, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    text-align: center;
-    color: #2c3e50;
-    margin: 10px;
-    height: 100%;
-
+.fade-enter-active, .fade-leave-active {
+    transition: opacity .3s;
 }
 
-.el-header {
-    background-color: #B3C0D1;
-    color: #333;
-    line-height: 60px;
+.fade-enter, .fade-leave-to {
+    opacity: 0;
 }
+</style>
+<style lang="scss">
+* {
+    &::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+    }
 
-.el-aside {
-    color: #333;
-}
+    &::-webkit-scrollbar-thumb {
+        border-radius: 8px;
+        background-color: hsla(225, 4%, 58%, 0.3);
+        transition: background-color 0.3s;
 
-.el-container.is-vertical {
-    overflow: auto;
-}
-.background-wrapper {
-    overflow: hidden;
-}
+        &:hover {
+            background: #bbb;
+        }
+    }
 
-.background {
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, .8);
-    background-position: center;
-    background-size: cover;
-    background-repeat: no-repeat;
-    filter: blur(5px) brightness(50%);
-    transform: scale(1.1);
+    &::-webkit-scrollbar-track {
+        background: #ededed;
+    }
 }
 </style>
