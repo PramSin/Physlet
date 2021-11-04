@@ -283,9 +283,8 @@ class SimulationController extends Controller
     {
         try {
             $ver = SimulationWithVersion::findOrFail($request->get('version'));
-            $url = Storage::temporaryUrl(
-                $ver->root_path,
-                now()->addMinutes(20)
+            $url = Storage::Url(
+                $ver->root_path
             );
 
             $this->r['code'] = 200;
@@ -293,7 +292,7 @@ class SimulationController extends Controller
             $this->r['data'] = $url;
         } catch (Exception $e) {
             $this->r['code'] = 400;
-            $this->r['message'] = '获取版本链接失败';
+            $this->r['message'] = $e->getMessage();
         }
 
         return $this->r;

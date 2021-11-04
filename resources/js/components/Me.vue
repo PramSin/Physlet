@@ -135,7 +135,6 @@ export default {
             formData.append('synopsis', 'sadkfuha;sdifh')
             formData.append('access', '0')
             // const file = this.Images
-            console.log(this.Images)
             formData.append('file', this.Images.raw);
             const headers = {'Content-Type': 'multipart/form-data;boundary=","'};
             this.axios.post('/physlet_api/uploadSimulation',
@@ -245,10 +244,10 @@ export default {
             })
 
         this.axios
-            .get('/physlet_api/getSimulations')
+            .get('/physlet_api/getMySimulations')
             .then(response => {
                 let data = response.data.data;
-                console.log(data)
+/*                console.log(data)*/
                 for (let syn = 0; syn < data.length; syn++) {
                     let simulation_list = {};
                     simulation_list.id = data[syn].id

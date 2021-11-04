@@ -1944,8 +1944,21 @@ __webpack_require__.r(__webpack_exports__);
   name: "Demo",
   data: function data() {
     return {
-      demosrc: 'https://www.openstreetmap.org/export/embed.html?bbox=-0.004017949104309083%2C51.47612752641776%2C0.00030577182769775396%2C51.478569861898606&layer=mapnik'
+      demo_src: 'https://www.openstreetmap.org/export/embed.html?bbox=-0.004017949104309083%2C51.47612752641776%2C0.00030577182769775396%2C51.478569861898606&layer=mapnik'
     };
+  },
+  mounted: function mounted() {
+    var _this = this;
+
+    console.log(this.$route.query);
+    var params = this.$route.query;
+    this.axios.get('/physlet_api/getPackage', {
+      params: params
+    }).then(function (response) {
+      var data = response.data.data;
+      console.log(response.data);
+      _this.demo_src = data;
+    });
   }
 });
 
@@ -1960,8 +1973,17 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
-/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var core_js_modules_es_function_name_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! core-js/modules/es.function.name.js */ "./node_modules/core-js/modules/es.function.name.js");
+/* harmony import */ var core_js_modules_es_function_name_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_function_name_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
+/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_1__);
+
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -2000,6 +2022,14 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   methods: {
+    jump_to_simulation: function jump_to_simulation(row) {
+      this.$router.push({
+        path: "/demo",
+        query: {
+          version: row.version
+        }
+      });
+    },
     dateFormat: function dateFormat(row, column) {
       var date = row[column.property];
 
@@ -2007,7 +2037,7 @@ __webpack_require__.r(__webpack_exports__);
         return "";
       }
 
-      return moment__WEBPACK_IMPORTED_MODULE_0___default()(date).format("YYYY-MM-DD HH:mm:ss");
+      return moment__WEBPACK_IMPORTED_MODULE_1___default()(date).format("YYYY-MM-DD HH:mm:ss");
     }
   },
   mounted: function mounted() {
@@ -2015,12 +2045,12 @@ __webpack_require__.r(__webpack_exports__);
 
     this.axios.get('/physlet_api/getSimulations').then(function (response) {
       var data = response.data.data;
-      console.log(data);
 
       for (var syn = 0; syn < data.length; syn++) {
         var simulation_list = {};
-        simulation_list.version = data[syn].version;
+        simulation_list.name = data[syn].name;
         simulation_list.likes = data[syn].likes;
+        simulation_list.version = data[syn].version;
         simulation_list.created_at = data[syn].created_at;
 
         _this.All_simulation_list.push(simulation_list);
@@ -2325,7 +2355,6 @@ __webpack_require__.r(__webpack_exports__);
       formData.append('synopsis', 'sadkfuha;sdifh');
       formData.append('access', '0'); // const file = this.Images
 
-      console.log(this.Images);
       formData.append('file', this.Images.raw);
       var headers = {
         'Content-Type': 'multipart/form-data;boundary=","'
@@ -2438,9 +2467,9 @@ __webpack_require__.r(__webpack_exports__);
         _this3.synopsis_list.push(synopsis);
       }
     });
-    this.axios.get('/physlet_api/getSimulations').then(function (response) {
+    this.axios.get('/physlet_api/getMySimulations').then(function (response) {
       var data = response.data.data;
-      console.log(data);
+      /*                console.log(data)*/
 
       for (var syn = 0; syn < data.length; syn++) {
         var simulation_list = {};
@@ -29461,7 +29490,7 @@ var render = function() {
     _c("iframe", {
       ref: "iframe",
       staticStyle: { height: "100vmin", width: "100%" },
-      attrs: { src: _vm.demosrc }
+      attrs: { src: _vm.demo_src }
     })
   ])
 }
@@ -29498,11 +29527,16 @@ var render = function() {
         "el-table",
         {
           staticStyle: { width: "100%" },
-          attrs: { stripe: "", data: _vm.All_simulation_list }
+          attrs: { stripe: "", data: _vm.All_simulation_list },
+          on: { "row-click": _vm.jump_to_simulation }
         },
         [
           _c("el-table-column", {
-            attrs: { prop: "version", label: "名称/版本", width: "180" }
+            attrs: { prop: "name", label: "名称", width: "180" }
+          }),
+          _vm._v(" "),
+          _c("el-table-column", {
+            attrs: { prop: "version", label: "版本", width: "180" }
           }),
           _vm._v(" "),
           _c("el-table-column", { attrs: { prop: "likes", label: "赞" } }),
