@@ -125,7 +125,6 @@ export default {
             this.Images = file;
             this.fileList = fileList;
             /*console.log(this.Images)*/
-
         },
         submitFile(event) {
             const formData = new FormData();
