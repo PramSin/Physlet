@@ -22,7 +22,8 @@ Route::middleware(['web'])->group(function () {
             Route::get('/logout', 'UserAuthController@logout')->name('logout');
             Route::post('/changePassword', 'UserAuthController@changePassword')->name('changePassword');
             Route::get('/getCategories', 'SimulationController@getCategories')->name('getCategories');
-            Route::get('/getSimulations', 'SimulationController@getSimulations')->name('getCategories');
+            Route::get('/getSimulations', 'SimulationController@getSimulations')->name('getSimulations');
+            Route::get('/getMySimulations', 'SimulationController@getMySimulations')->name('getMySimulations');
             Route::post('/uploadSimulation', 'SimulationController@uploadSimulation')->name('uploadSimulation');
             Route::post('/editSimulation', 'SimulationController@editSimulation')->name('editSimulation');
             Route::post('/deleteSimulation', 'SimulationController@deleteSimulation')->name('deleteSimulation');

@@ -25,6 +25,7 @@ class SimulationController extends Controller
      */
     protected static function unzip_file(string $filename): string
     {
+        $filename = storage_path("app/" . $filename);
         $ext = substr($filename, strrpos($filename, '.') + 1);
         $directory = substr($filename, 0, strrpos($filename, '.')) . "/";
 
@@ -55,11 +56,20 @@ class SimulationController extends Controller
         return $this->r;
     }
 
-    public function getSimulations(Request $request): array
+    public function getSimulations(): array
     {
         $this->r['code'] = 200;
         $this->r['message'] = "获取模拟成功";
-        $this->r['data'] = $request->user()->simulations;
+        $this->r['data'] = Simulation::where("access", "=", 1)
+            ->get()->load('version');
+        return $this->r;
+    }
+
+    public function getMySimulations(Request $request): array
+    {
+        $this->r['code'] = 200;
+        $this->r['message'] = "获取模拟成功";
+        $this->r['data'] = $request->user()->simulations->load('version');
         return $this->r;
     }
 
@@ -72,7 +82,8 @@ class SimulationController extends Controller
             $access = $request->post('access');
 
             if ($request->hasFile('file')) {
-                $package = $request->file('file')->store(Category::findOrFail($category)->name);
+                $package = $request->file('file')
+                    ->store("public/" . Category::findOrFail($category)->name);
                 $file = self::unzip_file($package);
             } else {
                 $this->r['code'] = 400;
@@ -87,7 +98,7 @@ class SimulationController extends Controller
                 "access" => $access,
             ]);
 
-            $siv = SimulationWithVersion::create([
+            SimulationWithVersion::create([
                 'simulation_id' => $sim->id,
                 'status_id' => $sim->id,
                 'name' => $name,
@@ -98,7 +109,7 @@ class SimulationController extends Controller
 
             $this->r['code'] = 200;
             $this->r['message'] = "模拟程序上传成功";
-            $this->r['data'] = $siv;
+            $this->r['data'] = $sim->load('version');
         } catch (Exception $e) {
             $this->r['code'] = 400;
             $this->r['message'] = $e->getMessage();
@@ -315,14 +326,18 @@ class SimulationController extends Controller
     {
         try {
             $ver = SimulationWithVersion::findOrFail($request->get('version'));
-            $url = Storage::temporaryUrl(
-                $ver->root_path,
-                now()->addMinutes(20)
-            );
+            if ($ver->simulation->access) {
+                $url = Storage::Url(
+                    $ver->root_path
+                );
 
-            $this->r['code'] = 200;
-            $this->r['message'] = '获取版本链接成功';
-            $this->r['data'] = $url;
+                $this->r['code'] = 200;
+                $this->r['message'] = '获取版本链接成功';
+                $this->r['data'] = $url;
+            } else {
+                $this->r['code'] = 400;
+                $this->r['message'] = '没有当前模拟的查看权限';
+            }
         } catch (Exception $e) {
             $this->r['code'] = 400;
             $this->r['message'] = '获取版本链接失败';

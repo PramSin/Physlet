@@ -20,6 +20,10 @@ class SimulationWithVersion extends Model
         'synopsis',
     ];
 
+    protected $hidden = [
+        'root_path'
+    ];
+
     public function simulation(): BelongsTo
     {
         return $this->belongsTo(Simulation::class);
