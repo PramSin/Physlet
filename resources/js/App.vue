@@ -1,5 +1,5 @@
 <template>
-        <el-container style="padding: 0px; margin: 0px; height: 100vmin">
+        <el-container style="padding: 0px; margin: 0px">
             <el-aside width="200px" style="background-color: rgb(238, 241, 246);">
                 <router-link class="list-group-item" active-class="active" to="/about">About</router-link>
                 <router-link class="list-group-item" active-class="active" to="/home">Home</router-link>
@@ -108,6 +108,15 @@ export default {
 </script>
 
 <style scoped>
+html {
+    max-width: 1980px;
+    margin: 0 auto;
+    height: 100%;
+}
+#app {
+    height: inherit;
+    width: inherit;
+}
 .el-container {
     padding: 0;
     margin: 0;
@@ -123,6 +132,10 @@ export default {
 }
 </style>
 <style lang="scss">
+#app {
+    min-height: 100vh;
+    max-height: 100vh;
+}
 * {
     &::-webkit-scrollbar {
         width: 8px;

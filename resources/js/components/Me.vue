@@ -1,27 +1,37 @@
 <template>
     <div style="width: 100%">
-        <h3>我的模拟</h3>
+        <h3>我的模拟（点击展示）</h3>
         <el-table
             stripe
             :data="Simulation_list"
             style="width: 100%">
             <el-table-column
                 prop="id"
-                label="id"
+                v-if=false
+                label="id">
+            </el-table-column>
+            <el-table-column
+                prop="category_id"
+                v-if=false
+                label="category_id">
+            </el-table-column>
+            <el-table-column
+                prop="name"
+                label="名称"
                 width="180">
             </el-table-column>
             <el-table-column
                 prop="version"
-                label="名称/版本"
+                label="版本"
                 width="180">
+            </el-table-column>
+            <el-table-column
+                prop="category"
+                label="类别">
             </el-table-column>
             <el-table-column
                 prop="access"
                 label="可见性">
-            </el-table-column>
-            <el-table-column
-                prop="likes"
-                label="赞">
             </el-table-column>
             <el-table-column
                 :formatter="dateFormat"
@@ -29,15 +39,29 @@
                 label="创建时间">
             </el-table-column>
             <el-table-column
+                prop="likes"
+                label="赞"
+                width="50">
+            </el-table-column>
+            <el-table-column
                 prop="shares"
                 label="分享">
+            </el-table-column>
+            <el-table-column
+                fixed="right"
+                label="操作"
+                width="100">
+                <template slot-scope="scope">
+                    <el-button type="text" size="small" @click="edit_Simulation(scope.row)">编辑</el-button>
+                </template>
+
             </el-table-column>
         </el-table>
         <br/>
         <h3>上传模拟</h3>
-        <el-select style="margin-top: 15px" v-model="value" placeholder="请选择">
+        <el-select style="margin-top: 15px" v-model="value" placeholder="请选择模拟类别">
             <el-option
-                v-for="item in synopsis_list"
+                v-for="item of synopsis_list"
                 :value="item.value"
                 :label="item.label">
             </el-option>
@@ -61,6 +85,7 @@
 
 <script>
 import moment from 'moment'
+
 export default {
     name: "Me",
     data() {
@@ -110,6 +135,18 @@ export default {
         },
     },
     methods: {
+        edit_Simulation(row) {
+            /*            console.log(row)*/
+            this.$router.push({
+                path: "/edit_simulation", query: {
+                    id: row.id,
+                    category: row.category,
+                    access: row.access,
+                    name: row.name,
+                }
+            });
+
+        },
         dateFormat(row, column) {
             let date = row[column.property];
             if (date === undefined) {
@@ -145,43 +182,6 @@ export default {
                 res.status; // HTTP status
             });
         },
-
-
-        isFolder(node) {
-            return (node.key && node.key.startsWith('F_'));
-        },
-        isShareFolder(node) {
-            return (node.key && node.key === 'ShareFolder');
-        },
-        isArticle(node) {
-            return (node.key && node.key.startsWith('A_'));
-        },
-        canEdit(node) {
-            return node.data.editable === undefined || node.data.editable !== false;
-        },
-        canAudit(node) {
-            return node.data.auditable === undefined || node.data.auditable !== false;
-        },
-        getNodeIcon(node) {
-            if (this.isArticle(node) && this.canEdit(node)) {
-                return 'el-icon-document';
-            } else if (this.isArticle(node) && !this.canEdit(node)) {
-                return 'el-icon-view';
-            } else if (this.isShareFolder(node)) {
-                return 'el-icon-share';
-            } else if (this.isFolder(node) && node.expanded) {
-                return 'el-icon-folder-opened';
-            } else if (this.isFolder(node) && !node.expanded) {
-                return 'el-icon-folder';
-            } else {
-                return 'el-icon-folder';
-            }
-        },
-        getTooltipContent(node) {
-            return node.data.name
-                + (node.data.owner ? '@' + node.data.owner : '')
-                + (this.canEdit(node) ? '' : '[只读]');
-        },
         handleDropdownCommand(command) {
             switch (command) {
                 case 'change_password':
@@ -202,11 +202,9 @@ export default {
                             message: response.data.message,
                         });
                     } else {
-                        localStorage.clear()
-                        console.log('111111111')
-                        this.$message('注销成功！');
                         this.$router.replace({path: '/home'})
-                        /*console.log('2222222222222222')*/
+/*                        localStorage.clear()
+                        this.$message('注销成功！');*/
                     }
                 })
                 .catch()
@@ -215,55 +213,49 @@ export default {
 
         },
     },
-    loadTree() {
-        this.loadingTree = true;
-        this.$store.dispatch('loadTree')
-            .catch()
-            .then(() => {
-                this.loadingTree = false;
-            });
-    },
+
     mounted() {
         this.$refs.upload.clearFiles()
         if (localStorage.getItem('is_authorized') !== 'true') {
             this.$router.replace({
                 path: "/login",
             });
+        } else {
+            this.axios
+                .get('/physlet_api/getCategories')
+                .then(response => {
+                    let data = response.data.data;
+                    for (let syn = 0; syn < data.length; syn++) {
+                        let synopsis = {};
+                        synopsis.label = data[syn].name
+                        synopsis.value = data[syn].id
+                        this.synopsis_list.push(synopsis)
+                    }
+                })
+            this.axios
+                .get('/physlet_api/getSimulations')
+                .then(response => {
+                    let data = response.data.data;
+                    /*                console.log(data)*/
+                    for (let syn = 0; syn < data.length; syn++) {
+                        let simulation_list = {};
+                        simulation_list.id = data[syn].id
+                        simulation_list.name = data[syn].name
+                        simulation_list.version = data[syn].version
+                        simulation_list.access = (data[syn].access ? 'public' : 'private')
+                        simulation_list.category = data[syn].category
+                        simulation_list.likes = data[syn].likes
+                        simulation_list.category_id = data[syn].category_id
+                        simulation_list.created_at = data[syn].created_at
+                        simulation_list.shares = data[syn].shares
+                        this.Simulation_list.push(simulation_list)
+                    }
+                })
         }
-        this.axios
-            .get('/physlet_api/getCategories')
-            .then(response => {
-                let data = response.data.data;
-                for (let syn = 0; syn < data.length; syn++) {
-                    let synopsis = {};
-                    synopsis.label = data[syn].name
-                    synopsis.value = data[syn].id
-                    this.synopsis_list.push(synopsis)
-                }
-
-            })
-
-        this.axios
-            .get('/physlet_api/getMySimulations')
-            .then(response => {
-                let data = response.data.data;
-/*                console.log(data)*/
-                for (let syn = 0; syn < data.length; syn++) {
-                    let simulation_list = {};
-                    simulation_list.id = data[syn].id
-                    simulation_list.version = data[syn].version
-                    simulation_list.access = data[syn].access
-                    simulation_list.likes = data[syn].likes
-                    simulation_list.created_at = data[syn].created_at
-                    simulation_list.shares = data[syn].shares
-                    this.Simulation_list.push(simulation_list)
-                }
-
-
-            })
-
     }
+
 }
+
 </script>
 
 <style>

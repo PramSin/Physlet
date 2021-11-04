@@ -1,7 +1,7 @@
 <template>
     <div>
         <h2>我们的主页信息啥的，可以展示现有的实验模拟</h2>
-        <h3>模拟展示</h3>
+        <h3>模拟展示（点击查看详情）</h3>
         <el-table
             @row-click="jump_to_simulation"
             stripe
@@ -18,13 +18,14 @@
                 width="180">
             </el-table-column>
             <el-table-column
-                prop="likes"
-                label="赞">
-            </el-table-column>
-            <el-table-column
                 :formatter="dateFormat"
                 prop="created_at"
                 label="创建时间">
+            </el-table-column>
+            <el-table-column
+                prop="likes"
+                label="赞"
+                width="50">
             </el-table-column>
 
         </el-table>
@@ -46,8 +47,7 @@ export default {
 
     methods: {
         jump_to_simulation(row) {
-            this.$router.push({path: "/demo",query:{version: row.version}});
-
+            this.$router.push({path: "/demo",query:{version: row.name}});
         },
         dateFormat(row, column) {
             let date = row[column.property];
@@ -64,8 +64,10 @@ export default {
             .get('/physlet_api/getSimulations')
             .then(response => {
                 let data = response.data.data;
+                console.log(data)
                 for (let syn = 0; syn < data.length; syn++) {
                     let simulation_list = {};
+                    simulation_list.id = data[syn].id
                     simulation_list.name = data[syn].name
                     simulation_list.likes = data[syn].likes
                     simulation_list.version = data[syn].version
