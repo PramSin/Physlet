@@ -61,7 +61,7 @@ class SimulationController extends Controller
         $this->r['code'] = 200;
         $this->r['message'] = "获取模拟成功";
         $this->r['data'] = Simulation::where("access", "=", 1)
-            ->get()->load('version');
+            ->get()->load('version', 'category');
         return $this->r;
     }
 
@@ -69,7 +69,7 @@ class SimulationController extends Controller
     {
         $this->r['code'] = 200;
         $this->r['message'] = "获取模拟成功";
-        $this->r['data'] = $request->user()->simulations->load('version');
+        $this->r['data'] = $request->user()->simulations->load('version', 'category');
         return $this->r;
     }
 
