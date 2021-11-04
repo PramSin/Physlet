@@ -14,6 +14,10 @@ export default new VueRouter({//TODO 在不存在页面时跳转404
     mode: 'history',
     routes:[
         {
+            path:'/',
+            component:Home
+        },
+        {
             path:'/about',
             component:About
         },
