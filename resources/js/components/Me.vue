@@ -1,111 +1,77 @@
 <template>
     <div style="width: 100%">
-        <!--    <el-container>
-              <el-aside width="200px">
-                <el-tree
-                    style="margin-top: 5px;"
-                    :loading="loadingTree"
-                    :data="tree"
-                    :props="defaultProps"
-                    :empty-text="loadingTree ? '文件树加载中' : '未获取到文件树'"
-                    node-key="id"
-                    default-expand-all
-                    :indent="8"
-                    :highlight-current="true"
-                    @node-click="nodeClick"
-                >
-                            <span slot-scope="{node, data}"
-                                  class="tree-node"
-                                  :class="{'selected-node': isArticle(node)
-                                   && active_article_id === data.entity_id}">
-                                <span>
-                                    <i :class="getNodeIcon(node)"></i>
-                                    <el-tooltip
-                                        :content="getTooltipContent(node)"
-                                        placement="top"
-                                        :open-delay="1000"
-                                    >
-                                        <span>
-                                            {{ data.name }}
-                                            <el-tag
-                                                v-if="data.owner"
-                                                type="info"
-                                                size="mini"
-                                            >{{ data.owner }}</el-tag>
-                                        </span>
-                                    </el-tooltip>
-                                </span>
-                                <span class="pull-right actions">
-                                    <el-button-group v-if="canAudit(node)">
-                                        <el-tooltip content="创建目录" placement="top" :open-delay="500" :hide-after="5000">
-                                            <el-button
-                                                v-if="isFolder(node)"
-                                                type="text"
-                                                size="small"
-                                                @click.stop="() => treeAppendFolder(node, data)">
-                                                <i class="el-icon-folder-add"></i>
-                                            </el-button>
-                                        </el-tooltip>
-                                        <el-tooltip content="创建文档" placement="top" :open-delay="500" :hide-after="5000">
-                                            <el-button
-                                                v-if="isFolder(node)"
-                                                type="text"
-                                                size="small"
-                                                @click.stop="() => treeAppend(node, data)">
-                                                <i class="el-icon-document-add"></i>
-                                            </el-button>
-                                        </el-tooltip>
-                                        <el-tooltip content="重命名" placement="top" :open-delay="500" :hide-after="5000">
-                                            <el-button
-                                                type="text"
-                                                size="small"
-                                                @click.stop="() => treeRename(node, data)">
-                                                <i class="el-icon-edit"></i>
-                                            </el-button>
-                                        </el-tooltip>
-                                        <el-tooltip content="删除" placement="top" :open-delay="500" :hide-after="5000">
-                                            <el-button
-                                                type="text"
-                                                size="small"
-                                                @click.stop="() => treeRemove(node, data)">
-                                                <i class="el-icon-delete"></i>
-                                            </el-button>
-                                        </el-tooltip>
-                                    </el-button-group>
-                                </span>
-                            </span>
-                </el-tree>
-              </el-aside>
-              <el-container>
-                <el-footer class="footer">
-                  <span class="footer-item">沪ICP备18033591号-1</span>
-                  <span class="footer-item">Copyright @ Arrakis 2020</span>
-                </el-footer>
-              </el-container>
-            </el-container>-->
+        <h3>我的模拟</h3>
+        <el-table
+            stripe
+            :data="Simulation_list"
+            style="width: 100%">
+            <el-table-column
+                prop="id"
+                label="id"
+                width="180">
+            </el-table-column>
+            <el-table-column
+                prop="version"
+                label="名称/版本"
+                width="180">
+            </el-table-column>
+            <el-table-column
+                prop="access"
+                label="可见性">
+            </el-table-column>
+            <el-table-column
+                prop="likes"
+                label="赞">
+            </el-table-column>
+            <el-table-column
+                :formatter="dateFormat"
+                prop="created_at"
+                label="创建时间">
+            </el-table-column>
+            <el-table-column
+                prop="shares"
+                label="分享">
+            </el-table-column>
+        </el-table>
+        <br/>
+        <h3>上传模拟</h3>
+        <el-select style="margin-top: 15px" v-model="value" placeholder="请选择">
+            <el-option
+                v-for="item in synopsis_list"
+                :value="item.value"
+                :label="item.label">
+            </el-option>
+        </el-select>
+        <br/>
         <el-upload ref="upload"
-            class="upload-demo"
-            action=""
-            :show-file-list="show_file"
-            :http-request="submitFile"
-            :before-remove="beforeRemove"
-            :file-list="fileList"
-            :on-change="uploadFile">
+                   class="upload-demo"
+                   action=""
+                   :show-file-list="show_file"
+                   :http-request="submitFile"
+                   :before-remove="beforeRemove"
+                   :file-list="fileList"
+                   :on-change="uploadFile"
+                   style="margin-top: 15px">
             <el-button size="small" type="primary">点击上传</el-button>
-            <div slot="tip" class="el-upload__tip">不超过500kb</div>
+            <div slot="tip" class="el-upload__tip">必须为zip格式，不超过100mb</div>
         </el-upload>
-        <iframe :src="demosrc" ref="iframe"></iframe>
     </div>
 </template>
 
 
 <script>
+import moment from 'moment'
 export default {
     name: "Me",
     data() {
         return {
-            demosrc: 'https://www.openstreetmap.org/export/embed.html?bbox=-0.004017949104309083%2C51.47612752641776%2C0.00030577182769775396%2C51.478569861898606&layer=mapnik',
-            fileList: [{name: 'food.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}],
+            value: '',
+            synopsis_list: [],
+            Simulation_list: [],
+            fileList: [{
+                name: 'food.jpeg',
+                url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'
+            }],
             show_file: false,
             username: localStorage.getItem('username'),
             loading: false,
@@ -115,7 +81,7 @@ export default {
             defaultProps: {
                 label: 'name',
             },
-            fileList: [{}],
+
             loggingOut: false,
         };
     },
@@ -144,6 +110,13 @@ export default {
         },
     },
     methods: {
+        dateFormat(row, column) {
+            let date = row[column.property];
+            if (date === undefined) {
+                return "";
+            }
+            return moment(date).format("YYYY-MM-DD HH:mm:ss");
+        },
         beforeRemove(file, fileList) {
             return this.$confirm(`确定移除 ${file.name}？`);
         },
@@ -157,11 +130,10 @@ export default {
             const formData = new FormData();
             // const name = localStorage.getItem('username')
             formData.append('name', localStorage.getItem('username'))
-            formData.append('category', '1')
-            formData.append('synopsis', 'cajhsjdhasca')
+            formData.append('category', this.value)
+            formData.append('synopsis', 'sadkfuha;sdifh')
             formData.append('access', '0')
             // const file = this.Images
-            console.log(this.Images)
             formData.append('file', this.Images.raw);
             const headers = {'Content-Type': 'multipart/form-data;boundary=","'};
             this.axios.post('/physlet_api/uploadSimulation',
@@ -172,6 +144,8 @@ export default {
                 res.status; // HTTP status
             });
         },
+
+
         isFolder(node) {
             return (node.key && node.key.startsWith('F_'));
         },
@@ -248,60 +222,6 @@ export default {
                 this.loadingTree = false;
             });
     },
-    treeAppendFolder(node, data) {
-        this.$prompt(null, '请输入文件夹名称', {
-            confirmButtonText: '确定',
-            cancelButtonText: '取消',
-        }).then(({value}) => {
-            this.loadingTree = true;
-            this.$http
-                .post('/workbench_api/addFolder', {
-                    parent_id: data.entity_id,
-                    name: value,
-                })
-                .then(response => {
-                    if (response.data && response.data.code === 0) {
-                        if (!data.children) {
-                            this.$set(data, 'children', []);
-                        }
-                        data.children.push(response.data.folder);
-                    } else if (response.data && response.data.message) {
-                        this.$notify.error(response.data.message);
-                    }
-                })
-                .catch()
-                .then(() => {
-                    this.loadingTree = false;
-                });
-        }).catch();
-    },
-    treeAppend(node, data) {
-        this.$prompt(null, '请输入文件名称', {
-            confirmButtonText: '确定',
-            cancelButtonText: '取消',
-        }).then(({value}) => {
-            this.loadingTree = true;
-            this.$http
-                .post('/workbench_api/addArticle', {
-                    parent_id: data.entity_id,
-                    name: value,
-                })
-                .then(response => {
-                    if (response.data && response.data.code === 0) {
-                        if (!data.children) {
-                            this.$set(data, 'children', []);
-                        }
-                        data.children.push(response.data.article);
-                    } else if (response.data && response.data.message) {
-                        this.$notify.error(response.data.message);
-                    }
-                })
-                .catch()
-                .then(() => {
-                    this.loadingTree = false;
-                });
-        }).catch();
-    },
     mounted() {
         this.$refs.upload.clearFiles()
         if (localStorage.getItem('is_authorized') !== 'true') {
@@ -309,6 +229,38 @@ export default {
                 path: "/login",
             });
         }
+        this.axios
+            .get('/physlet_api/getCategories')
+            .then(response => {
+                let data = response.data.data;
+                for (let syn = 0; syn < data.length; syn++) {
+                    let synopsis = {};
+                    synopsis.label = data[syn].name
+                    synopsis.value = data[syn].id
+                    this.synopsis_list.push(synopsis)
+                }
+
+            })
+
+        this.axios
+            .get('/physlet_api/getMySimulations')
+            .then(response => {
+                let data = response.data.data;
+/*                console.log(data)*/
+                for (let syn = 0; syn < data.length; syn++) {
+                    let simulation_list = {};
+                    simulation_list.id = data[syn].id
+                    simulation_list.version = data[syn].version
+                    simulation_list.access = data[syn].access
+                    simulation_list.likes = data[syn].likes
+                    simulation_list.created_at = data[syn].created_at
+                    simulation_list.shares = data[syn].shares
+                    this.Simulation_list.push(simulation_list)
+                }
+
+
+            })
+
     }
 }
 </script>

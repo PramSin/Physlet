@@ -42,14 +42,6 @@
 export default {
   name: "Changepsw",
   data() {
-    let pswcheck= (rule, value, callback) => {
-      if (value === localStorage.getItem('userpsw')) {
-        callback()
-      }
-      else {
-        return callback(new Error('原密码错误！'))
-        }
-      }
 
     return {
 
@@ -60,7 +52,7 @@ export default {
       },
       rules: {
         password: [
-          {required: true, validator: pswcheck, message: '不能为空', trigger: 'blur'},
+          {required: true, message: '不能为空', trigger: 'blur'},
         ],
         ori_password: [
           {required: true, message: '密码不能为空', trigger: 'blur'},

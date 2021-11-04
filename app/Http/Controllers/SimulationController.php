@@ -340,7 +340,7 @@ class SimulationController extends Controller
             }
         } catch (Exception $e) {
             $this->r['code'] = 400;
-            $this->r['message'] = '获取版本链接失败';
+            $this->r['message'] = $e->getMessage();
         }
 
         return $this->r;
