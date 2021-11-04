@@ -12,11 +12,11 @@
                 label="名称"
                 width="180">
             </el-table-column>
-            <el-table-column
+<!--            <el-table-column
                 prop="version"
                 label="版本"
                 width="180">
-            </el-table-column>
+            </el-table-column>-->
             <el-table-column
                 :formatter="dateFormat"
                 prop="created_at"
@@ -68,9 +68,8 @@ export default {
                 for (let syn = 0; syn < data.length; syn++) {
                     let simulation_list = {};
                     simulation_list.id = data[syn].id
-                    simulation_list.name = data[syn].name
+                    simulation_list.name = data[syn].version.name
                     simulation_list.likes = data[syn].likes
-                    simulation_list.version = data[syn].version
                     simulation_list.created_at = data[syn].created_at
                     this.All_simulation_list.push(simulation_list)
                 }

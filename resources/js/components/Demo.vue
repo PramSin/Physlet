@@ -20,7 +20,6 @@ export default {
             .get('/physlet_api/getPackage', {params})
             .then(response => {
                 let data = response.data.data;
-                console.log(response.data)
                 this.demo_src = data
 
 

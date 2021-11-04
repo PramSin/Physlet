@@ -25,6 +25,7 @@ class SimulationController extends Controller
      */
     protected static function unzip_file(string $filename): string
     {
+        $direct = substr($filename, 0, strrpos($filename, '.')) . "/";
         $filename = storage_path("app/" . $filename);
         $ext = substr($filename, strrpos($filename, '.') + 1);
         $directory = substr($filename, 0, strrpos($filename, '.')) . "/";
@@ -42,7 +43,7 @@ class SimulationController extends Controller
         if ($zip->open($filename)) {
             $zip->extractTo($directory);
             $zip->close();
-            return $directory . "index.html";
+            return $direct . "index.html";
         } else {
             throw new Exception();
         }
@@ -326,7 +327,7 @@ class SimulationController extends Controller
     {
         try {
             $ver = SimulationWithVersion::findOrFail($request->get('version'));
-            if ($ver->simulation->access) {
+            if ($ver->simulation->access or $request->user()->id == $ver->simulation->user_id) {
                 $url = Storage::Url(
                     $ver->root_path
                 );

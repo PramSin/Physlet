@@ -2,13 +2,14 @@
     <div style="width: 100%">
         <h3>我的模拟（点击展示）</h3>
         <el-table
+            @row-click="jump_to_My_simulation"
             stripe
             :data="Simulation_list"
             style="width: 100%">
             <el-table-column
-                prop="id"
+                prop="version_id"
                 v-if=false
-                label="id">
+                label="version_id">
             </el-table-column>
             <el-table-column
                 prop="category_id"
@@ -18,11 +19,6 @@
             <el-table-column
                 prop="name"
                 label="名称"
-                width="180">
-            </el-table-column>
-            <el-table-column
-                prop="version"
-                label="版本"
                 width="180">
             </el-table-column>
             <el-table-column
@@ -135,6 +131,9 @@ export default {
         },
     },
     methods: {
+        jump_to_My_simulation(row) {
+            this.$router.push({path: "/demo",query:{version: row.version_id}});
+        },
         edit_Simulation(row) {
             /*            console.log(row)*/
             this.$router.push({
@@ -180,6 +179,7 @@ export default {
                 res.data.files; // binary representation of the file
                 res.status; // HTTP status
             });
+            location.reload()
         },
         handleDropdownCommand(command) {
             switch (command) {
@@ -232,17 +232,16 @@ export default {
                     }
                 })
             this.axios
-                .get('/physlet_api/getSimulations')
+                .get('/physlet_api/getMySimulations')
                 .then(response => {
                     let data = response.data.data;
-                    /*                console.log(data)*/
                     for (let syn = 0; syn < data.length; syn++) {
                         let simulation_list = {};
-                        simulation_list.id = data[syn].id
-                        simulation_list.name = data[syn].name
-                        simulation_list.version = data[syn].version
+                        simulation_list.version_id = data[syn].version.id
+                        simulation_list.name = data[syn].version.name
                         simulation_list.access = (data[syn].access ? 'public' : 'private')
-                        simulation_list.category = data[syn].category
+                        simulation_list.category = data[syn].category.name
+/*                        console.log(data[syn].version.name)*/
                         simulation_list.likes = data[syn].likes
                         simulation_list.category_id = data[syn].category_id
                         simulation_list.created_at = data[syn].created_at
