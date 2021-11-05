@@ -2511,14 +2511,15 @@ __webpack_require__.r(__webpack_exports__);
       var headers = {
         'Content-Type': 'multipart/form-data;boundary=","'
       };
-      this.$apipost('/physlet_api/uploadSimulation', formData, {
+      this.$api.post('/physlet_api/uploadSimulation', formData, {
         headers: headers
       }).then(function (res) {
         res.data.files; // binary representation of the file
 
         res.status; // HTTP status
+
+        location.reload();
       });
-      location.reload();
     },
     handleDropdownCommand: function handleDropdownCommand(command) {
       switch (command) {

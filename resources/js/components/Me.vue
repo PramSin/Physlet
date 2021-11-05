@@ -132,7 +132,7 @@ export default {
     },
     methods: {
         jump_to_My_simulation(row) {
-            this.$router.push({path: "/demo",query:{version: row.version_id}});
+            this.$router.push({path: "/demo", query: {version: row.version_id}});
         },
         edit_Simulation(row) {
             /*            console.log(row)*/
@@ -172,14 +172,14 @@ export default {
             // const file = this.Images
             formData.append('file', this.Images.raw);
             const headers = {'Content-Type': 'multipart/form-data;boundary=","'};
-            this.$apipost('/physlet_api/uploadSimulation',
+            this.$api.post('/physlet_api/uploadSimulation',
                 formData,
                 {headers},
             ).then((res) => {
                 res.data.files; // binary representation of the file
                 res.status; // HTTP status
+                location.reload()
             });
-            location.reload()
         },
         handleDropdownCommand(command) {
             switch (command) {
@@ -221,7 +221,7 @@ export default {
                         simulation_list.name = data[syn].version.name
                         simulation_list.access = (data[syn].access ? 'public' : 'private')
                         simulation_list.category = data[syn].category.name
-/*                        console.log(data[syn].version.name)*/
+                        /*                        console.log(data[syn].version.name)*/
                         simulation_list.likes = data[syn].likes
                         simulation_list.category_id = data[syn].category_id
                         simulation_list.created_at = data[syn].created_at

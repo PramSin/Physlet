@@ -35,6 +35,7 @@ export default {
     data() {
         return {
             is_authorized: false
+            //fixme 去掉所有is_authorized
         }
 
 
@@ -93,6 +94,8 @@ export default {
         },
     },
     computed: {
+        //todo 加载的动画
+        //todo async
         username: function () {
             if (localStorage.getItem('is_authorized') === 'true') {
                 return localStorage.getItem('username')
