@@ -25,6 +25,7 @@ class SimulationController extends Controller
      */
     protected static function unzip_file(string $filename): string
     {
+        $direct = substr($filename, 0, strrpos($filename, '.')) . "/";
         $filename = storage_path("app/" . $filename);
         $ext = substr($filename, strrpos($filename, '.') + 1);
         $directory = substr($filename, 0, strrpos($filename, '.')) . "/";
@@ -42,7 +43,7 @@ class SimulationController extends Controller
         if ($zip->open($filename)) {
             $zip->extractTo($directory);
             $zip->close();
-            return $directory . "index.html";
+            return $direct . "index.html";
         } else {
             throw new Exception();
         }
@@ -327,6 +328,30 @@ class SimulationController extends Controller
         try {
             $ver = SimulationWithVersion::findOrFail($request->get('version'));
             if ($ver->simulation->access) {
+                $url = Storage::Url(
+                    $ver->root_path
+                );
+
+                $this->r['code'] = 200;
+                $this->r['message'] = '获取版本链接成功';
+                $this->r['data'] = $url;
+            } else {
+                $this->r['code'] = 400;
+                $this->r['message'] = '没有当前模拟的查看权限';
+            }
+        } catch (Exception $e) {
+            $this->r['code'] = 400;
+            $this->r['message'] = $e->getMessage();
+        }
+
+        return $this->r;
+    }
+
+    protected function getMyPackage(Request $request): array
+    {
+        try {
+            $ver = SimulationWithVersion::findOrFail($request->get('version'));
+            if ($ver->simulation->user->id === $request->user()->id) {
                 $url = Storage::Url(
                     $ver->root_path
                 );
