@@ -17,6 +17,14 @@ class UserAuthController extends Controller
         'message' => 'unknown error',
     ];
 
+    protected function userInfo(Request $request): array
+    {
+        $this->r['code'] = 200;
+        $this->r['message'] = "获取用户信息成功";
+        $this->r['data'] = $request->user();
+        return $this->r;
+    }
+
     protected function register(Request $request): array
     {
         try {
