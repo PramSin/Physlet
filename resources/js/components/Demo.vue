@@ -16,7 +16,7 @@ export default {
     mounted() {
         console.log(this.$route.query)
         let params = this.$route.query
-        this.axios
+        this.$api
             .get('/physlet_api/getPackage', {params})
             .then(response => {
                 let data = response.data.data;

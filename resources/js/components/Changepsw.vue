@@ -80,7 +80,7 @@ export default {
             this.$router.replace({path: '/home'} )
           }
           else {
-            this.$http
+            this.$api
                 .post('/physlet_api/changePassword', this.form)
                 .then(response => {
                   if (response.data.code !== 200) {

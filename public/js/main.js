@@ -1674,6 +1674,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'App',
   data: function data() {
@@ -1725,22 +1727,20 @@ __webpack_require__.r(__webpack_exports__);
     logout: function logout() {
       var _this = this;
 
-      this.$http.get('/physlet_api/logout').then(function (response) {
+      this.$api.get('/physlet_api/logout').then(function (response) {
         if (response.data.code !== 200) {
           _this.$notify.error({
             title: '登出错误',
             message: response.data.message
           });
         } else {
-          localStorage.clear();
+          location.reload();
 
           _this.$message('注销成功！');
 
-          location.reload();
-
           _this.$router.replace({
-            path: '@/components/home'
-          });
+            path: '/home'
+          })["catch"](function () {});
           /*console.log('2222222222222222')*/
 
         }
@@ -1749,7 +1749,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   computed: {
     username: function username() {
-      if (localStorage.getItem('username')) {
+      if (localStorage.getItem('is_authorized') === 'true') {
         return localStorage.getItem('username');
       } else {
         return '请登录';
@@ -1881,7 +1881,7 @@ __webpack_require__.r(__webpack_exports__);
               path: '/home'
             });
           } else {
-            _this.$http.post('/physlet_api/changePassword', _this.form).then(function (response) {
+            _this.$api.post('/physlet_api/changePassword', _this.form).then(function (response) {
               if (response.data.code !== 200) {
                 _this.$notify.error({
                   title: '错误',
@@ -1942,7 +1942,7 @@ __webpack_require__.r(__webpack_exports__);
 
     console.log(this.$route.query);
     var params = this.$route.query;
-    this.axios.get('/physlet_api/getPackage', {
+    this.$api.get('/physlet_api/getPackage', {
       params: params
     }).then(function (response) {
       var data = response.data.data;
@@ -2044,7 +2044,7 @@ __webpack_require__.r(__webpack_exports__);
         category: this.category_changed,
         access: this.access_changed
       };
-      this.axios.post('/physlet_api/editSimulation', {
+      this.$api.post('/physlet_api/editSimulation', {
         params: params
       }).then(function (response) {
         if (response.data.code === 200) {
@@ -2062,7 +2062,7 @@ __webpack_require__.r(__webpack_exports__);
   mounted: function mounted() {
     var _this2 = this;
 
-    this.axios.get('/physlet_api/getCategories').then(function (response) {
+    this.$api.get('/physlet_api/getCategories').then(function (response) {
       var data = response.data.data;
 
       for (var syn = 0; syn < data.length; syn++) {
@@ -2158,7 +2158,7 @@ __webpack_require__.r(__webpack_exports__);
   mounted: function mounted() {
     var _this = this;
 
-    this.axios.get('/physlet_api/getSimulations').then(function (response) {
+    this.$api.get('/physlet_api/getSimulations').then(function (response) {
       var data = response.data.data;
       console.log(data);
 
@@ -2262,7 +2262,7 @@ __webpack_require__.r(__webpack_exports__);
               path: '/home'
             });
           } else {
-            _this.$http.post('/physlet_api/login', _this.form).then(function (response) {
+            _this.$api.post('/physlet_api/login', _this.form).then(function (response) {
               if (response.data.code !== 200) {
                 _this.$notify.error({
                   title: '错误',
@@ -2511,7 +2511,7 @@ __webpack_require__.r(__webpack_exports__);
       var headers = {
         'Content-Type': 'multipart/form-data;boundary=","'
       };
-      this.axios.post('/physlet_api/uploadSimulation', formData, {
+      this.$apipost('/physlet_api/uploadSimulation', formData, {
         headers: headers
       }).then(function (res) {
         res.data.files; // binary representation of the file
@@ -2532,29 +2532,10 @@ __webpack_require__.r(__webpack_exports__);
           this.logout();
           break;
       }
-    },
-    logout: function logout() {
-      var _this = this;
-
-      this.$http.get('/physlet_api/logout').then(function (response) {
-        if (response.data.code !== 200) {
-          _this.$notify.error({
-            title: '登出错误',
-            message: response.data.message
-          });
-        } else {
-          _this.$router.replace({
-            path: '/home'
-          });
-          /*                        localStorage.clear()
-                                  this.$message('注销成功！');*/
-
-        }
-      })["catch"]().then(function () {});
     }
   },
   mounted: function mounted() {
-    var _this2 = this;
+    var _this = this;
 
     this.$refs.upload.clearFiles();
 
@@ -2563,7 +2544,7 @@ __webpack_require__.r(__webpack_exports__);
         path: "/login"
       });
     } else {
-      this.axios.get('/physlet_api/getCategories').then(function (response) {
+      this.$api.get('/physlet_api/getCategories').then(function (response) {
         var data = response.data.data;
 
         for (var syn = 0; syn < data.length; syn++) {
@@ -2571,10 +2552,10 @@ __webpack_require__.r(__webpack_exports__);
           synopsis.label = data[syn].name;
           synopsis.value = data[syn].id;
 
-          _this2.synopsis_list.push(synopsis);
+          _this.synopsis_list.push(synopsis);
         }
       });
-      this.axios.get('/physlet_api/getMySimulations').then(function (response) {
+      this.$api.get('/physlet_api/getMySimulations').then(function (response) {
         var data = response.data.data;
 
         for (var syn = 0; syn < data.length; syn++) {
@@ -2590,7 +2571,7 @@ __webpack_require__.r(__webpack_exports__);
           simulation_list.created_at = data[syn].created_at;
           simulation_list.shares = data[syn].shares;
 
-          _this2.Simulation_list.push(simulation_list);
+          _this.Simulation_list.push(simulation_list);
         }
       });
     }
@@ -2773,7 +2754,7 @@ __webpack_require__.r(__webpack_exports__);
         if (valid) {
           _this2.loading = true;
 
-          _this2.$http.post('/physlet_api/register', _this2.registerForm).then(function (response) {
+          _this2.$api.post('/physlet_api/register', _this2.registerForm).then(function (response) {
             if (response.data.code !== 0) {
               _this2.$notify.error({
                 title: '错误',
@@ -29271,21 +29252,6 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
 
 /***/ }),
 
-/***/ "./node_modules/vue-axios/dist/vue-axios.esm.min.js":
-/*!**********************************************************!*\
-  !*** ./node_modules/vue-axios/dist/vue-axios.esm.min.js ***!
-  \**********************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* WEBPACK VAR INJECTION */(function(module) {/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return plugin; });
-function _typeof(o){return(_typeof="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(o){return typeof o}:function(o){return o&&"function"==typeof Symbol&&o.constructor===Symbol&&o!==Symbol.prototype?"symbol":typeof o})(o)}function plugin(o,e){if(!plugin.installed)if(e){if(plugin.installed=!0,o.version&&o.version.split(".")[0]<3)Object.defineProperties(o.prototype,{axios:{get:function(){return e}},$http:{get:function(){return e}}});else{if(!(o.version&&o.version.split(".")[0]>=3))return void console.error("Unknown Vue version");o.config.globalProperties.axios=e,o.config.globalProperties.$http=e}o.axios=e,o.$http=e}else console.error("You have to install axios")}"object"==("undefined"==typeof exports?"undefined":_typeof(exports))?module.exports=plugin:"function"==typeof define&&__webpack_require__(/*! !webpack amd options */ "./node_modules/webpack/buildin/amd-options.js")?define([],(function(){return plugin})):window.Vue&&window.axios&&window.Vue.use&&Vue.use(plugin,window.axios);
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../webpack/buildin/harmony-module.js */ "./node_modules/webpack/buildin/harmony-module.js")(module)))
-
-/***/ }),
-
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/App.vue?vue&type=template&id=f348271a&scoped=true&":
 /*!*******************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/App.vue?vue&type=template&id=f348271a&scoped=true& ***!
@@ -29316,15 +29282,6 @@ var render = function() {
             "router-link",
             {
               staticClass: "list-group-item",
-              attrs: { "active-class": "active", to: "/about" }
-            },
-            [_vm._v("About")]
-          ),
-          _vm._v(" "),
-          _c(
-            "router-link",
-            {
-              staticClass: "list-group-item",
               attrs: { "active-class": "active", to: "/home" }
             },
             [_vm._v("Home")]
@@ -29337,6 +29294,15 @@ var render = function() {
               attrs: { "active-class": "active", to: "/me" }
             },
             [_vm._v("Me")]
+          ),
+          _vm._v(" "),
+          _c(
+            "router-link",
+            {
+              staticClass: "list-group-item",
+              attrs: { "active-class": "active", to: "/about" }
+            },
+            [_vm._v("About")]
           )
         ],
         1
@@ -29405,7 +29371,7 @@ var render = function() {
                   attrs: { underline: false },
                   on: { click: _vm.to_login }
                 },
-                [_vm._v(_vm._s(_vm.username))]
+                [_vm._v(_vm._s(_vm.username) + "\n            ")]
               )
             ],
             1
@@ -30375,20 +30341,6 @@ function normalizeComponent (
 
 /***/ }),
 
-/***/ "./node_modules/webpack/buildin/amd-options.js":
-/*!****************************************!*\
-  !*** (webpack)/buildin/amd-options.js ***!
-  \****************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-/* WEBPACK VAR INJECTION */(function(__webpack_amd_options__) {/* globals __webpack_amd_options__ */
-module.exports = __webpack_amd_options__;
-
-/* WEBPACK VAR INJECTION */}.call(this, {}))
-
-/***/ }),
-
 /***/ "./node_modules/webpack/buildin/global.js":
 /*!***********************************!*\
   !*** (webpack)/buildin/global.js ***!
@@ -30416,41 +30368,6 @@ try {
 // easier to handle this case. if(!global) { ...}
 
 module.exports = g;
-
-
-/***/ }),
-
-/***/ "./node_modules/webpack/buildin/harmony-module.js":
-/*!*******************************************!*\
-  !*** (webpack)/buildin/harmony-module.js ***!
-  \*******************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = function(originalModule) {
-	if (!originalModule.webpackPolyfill) {
-		var module = Object.create(originalModule);
-		// module.parent = undefined by default
-		if (!module.children) module.children = [];
-		Object.defineProperty(module, "loaded", {
-			enumerable: true,
-			get: function() {
-				return module.l;
-			}
-		});
-		Object.defineProperty(module, "id", {
-			enumerable: true,
-			get: function() {
-				return module.i;
-			}
-		});
-		Object.defineProperty(module, "exports", {
-			enumerable: true
-		});
-		module.webpackPolyfill = 1;
-	}
-	return module;
-};
 
 
 /***/ }),
@@ -31253,9 +31170,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var element_ui_lib_theme_chalk_index_css__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(element_ui_lib_theme_chalk_index_css__WEBPACK_IMPORTED_MODULE_6__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_7__);
-/* harmony import */ var vue_axios__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! vue-axios */ "./node_modules/vue-axios/dist/vue-axios.esm.min.js");
-/* harmony import */ var _store__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./store */ "./resources/js/store/index.js");
-
+/* harmony import */ var _store__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./store */ "./resources/js/store/index.js");
 
 
 
@@ -31269,13 +31184,19 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.config.productionTip = false;
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_router__WEBPACK_IMPORTED_MODULE_2__["default"]);
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(element_ui__WEBPACK_IMPORTED_MODULE_4___default.a);
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_5__["default"]);
-vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_axios__WEBPACK_IMPORTED_MODULE_8__["default"], axios__WEBPACK_IMPORTED_MODULE_7___default.a);
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.use({
+  install: function install(Vue) {
+    Vue.prototype.$api = axios__WEBPACK_IMPORTED_MODULE_7___default.a.create({
+      baseURL: 'http://127.0.0.1:8000/'
+    });
+  }
+});
 new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
   render: function render(h) {
     return h(_App_vue__WEBPACK_IMPORTED_MODULE_1__["default"]);
   },
   router: _router__WEBPACK_IMPORTED_MODULE_3__["default"],
-  store: _store__WEBPACK_IMPORTED_MODULE_9__["default"]
+  store: _store__WEBPACK_IMPORTED_MODULE_8__["default"]
 }).$mount('#app');
 
 /***/ }),

@@ -172,7 +172,7 @@ export default {
             // const file = this.Images
             formData.append('file', this.Images.raw);
             const headers = {'Content-Type': 'multipart/form-data;boundary=","'};
-            this.axios.post('/physlet_api/uploadSimulation',
+            this.$apipost('/physlet_api/uploadSimulation',
                 formData,
                 {headers},
             ).then((res) => {
@@ -191,26 +191,6 @@ export default {
                     break;
             }
         },
-        logout() {
-            this.$http
-                .get('/physlet_api/logout')
-                .then(response => {
-                    if (response.data.code !== 200) {
-                        this.$notify.error({
-                            title: '登出错误',
-                            message: response.data.message,
-                        });
-                    } else {
-                        this.$router.replace({path: '/home'})
-/*                        localStorage.clear()
-                        this.$message('注销成功！');*/
-                    }
-                })
-                .catch()
-                .then(() => {
-                });
-
-        },
     },
 
     mounted() {
@@ -220,7 +200,7 @@ export default {
                 path: "/login",
             });
         } else {
-            this.axios
+            this.$api
                 .get('/physlet_api/getCategories')
                 .then(response => {
                     let data = response.data.data;
@@ -231,7 +211,7 @@ export default {
                         this.synopsis_list.push(synopsis)
                     }
                 })
-            this.axios
+            this.$api
                 .get('/physlet_api/getMySimulations')
                 .then(response => {
                     let data = response.data.data;

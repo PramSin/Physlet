@@ -62,7 +62,7 @@ export default {
                     if (this.$store.state.debug) {
                         this.$router.replace({path: '/home'})
                     } else {
-                        this.$http
+                        this.$api
                             .post('/physlet_api/login', this.form)
                             .then(response => {
                                 if (response.data.code !== 200) {

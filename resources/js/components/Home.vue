@@ -60,7 +60,7 @@ export default {
     },
 
     mounted() {
-        this.axios
+        this.$api
             .get('/physlet_api/getSimulations')
             .then(response => {
                 let data = response.data.data;

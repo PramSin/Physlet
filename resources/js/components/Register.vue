@@ -122,7 +122,7 @@ export default {
       this.$refs.form.validate((valid) => {
         if (valid) {
           this.loading = true;
-          this.$http
+          this.$api
               .post('/physlet_api/register', this.registerForm)
               .then(response => {
                 if (response.data.code !== 0) {
