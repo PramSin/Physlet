@@ -30510,6 +30510,23 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/api/physlet.js":
+/*!*************************************!*\
+  !*** ./resources/js/api/physlet.js ***!
+  \*************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
+
+axios__WEBPACK_IMPORTED_MODULE_0___default.a.defaults.baseURL = 'http://127.0.0.1:8000/';
+/* harmony default export */ __webpack_exports__["default"] = (axios__WEBPACK_IMPORTED_MODULE_0___default.a);
+
+/***/ }),
+
 /***/ "./resources/js/components/About.vue":
 /*!*******************************************!*\
   !*** ./resources/js/components/About.vue ***!
@@ -31168,8 +31185,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
 /* harmony import */ var element_ui_lib_theme_chalk_index_css__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! element-ui/lib/theme-chalk/index.css */ "./node_modules/element-ui/lib/theme-chalk/index.css");
 /* harmony import */ var element_ui_lib_theme_chalk_index_css__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(element_ui_lib_theme_chalk_index_css__WEBPACK_IMPORTED_MODULE_6__);
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_7__);
+/* harmony import */ var _api_physlet__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./api/physlet */ "./resources/js/api/physlet.js");
 /* harmony import */ var _store__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./store */ "./resources/js/store/index.js");
 
 
@@ -31184,11 +31200,19 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.config.productionTip = false;
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_router__WEBPACK_IMPORTED_MODULE_2__["default"]);
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(element_ui__WEBPACK_IMPORTED_MODULE_4___default.a);
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_5__["default"]);
-vue__WEBPACK_IMPORTED_MODULE_0___default.a.use({
-  install: function install(Vue) {
-    Vue.prototype.$api = axios__WEBPACK_IMPORTED_MODULE_7___default.a.create({
-      baseURL: 'http://127.0.0.1:8000/'
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.prototype.$api = _api_physlet__WEBPACK_IMPORTED_MODULE_7__["default"];
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.prototype.$api.interceptors.response.use(function (request) {
+  console.log(request);
+  return request;
+}, function (error) {
+  console.log(error.response.status);
+
+  if (error.response.status === 401) {
+    _router__WEBPACK_IMPORTED_MODULE_3__["default"].push({
+      path: '/login'
     });
+    console.log(error);
+    return error;
   }
 });
 new vue__WEBPACK_IMPORTED_MODULE_0___default.a({

@@ -5,7 +5,7 @@ import router from './router'
 import ElementUI from 'element-ui';
 import Vuex from 'vuex'
 import 'element-ui/lib/theme-chalk/index.css';
-import axios from 'axios';
+import axios from './api/physlet';
 import store from "./store";
 
 Vue.config.productionTip = false
@@ -13,15 +13,24 @@ Vue.use(VueRouter)
 Vue.use(ElementUI)
 Vue.use(Vuex)
 
-Vue.use({
-    install (Vue) {
-        Vue.prototype.$api = axios.create({
-            baseURL: 'http://127.0.0.1:8000/'
-        })
+Vue.prototype.$api = axios
+Vue.prototype.$api.interceptors.response.use(
+    (request) => {
+        console.log(request)
+        return request
+    },
+    (error) => {
+        console.log(error.response.status)
+        if (error.response.status === 401) {
+            router.push({path:'/login'});
+            console.log(error)
+            return error
+        }
     }
-})
+)
+
 new Vue({
-  render: h => h(App),
-  router,
-  store,
+    render: h => h(App),
+    router,
+    store,
 }).$mount('#app')
