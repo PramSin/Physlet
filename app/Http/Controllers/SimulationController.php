@@ -327,7 +327,7 @@ class SimulationController extends Controller
     {
         try {
             $ver = SimulationWithVersion::findOrFail($request->get('version'));
-            if ($ver->simulation->access) {
+            if ($ver->simulation->access or $request->user()->id == $ver->simulation->user_id) {
                 $url = Storage::Url(
                     $ver->root_path
                 );

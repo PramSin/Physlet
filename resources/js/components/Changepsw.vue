@@ -95,17 +95,9 @@ export default {
                       message: null,
 
                     });
-                    if (this.isRemember) {
-                      localStorage.setItem('username',this.form.userName)
-                      localStorage.removeItem('userpsw')
-                      localStorage.setItem('userpsw',this.form.userName)
-                      this.$router.replace({path: '/home'})
-                    }
-                    else {
-                      localStorage.removeItem('userpsw')
-                      localStorage.removeItem('username')
+                      localStorage.clear()
+                      localStorage.setItem('is_authorized', 'false')
                       this.$router.replace({path: '/login'})
-                    }
                   }
                 })
                 .catch()
