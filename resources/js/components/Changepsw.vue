@@ -5,6 +5,7 @@
       label-position="top"
       @submit.native.prevent
       :rules="rules"
+      style="width: 50%"
   >
     <el-form-item label="原密码" prop="ori_password">
       <el-input

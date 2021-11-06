@@ -3,7 +3,7 @@
     <div class="background"></div>
     <div class="form-wrapper">
     <h2 class="form-title">注册</h2>
-    <el-form :model="registerForm" :rules="rules" ref="registerForm" >
+    <el-form :model="registerForm" :rules="rules" ref="registerForm" style="width: 50%">
     <el-form-item label="用户名" prop="username">
       <el-input v-model="registerForm.username"
                 clearable

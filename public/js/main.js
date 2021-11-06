@@ -1814,6 +1814,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "Changepsw",
   data: function data() {
@@ -1909,17 +1910,52 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "Demo",
   data: function data() {
     return {
+      comment_to_post: '',
+      comments: [],
+      rate_to_post: null,
+      colors: ['#99A9BF', '#F7BA2A', '#FF9900'],
       demo_src: 'https://www.openstreetmap.org/export/embed.html?bbox=-0.004017949104309083%2C51.47612752641776%2C0.00030577182769775396%2C51.478569861898606&layer=mapnik'
     };
+  },
+  methods: {
+    post_rate: function post_rate(value) {
+      console.log(1);
+      console.log(value);
+    },
+    post_comment: function post_comment() {//todo 发表评论区
+    }
   },
   mounted: function mounted() {
     var _this = this;
 
-    console.log(this.$route.query);
+    /*        console.log(this.$route.query)*/
     var params = this.$route.query;
     this.$api.get('/physlet_api/getPackage', {
       params: params
@@ -2174,6 +2210,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+//
 //
 //
 //
@@ -29408,6 +29445,7 @@ var render = function() {
     "el-form",
     {
       ref: "form",
+      staticStyle: { width: "50%" },
       attrs: { model: _vm.form, "label-position": "top", rules: _vm.rules },
       nativeOn: {
         submit: function($event) {
@@ -29532,13 +29570,70 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [
-    _c("iframe", {
-      ref: "iframe",
-      staticStyle: { height: "100vmin", width: "100%" },
-      attrs: { src: _vm.demo_src }
-    })
-  ])
+  return _c(
+    "div",
+    [
+      _c("h3", [_vm._v("展示区")]),
+      _vm._v(" "),
+      _c("iframe", {
+        ref: "iframe",
+        staticStyle: { height: "100vmin", width: "100%" },
+        attrs: { src: _vm.demo_src }
+      }),
+      _vm._v(" "),
+      _c("div", { staticStyle: { margin: "20px 0" } }),
+      _vm._v(" "),
+      _c("h4", [_vm._v("评分")]),
+      _vm._v(" "),
+      _c("el-rate", {
+        attrs: {
+          value: _vm.rate_to_post,
+          colors: _vm.colors,
+          change: _vm.post_rate
+        }
+      }),
+      _vm._v(" "),
+      _c("h3", [_vm._v("评论区")]),
+      _vm._v(" "),
+      _c("div", { staticStyle: { margin: "20px 0" } }),
+      _vm._v(" "),
+      _vm._l(_vm.comments, function(comment) {
+        return _c("div", [
+          _c("div", [_vm._v(_vm._s(comment.user_id))]),
+          _vm._v(" "),
+          _c("div", [_vm._v(_vm._s(comment.content))])
+        ])
+      }),
+      _vm._v(" "),
+      _c("el-input", {
+        staticStyle: { width: "50%" },
+        attrs: {
+          type: "textarea",
+          placeholder: "请输入评论",
+          autosize: { minRows: 2 }
+        },
+        model: {
+          value: _vm.comment_to_post,
+          callback: function($$v) {
+            _vm.comment_to_post = $$v
+          },
+          expression: "comment_to_post"
+        }
+      }),
+      _vm._v(" "),
+      _c("div", { staticStyle: { margin: "20px 0" } }),
+      _vm._v(" "),
+      _c(
+        "el-button",
+        {
+          attrs: { type: "primary", "native-type": "submit" },
+          on: { click: _vm.post_comment }
+        },
+        [_vm._v("评论")]
+      )
+    ],
+    2
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -29728,6 +29823,7 @@ var render = function() {
     "el-form",
     {
       ref: "form",
+      staticStyle: { width: "50%" },
       attrs: { model: _vm.form, "label-position": "top", rules: _vm.rules },
       nativeOn: {
         submit: function($event) {
@@ -30053,6 +30149,7 @@ var render = function() {
           "el-form",
           {
             ref: "registerForm",
+            staticStyle: { width: "50%" },
             attrs: { model: _vm.registerForm, rules: _vm.rules }
           },
           [
