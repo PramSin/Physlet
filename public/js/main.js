@@ -2000,7 +2000,6 @@ __webpack_require__.r(__webpack_exports__);
   beforeMount: function beforeMount() {
     var _this = this;
 
-    /*        console.log(this.$route.query)*/
     var params = this.$route.query;
     this.$api.get('/physlet_api/getPackage', {
       params: params
@@ -31449,6 +31448,9 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.prototype.$api.interceptors.response.
     return error;
   }
 });
+
+console.log = function () {};
+
 new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
   render: function render(h) {
     return h(_App_vue__WEBPACK_IMPORTED_MODULE_1__["default"]);

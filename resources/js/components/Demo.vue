@@ -72,7 +72,6 @@ export default {
         },
     },
     beforeMount() {
-        /*        console.log(this.$route.query)*/
         let params = this.$route.query
         this.$api
             .get('/physlet_api/getPackage', {params})
