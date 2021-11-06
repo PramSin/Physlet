@@ -346,4 +346,28 @@ class SimulationController extends Controller
 
         return $this->r;
     }
+
+    protected function getMyPackage(Request $request): array
+    {
+        try {
+            $ver = SimulationWithVersion::findOrFail($request->get('version'));
+            if ($ver->simulation->user->id === $request->user()->id) {
+                $url = Storage::Url(
+                    $ver->root_path
+                );
+
+                $this->r['code'] = 200;
+                $this->r['message'] = '获取版本链接成功';
+                $this->r['data'] = $url;
+            } else {
+                $this->r['code'] = 400;
+                $this->r['message'] = '没有当前模拟的查看权限';
+            }
+        } catch (Exception $e) {
+            $this->r['code'] = 400;
+            $this->r['message'] = $e->getMessage();
+        }
+
+        return $this->r;
+    }
 }
