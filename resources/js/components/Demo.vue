@@ -1,18 +1,19 @@
 <template>
     <div style="height: 100%;width: 100%">
-        <h3>展示区</h3>
+        <div class="row">
+            <h3 class="col-md-6">展示区</h3>
+            <div class="col-md-6" style="background-color: white">
+                <el-button class="pull-right" type="primary" @click="toggle">
+                    全屏
+                </el-button>
+            </div>
+        </div>
         <div style="margin: 15px 0;"></div>
         <fullscreen :fullscreen="fullscreen" :teleport="teleport" :page-only="pageOnly"
                     :fullscreen-class="fullscreen_class" style="height: 100%;width: 100%">
             <iframe :src="demo_src" allow="fullscreen" style="height: 100%;width: 100%"
                     ref="demo_iframe"></iframe>
         </fullscreen>
-        <div style="background-color: white">
-            <div style="margin: 15px 0;"></div>
-            <el-button type="primary" @click="toggle">
-                全屏
-            </el-button>
-        </div>
         <div style="margin: 50px 0;"></div>
         <h4>评分</h4>
         <el-rate

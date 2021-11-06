@@ -18,6 +18,10 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        $categories = ["力学", "电磁学", "热学", "光学", "近代物理"];
+        foreach ($categories as $category) {
+            Category::factory(['name' => $category])->create();
+        }
         User::create([
             'username' => 'test',
             'slug' => 'test',
@@ -25,14 +29,20 @@ class DatabaseSeeder extends Seeder
             'email_verified_at' => now(),
             'password' => Hash::make('test')
         ]);
+        User::create([
+            'username' => 'PramSin',
+            'slug' => 'pram',
+            'email' => 'pram_sin@qq.com',
+            'email_verified_at' => now(),
+            'password' => Hash::make('pl3270823')
+        ]);
         User::factory(3)
             ->has(User::factory(3), 'followers')
             ->create();
         User::factory(3)
             ->has(User::factory(3), 'followings')
             ->create();
-        Category::factory(4)->create();
-        SimulationWithVersion::factory(10)->create();
-        Comment::factory(20)->create();
+//        SimulationWithVersion::factory(10)->create();
+//        Comment::factory(20)->create();
     }
 }
