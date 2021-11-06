@@ -7,11 +7,13 @@ import Vuex from 'vuex'
 import 'element-ui/lib/theme-chalk/index.css';
 import axios from './api/physlet';
 import store from "./store";
+import VueFullscreen from 'vue-fullscreen'
 
 Vue.config.productionTip = false
 Vue.use(VueRouter)
 Vue.use(ElementUI)
 Vue.use(Vuex)
+Vue.use(VueFullscreen)
 
 Vue.prototype.$api = axios
 Vue.prototype.$api.interceptors.response.use(

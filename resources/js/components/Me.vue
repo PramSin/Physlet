@@ -131,7 +131,7 @@ export default {
     },
     methods: {
         jump_to_My_simulation(row) {
-            this.$router.push({path: "/demo", query: {version: row.version_id}});
+            this.$router.replace({path: "/demo", query: {version: row.version_id}});
         },
         edit_Simulation(row) {
             /*            console.log(row)*/
@@ -163,7 +163,7 @@ export default {
         },
         submitFile(event) {
             const formData = new FormData();
-            formData.append('name', localStorage.getItem('username'))
+            formData.append('name', this.username)
             formData.append('category', this.value)
             formData.append('synopsis', 'sadkfuha;sdifh')
             formData.append('access', '0')
@@ -205,10 +205,9 @@ export default {
                 }
             })
         this.$api
-            .get('/physlet_api/getUserNames')
+            .get('/physlet_api/userInfo')
             .then(response => {
-                console.log(1)
-                console.log(response.data)
+                this.username = response.data.data.username
             })
         this.$api
             .get('/physlet_api/getMySimulations')
@@ -220,7 +219,6 @@ export default {
                     simulation_list.name = data[syn].version.name
                     simulation_list.access = (data[syn].access ? 'public' : 'private')
                     simulation_list.category = data[syn].category.name
-                    /*                        console.log(data[syn].version.name)*/
                     simulation_list.likes = data[syn].likes
                     simulation_list.category_id = data[syn].category_id
                     simulation_list.created_at = data[syn].created_at

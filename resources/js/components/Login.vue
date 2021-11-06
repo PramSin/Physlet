@@ -54,7 +54,13 @@ export default {
         };
     },
     mounted() {
-
+        this.$api
+            .get('/physlet_api/userInfo')
+            .then(response => {
+                if (response.data.data.username !== '') {
+                    this.$router.replace({path:'/me'})
+                }
+            })
     },
     methods: {
         //todo 输入框宽度

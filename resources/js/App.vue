@@ -1,6 +1,6 @@
 <template>
     <el-container style="padding: 0px; margin: 0px">
-        <el-aside width="200px" style="background-color: rgb(238, 241, 246);">
+        <el-aside width=15% style="background-color: rgb(238, 241, 246);">
             <router-link class="list-group-item" active-class="active" to="/home">Home</router-link>
             <router-link class="list-group-item" active-class="active" to="/me">Me</router-link>
             <router-link class="list-group-item" active-class="active" to="/about">About</router-link>
@@ -41,14 +41,20 @@ export default {
     },
     mounted() {
         this.$api
-            .get('/physlet_api/getUserNames')
+            .get('/physlet_api/userInfo')
             .then(response => {
-                console.log(response.data)
+                this.display_username = response.data.data.username
             })
     },
     methods: {
         to_login() {
-            this.$router.push({path: '/login'})
+            if (this.display_username !== '') {
+                this.$router.push({path: '/login'})
+            }
+            else {
+                this.$router.push({path:'/me'})
+            }
+
         },
         handleCommand(command) {
             switch (command) {
@@ -90,9 +96,9 @@ export default {
         //todo async
         is_authorized() {
             if (this.display_username !== '') {
-                return false
-            } else {
                 return true
+            } else {
+                return false
             }
         },
         username() {
@@ -138,7 +144,9 @@ html {
     min-height: 100vh;
     max-height: 100vh;
 }
-
+html,body {
+    height: 100%;
+}
 * {
     &::-webkit-scrollbar {
         width: 8px;
