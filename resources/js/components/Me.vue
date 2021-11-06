@@ -94,9 +94,8 @@ export default {
                 url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'
             }],
             show_file: false,
-            username: localStorage.getItem('username'),
+            username: '',
             loading: false,
-
             loadingTree: false,
 
             defaultProps: {
@@ -132,7 +131,7 @@ export default {
     },
     methods: {
         jump_to_My_simulation(row) {
-            this.$router.push({path: "/demo",query:{version: row.version_id}});
+            this.$router.replace({path: "/demo", query: {version: row.version_id}});
         },
         edit_Simulation(row) {
             /*            console.log(row)*/
@@ -164,22 +163,21 @@ export default {
         },
         submitFile(event) {
             const formData = new FormData();
-            // const name = localStorage.getItem('username')
-            formData.append('name', localStorage.getItem('username'))
+            formData.append('name', this.username)
             formData.append('category', this.value)
             formData.append('synopsis', 'sadkfuha;sdifh')
             formData.append('access', '0')
             // const file = this.Images
             formData.append('file', this.Images.raw);
             const headers = {'Content-Type': 'multipart/form-data;boundary=","'};
-            this.axios.post('/physlet_api/uploadSimulation',
+            this.$api.post('/physlet_api/uploadSimulation',
                 formData,
                 {headers},
             ).then((res) => {
                 res.data.files; // binary representation of the file
                 res.status; // HTTP status
+                location.reload()
             });
-            location.reload()
         },
         handleDropdownCommand(command) {
             switch (command) {
@@ -191,65 +189,43 @@ export default {
                     break;
             }
         },
-        logout() {
-            this.$http
-                .get('/physlet_api/logout')
-                .then(response => {
-                    if (response.data.code !== 200) {
-                        this.$notify.error({
-                            title: '登出错误',
-                            message: response.data.message,
-                        });
-                    } else {
-                        this.$router.replace({path: '/home'})
-/*                        localStorage.clear()
-                        this.$message('注销成功！');*/
-                    }
-                })
-                .catch()
-                .then(() => {
-                });
-
-        },
     },
 
     mounted() {
         this.$refs.upload.clearFiles()
-        if (localStorage.getItem('is_authorized') !== 'true') {
-            this.$router.replace({
-                path: "/login",
-            });
-        } else {
-            this.axios
-                .get('/physlet_api/getCategories')
-                .then(response => {
-                    let data = response.data.data;
-                    for (let syn = 0; syn < data.length; syn++) {
-                        let synopsis = {};
-                        synopsis.label = data[syn].name
-                        synopsis.value = data[syn].id
-                        this.synopsis_list.push(synopsis)
-                    }
-                })
-            this.axios
-                .get('/physlet_api/getMySimulations')
-                .then(response => {
-                    let data = response.data.data;
-                    for (let syn = 0; syn < data.length; syn++) {
-                        let simulation_list = {};
-                        simulation_list.version_id = data[syn].version.id
-                        simulation_list.name = data[syn].version.name
-                        simulation_list.access = (data[syn].access ? 'public' : 'private')
-                        simulation_list.category = data[syn].category.name
-/*                        console.log(data[syn].version.name)*/
-                        simulation_list.likes = data[syn].likes
-                        simulation_list.category_id = data[syn].category_id
-                        simulation_list.created_at = data[syn].created_at
-                        simulation_list.shares = data[syn].shares
-                        this.Simulation_list.push(simulation_list)
-                    }
-                })
-        }
+        this.$api
+            .get('/physlet_api/getCategories')
+            .then(response => {
+                let data = response.data.data;
+                for (let syn = 0; syn < data.length; syn++) {
+                    let synopsis = {};
+                    synopsis.label = data[syn].name
+                    synopsis.value = data[syn].id
+                    this.synopsis_list.push(synopsis)
+                }
+            })
+        this.$api
+            .get('/physlet_api/userInfo')
+            .then(response => {
+                this.username = response.data.data.username
+            })
+        this.$api
+            .get('/physlet_api/getMySimulations')
+            .then(response => {
+                let data = response.data.data;
+                for (let syn = 0; syn < data.length; syn++) {
+                    let simulation_list = {};
+                    simulation_list.version_id = data[syn].version.id
+                    simulation_list.name = data[syn].version.name
+                    simulation_list.access = (data[syn].access ? 'public' : 'private')
+                    simulation_list.category = data[syn].category.name
+                    simulation_list.likes = data[syn].likes
+                    simulation_list.category_id = data[syn].category_id
+                    simulation_list.created_at = data[syn].created_at
+                    simulation_list.shares = data[syn].shares
+                    this.Simulation_list.push(simulation_list)
+                }
+            })
     }
 
 }
