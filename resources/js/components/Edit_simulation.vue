@@ -10,7 +10,7 @@
                 label="名称">
             </el-table-column>
             <el-table-column
-                prop="simulation_category"
+                prop="simulation_category.name"
                 label="类别">
             </el-table-column>
             <el-table-column
@@ -21,16 +21,18 @@
 
         <el-select style="margin-top: 15px" v-model="category_changed" placeholder="请选择类别">
             <el-option
-                v-for="item of category_list"
+                v-for="(item, index) of category_list"
                 :value="item.value"
-                :label="item.label">
+                :label="item.label"
+                :key="index">
             </el-option>
         </el-select>
         <el-select style="margin-top: 15px" v-model="access_changed" placeholder="请选择可见性">
             <el-option
-                v-for="access_item of access_list"
+                v-for="(access_item, index) of access_list"
                 :value="access_item.value"
-                :label="access_item.label">
+                :label="access_item.label"
+                :key="index">
             </el-option>
         </el-select>
 
@@ -45,16 +47,16 @@ export default {
         return {
             access_list: [
                 {
-                    value: 1,
-                    label: 'public'
+                    value: 0,
+                    label: '私人'
                 },
                 {
                     value: 1,
-                    label: 'private'
+                    label: '公开'
                 },
             ],
             access_changed: this.$route.query.access,
-            category_changed: this.$route.query.category,
+            category_changed: this.$route.query.category.id,
             category_list: [],
             simulation_to_edit: [{
                 simulation_name: this.$route.query.name,
@@ -65,19 +67,20 @@ export default {
     },
     methods: {
         save_change() {
+            // console.log(this.$route.query.id);
+            console.log(this.$route.query);
             let params = {
-                simulation_id: this.$route.query.id,
+                simulation: this.$route.query.id,
                 category: this.category_changed,
                 access: this.access_changed,
             }
             this.$api
-                .post('/physlet_api/editSimulation', {params})
+                .post('/physlet_api/editSimulation', params)
                 .then(response => {
                     if (response.data.code === 200) {
                         window.alert("成功！")
-                        this.$router.replace({path:'/me'})
-                    }
-                    else {
+                        this.$router.replace({path: '/me'})
+                    } else {
                         window.alert(response.data.message)
                     }
                 })

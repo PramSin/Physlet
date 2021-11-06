@@ -1,14 +1,10 @@
 <template>
-    <el-container style="padding: 0px; margin: 0px">
+    <el-container style="padding: 0; margin: 0">
         <el-aside width=15% style="background-color: rgb(238, 241, 246);">
-            <router-link class="list-group-item" active-class="active" to="/home">Home</router-link>
-            <router-link class="list-group-item" active-class="active" to="/me">Me</router-link>
-            <router-link class="list-group-item" active-class="active" to="/about">About</router-link>
-        </el-aside>
-
-        <el-container>
-            <el-header style="text-align: right;">
-                <!--                    <h2>实验中心（不是）</h2>-->
+            <el-header class="list-group-item">
+                <el-link :underline='false' @click="to_login"
+                         style="font-size: 20px;margin-top: 15px;vertical-align: top;">{{ username }}
+                </el-link>
                 <el-dropdown v-if="is_authorized" @command='handleCommand' style="margin-top: 20px">
                     <i class="el-icon-setting" style=" margin-right: 10px; font-size: 20px"></i>
                     <el-dropdown-menu slot="dropdown">
@@ -17,14 +13,17 @@
                         <el-dropdown-item command="exit">登出</el-dropdown-item>
                     </el-dropdown-menu>
                 </el-dropdown>
-                <el-link :underline='false' @click="to_login"
-                         style="font-size: 20px;margin-top: 15px;vertical-align: top;">{{ username }}
-                </el-link>
             </el-header>
+            <router-link class="list-group-item" active-class="active" to="/home">Home</router-link>
+            <router-link class="list-group-item" active-class="active" to="/me">Me</router-link>
+            <router-link class="list-group-item" active-class="active" to="/about">About</router-link>
+        </el-aside>
+
+        <el-container>
             <el-main>
                 <router-view></router-view>
             </el-main>
-            <el-footer style="margin: 0px">1111111</el-footer>
+            <el-footer style="margin: 0px"></el-footer>
         </el-container>
     </el-container>
 </template>
@@ -36,8 +35,6 @@ export default {
         return {
             display_username: '',
         }
-
-
     },
     mounted() {
         this.$api
@@ -50,9 +47,8 @@ export default {
         to_login() {
             if (this.display_username !== '') {
                 this.$router.push({path: '/login'})
-            }
-            else {
-                this.$router.push({path:'/me'})
+            } else {
+                this.$router.push({path: '/me'})
             }
 
         },
@@ -95,11 +91,7 @@ export default {
         //todo 加载的动画
         //todo async
         is_authorized() {
-            if (this.display_username !== '') {
-                return true
-            } else {
-                return false
-            }
+            return this.display_username !== '';
         },
         username() {
             if (this.display_username !== '') {
@@ -120,10 +112,10 @@ html {
     height: 100%;
 }
 
-#app {
-    height: inherit;
-    width: inherit;
-}
+/*#app {*/
+/*    height: inherit;*/
+/*    width: inherit;*/
+/*}*/
 
 .el-container {
     padding: 0;
@@ -144,9 +136,11 @@ html {
     min-height: 100vh;
     max-height: 100vh;
 }
-html,body {
+
+html, body {
     height: 100%;
 }
+
 * {
     &::-webkit-scrollbar {
         width: 8px;
