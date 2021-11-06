@@ -1679,10 +1679,21 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'App',
   data: function data() {
-    return {};
+    return {
+      display_username: ''
+    };
   },
-  mounted: function mounted() {},
+  mounted: function mounted() {
+    this.$api.get('/physlet_api/getUserNames').then(function (response) {
+      console.log(response.data);
+    });
+  },
   methods: {
+    to_login: function to_login() {
+      this.$router.push({
+        path: '/login'
+      });
+    },
     handleCommand: function handleCommand(command) {
       switch (command) {
         case 'change_password':
@@ -1727,9 +1738,16 @@ __webpack_require__.r(__webpack_exports__);
   computed: {
     //todo 加载的动画
     //todo async
+    is_authorized: function is_authorized() {
+      if (this.display_username !== '') {
+        return false;
+      } else {
+        return true;
+      }
+    },
     username: function username() {
-      if (localStorage.getItem('is_authorized') === 'true') {
-        return localStorage.getItem('username');
+      if (this.display_username !== '') {
+        return this.display_username;
       } else {
         return '请登录';
       }
@@ -1874,9 +1892,6 @@ __webpack_require__.r(__webpack_exports__);
                   message: null
                 });
 
-                localStorage.clear();
-                localStorage.setItem('is_authorized', 'false');
-
                 _this.$router.replace({
                   path: '/login'
                 });
@@ -1933,12 +1948,14 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "Demo",
   data: function data() {
     return {
       comment_to_post: '',
       comments: [],
+      disable_rate: false,
       rate_to_post: null,
       colors: ['#99A9BF', '#F7BA2A', '#FF9900'],
       demo_src: 'https://www.openstreetmap.org/export/embed.html?bbox=-0.004017949104309083%2C51.47612752641776%2C0.00030577182769775396%2C51.478569861898606&layer=mapnik'
@@ -1946,8 +1963,9 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     post_rate: function post_rate(value) {
-      console.log(1);
-      console.log(value);
+      if (value >= 3) {}
+
+      this.disable_rate = true;
     },
     post_comment: function post_comment() {//todo 发表评论区
     }
@@ -2326,18 +2344,10 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var core_js_modules_es_regexp_exec_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! core-js/modules/es.regexp.exec.js */ "./node_modules/core-js/modules/es.regexp.exec.js");
-/* harmony import */ var core_js_modules_es_regexp_exec_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_regexp_exec_js__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var core_js_modules_es_string_replace_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! core-js/modules/es.string.replace.js */ "./node_modules/core-js/modules/es.string.replace.js");
-/* harmony import */ var core_js_modules_es_string_replace_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_string_replace_js__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var core_js_modules_es_function_name_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! core-js/modules/es.function.name.js */ "./node_modules/core-js/modules/es.function.name.js");
-/* harmony import */ var core_js_modules_es_function_name_js__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_function_name_js__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
-/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_3__);
-
-
-
-
+/* harmony import */ var core_js_modules_es_function_name_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! core-js/modules/es.function.name.js */ "./node_modules/core-js/modules/es.function.name.js");
+/* harmony import */ var core_js_modules_es_function_name_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_function_name_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
+/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_1__);
 
 //
 //
@@ -2494,7 +2504,7 @@ __webpack_require__.r(__webpack_exports__);
         return "";
       }
 
-      return moment__WEBPACK_IMPORTED_MODULE_3___default()(date).format("YYYY-MM-DD HH:mm:ss");
+      return moment__WEBPACK_IMPORTED_MODULE_1___default()(date).format("YYYY-MM-DD HH:mm:ss");
     },
     beforeRemove: function beforeRemove(file, fileList) {
       return this.$confirm("\u786E\u5B9A\u79FB\u9664 ".concat(file.name, "\uFF1F"));
@@ -2544,43 +2554,40 @@ __webpack_require__.r(__webpack_exports__);
     var _this = this;
 
     this.$refs.upload.clearFiles();
+    this.$api.get('/physlet_api/getCategories').then(function (response) {
+      var data = response.data.data;
 
-    if (localStorage.getItem('is_authorized') !== 'true') {
-      this.$router.replace({
-        path: "/login"
-      });
-    } else {
-      this.$api.get('/physlet_api/getCategories').then(function (response) {
-        var data = response.data.data;
+      for (var syn = 0; syn < data.length; syn++) {
+        var synopsis = {};
+        synopsis.label = data[syn].name;
+        synopsis.value = data[syn].id;
 
-        for (var syn = 0; syn < data.length; syn++) {
-          var synopsis = {};
-          synopsis.label = data[syn].name;
-          synopsis.value = data[syn].id;
+        _this.synopsis_list.push(synopsis);
+      }
+    });
+    this.$api.get('/physlet_api/getUserNames').then(function (response) {
+      console.log(1);
+      console.log(response.data);
+    });
+    this.$api.get('/physlet_api/getMySimulations').then(function (response) {
+      var data = response.data.data;
 
-          _this.synopsis_list.push(synopsis);
-        }
-      });
-      this.$api.get('/physlet_api/getMySimulations').then(function (response) {
-        var data = response.data.data;
+      for (var syn = 0; syn < data.length; syn++) {
+        var simulation_list = {};
+        simulation_list.version_id = data[syn].version.id;
+        simulation_list.name = data[syn].version.name;
+        simulation_list.access = data[syn].access ? 'public' : 'private';
+        simulation_list.category = data[syn].category.name;
+        /*                        console.log(data[syn].version.name)*/
 
-        for (var syn = 0; syn < data.length; syn++) {
-          var simulation_list = {};
-          simulation_list.version_id = data[syn].version.id;
-          simulation_list.name = data[syn].version.name;
-          simulation_list.access = data[syn].access ? 'public' : 'private';
-          simulation_list.category = data[syn].category.name;
-          /*                        console.log(data[syn].version.name)*/
+        simulation_list.likes = data[syn].likes;
+        simulation_list.category_id = data[syn].category_id;
+        simulation_list.created_at = data[syn].created_at;
+        simulation_list.shares = data[syn].shares;
 
-          simulation_list.likes = data[syn].likes;
-          simulation_list.category_id = data[syn].category_id;
-          simulation_list.created_at = data[syn].created_at;
-          simulation_list.shares = data[syn].shares;
-
-          _this.Simulation_list.push(simulation_list);
-        }
-      });
-    }
+        _this.Simulation_list.push(simulation_list);
+      }
+    });
   }
 });
 
@@ -29589,8 +29596,9 @@ var render = function() {
         attrs: {
           value: _vm.rate_to_post,
           colors: _vm.colors,
-          change: _vm.post_rate
-        }
+          disabled: _vm.disable_rate
+        },
+        on: { change: _vm.post_rate }
       }),
       _vm._v(" "),
       _c("h3", [_vm._v("评论区")]),

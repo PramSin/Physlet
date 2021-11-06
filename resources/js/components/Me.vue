@@ -96,7 +96,6 @@ export default {
             show_file: false,
             username: '',
             loading: false,
-
             loadingTree: false,
 
             defaultProps: {
@@ -194,41 +193,41 @@ export default {
 
     mounted() {
         this.$refs.upload.clearFiles()
-        if (localStorage.getItem('is_authorized') !== 'true') {
-            this.$router.replace({
-                path: "/login",
-            });
-        } else {
-            this.$api
-                .get('/physlet_api/getCategories')
-                .then(response => {
-                    let data = response.data.data;
-                    for (let syn = 0; syn < data.length; syn++) {
-                        let synopsis = {};
-                        synopsis.label = data[syn].name
-                        synopsis.value = data[syn].id
-                        this.synopsis_list.push(synopsis)
-                    }
-                })
-            this.$api
-                .get('/physlet_api/getMySimulations')
-                .then(response => {
-                    let data = response.data.data;
-                    for (let syn = 0; syn < data.length; syn++) {
-                        let simulation_list = {};
-                        simulation_list.version_id = data[syn].version.id
-                        simulation_list.name = data[syn].version.name
-                        simulation_list.access = (data[syn].access ? 'public' : 'private')
-                        simulation_list.category = data[syn].category.name
-                        /*                        console.log(data[syn].version.name)*/
-                        simulation_list.likes = data[syn].likes
-                        simulation_list.category_id = data[syn].category_id
-                        simulation_list.created_at = data[syn].created_at
-                        simulation_list.shares = data[syn].shares
-                        this.Simulation_list.push(simulation_list)
-                    }
-                })
-        }
+        this.$api
+            .get('/physlet_api/getCategories')
+            .then(response => {
+                let data = response.data.data;
+                for (let syn = 0; syn < data.length; syn++) {
+                    let synopsis = {};
+                    synopsis.label = data[syn].name
+                    synopsis.value = data[syn].id
+                    this.synopsis_list.push(synopsis)
+                }
+            })
+        this.$api
+            .get('/physlet_api/getUserNames')
+            .then(response => {
+                console.log(1)
+                console.log(response.data)
+            })
+        this.$api
+            .get('/physlet_api/getMySimulations')
+            .then(response => {
+                let data = response.data.data;
+                for (let syn = 0; syn < data.length; syn++) {
+                    let simulation_list = {};
+                    simulation_list.version_id = data[syn].version.id
+                    simulation_list.name = data[syn].version.name
+                    simulation_list.access = (data[syn].access ? 'public' : 'private')
+                    simulation_list.category = data[syn].category.name
+                    /*                        console.log(data[syn].version.name)*/
+                    simulation_list.likes = data[syn].likes
+                    simulation_list.category_id = data[syn].category_id
+                    simulation_list.created_at = data[syn].created_at
+                    simulation_list.shares = data[syn].shares
+                    this.Simulation_list.push(simulation_list)
+                }
+            })
     }
 
 }

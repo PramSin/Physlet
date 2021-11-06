@@ -7,7 +7,8 @@
         <el-rate
             :value="rate_to_post"
             :colors="colors"
-            :change='post_rate'>
+            :disabled='disable_rate'
+            @change="post_rate">
         </el-rate>
         <h3>评论区</h3>
         <div style="margin: 20px 0;"></div>
@@ -35,6 +36,7 @@ export default {
         return {
             comment_to_post: '',
             comments: [],
+            disable_rate: false,
             rate_to_post: null,
             colors: ['#99A9BF', '#F7BA2A', '#FF9900'],
             demo_src: 'https://www.openstreetmap.org/export/embed.html?bbox=-0.004017949104309083%2C51.47612752641776%2C0.00030577182769775396%2C51.478569861898606&layer=mapnik',
@@ -42,8 +44,10 @@ export default {
     },
     methods: {
         post_rate(value) {
-            console.log(1)
-            console.log(value)
+            if (value >= 3) {
+
+            }
+            this.disable_rate = true
         },
         post_comment() {//todo 发表评论区
         },

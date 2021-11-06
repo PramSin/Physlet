@@ -34,24 +34,33 @@ export default {
     name: 'App',
     data() {
         return {
+            display_username: '',
         }
 
 
     },
     mounted() {
+        this.$api
+            .get('/physlet_api/getUserNames')
+            .then(response => {
+                console.log(response.data)
+            })
     },
     methods: {
+        to_login() {
+            this.$router.push({path: '/login'})
+        },
         handleCommand(command) {
-                switch (command) {
-                    case 'change_password':
-                        this.$router.push({path: "/changepsw"});
-                        break;
-                    case 'exit':
-                        this.logout();
-                        break;
-                    case 'to_homepage':
-                        this.$router.push({path: "/me"})
-                }
+            switch (command) {
+                case 'change_password':
+                    this.$router.push({path: "/changepsw"});
+                    break;
+                case 'exit':
+                    this.logout();
+                    break;
+                case 'to_homepage':
+                    this.$router.push({path: "/me"})
+            }
         },
         logout() {
             this.$api
@@ -79,9 +88,16 @@ export default {
     computed: {
         //todo 加载的动画
         //todo async
-        username: function () {
-            if (localStorage.getItem('is_authorized') === 'true') {
-                return localStorage.getItem('username')
+        is_authorized() {
+            if (this.display_username !== '') {
+                return false
+            } else {
+                return true
+            }
+        },
+        username() {
+            if (this.display_username !== '') {
+                return this.display_username
             } else {
                 return '请登录'
             }

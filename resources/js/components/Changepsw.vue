@@ -96,8 +96,6 @@ export default {
                       message: null,
 
                     });
-                      localStorage.clear()
-                      localStorage.setItem('is_authorized', 'false')
                       this.$router.replace({path: '/login'})
                   }
                 })
