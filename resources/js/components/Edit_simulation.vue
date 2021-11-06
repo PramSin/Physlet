@@ -65,13 +65,12 @@ export default {
     },
     methods: {
         save_change() {
-            console.log(this.simulation_id)
             let params = {
                 simulation_id: this.$route.query.id,
                 category: this.category_changed,
                 access: this.access_changed,
             }
-            this.axios
+            this.$api
                 .post('/physlet_api/editSimulation', {params})
                 .then(response => {
                     if (response.data.code === 200) {
@@ -85,7 +84,7 @@ export default {
         }
     },
     mounted() {
-        this.axios
+        this.$api
             .get('/physlet_api/getCategories')
             .then(response => {
                 let data = response.data.data;

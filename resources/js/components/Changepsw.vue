@@ -5,6 +5,7 @@
       label-position="top"
       @submit.native.prevent
       :rules="rules"
+      style="width: 50%"
   >
     <el-form-item label="原密码" prop="ori_password">
       <el-input
@@ -80,7 +81,7 @@ export default {
             this.$router.replace({path: '/home'} )
           }
           else {
-            this.$http
+            this.$api
                 .post('/physlet_api/changePassword', this.form)
                 .then(response => {
                   if (response.data.code !== 200) {
@@ -95,8 +96,6 @@ export default {
                       message: null,
 
                     });
-                      localStorage.clear()
-                      localStorage.setItem('is_authorized', 'false')
                       this.$router.replace({path: '/login'})
                   }
                 })
