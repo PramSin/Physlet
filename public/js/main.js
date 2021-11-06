@@ -1679,49 +1679,26 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'App',
   data: function data() {
-    return {
-      is_authorized: false
-    };
+    return {};
   },
-  mounted: function mounted() {
-    if (localStorage.getItem('is_authorized') === 'true') {
-      this.is_authorized = true;
-    }
-  },
+  mounted: function mounted() {},
   methods: {
-    to_login: function to_login() {
-      if (localStorage.getItem('is_authorized') === 'true') {
-        this.$router.push({
-          path: "/me"
-        });
-      } else {
-        this.$router.push({
-          path: "/login"
-        });
-      }
-    },
     handleCommand: function handleCommand(command) {
-      if (localStorage.getItem('is_authorized') === false) {
-        this.$router.push({
-          path: "/login"
-        });
-      } else {
-        switch (command) {
-          case 'change_password':
-            this.$router.push({
-              path: "/changepsw"
-            });
-            break;
+      switch (command) {
+        case 'change_password':
+          this.$router.push({
+            path: "/changepsw"
+          });
+          break;
 
-          case 'exit':
-            this.logout();
-            break;
+        case 'exit':
+          this.logout();
+          break;
 
-          case 'to_homepage':
-            this.$router.push({
-              path: "/me"
-            });
-        }
+        case 'to_homepage':
+          this.$router.push({
+            path: "/me"
+          });
       }
     },
     logout: function logout() {
@@ -1748,6 +1725,8 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   computed: {
+    //todo 加载的动画
+    //todo async
     username: function username() {
       if (localStorage.getItem('is_authorized') === 'true') {
         return localStorage.getItem('username');
@@ -2252,6 +2231,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   mounted: function mounted() {},
   methods: {
+    //todo 输入框宽度
     onSubmit: function onSubmit() {
       var _this = this;
 
@@ -2273,18 +2253,7 @@ __webpack_require__.r(__webpack_exports__);
                   type: 'success',
                   title: response.data.message,
                   message: null
-                }); //使用localstorage储存token
-
-
-                if (_this.isRemember) {
-                  localStorage.setItem('username', _this.form.emailOrUsername);
-                  localStorage.setItem('userpsw', _this.form.password);
-                } else {
-                  localStorage.setItem('username', _this.form.emailOrUsername);
-                  _this.$store.state.authorized = true;
-                }
-
-                localStorage.setItem('is_authorized', 'true');
+                });
 
                 _this.$router.replace({
                   path: '/home'
@@ -2427,7 +2396,7 @@ __webpack_require__.r(__webpack_exports__);
         url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'
       }],
       show_file: false,
-      username: localStorage.getItem('username'),
+      username: '',
       loading: false,
       loadingTree: false,
       defaultProps: {
@@ -2500,8 +2469,7 @@ __webpack_require__.r(__webpack_exports__);
       /*console.log(this.Images)*/
     },
     submitFile: function submitFile(event) {
-      var formData = new FormData(); // const name = localStorage.getItem('username')
-
+      var formData = new FormData();
       formData.append('name', localStorage.getItem('username'));
       formData.append('category', this.value);
       formData.append('synopsis', 'sadkfuha;sdifh');

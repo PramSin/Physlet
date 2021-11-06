@@ -94,7 +94,7 @@ export default {
                 url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'
             }],
             show_file: false,
-            username: localStorage.getItem('username'),
+            username: '',
             loading: false,
 
             loadingTree: false,
@@ -164,7 +164,6 @@ export default {
         },
         submitFile(event) {
             const formData = new FormData();
-            // const name = localStorage.getItem('username')
             formData.append('name', localStorage.getItem('username'))
             formData.append('category', this.value)
             formData.append('synopsis', 'sadkfuha;sdifh')

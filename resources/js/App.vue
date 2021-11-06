@@ -34,30 +34,14 @@ export default {
     name: 'App',
     data() {
         return {
-            is_authorized: false
-            //fixme 去掉所有is_authorized
         }
 
 
     },
     mounted() {
-        if (localStorage.getItem('is_authorized') === 'true') {
-            this.is_authorized = true
-        }
     },
     methods: {
-        to_login() {
-            if (localStorage.getItem('is_authorized') === 'true') {
-                this.$router.push({path: "/me"});
-            } else {
-                this.$router.push({path: "/login"});
-            }
-        },
         handleCommand(command) {
-            if (localStorage.getItem('is_authorized') === false) {
-                this.$router.push({path: "/login"})
-            } else {
-
                 switch (command) {
                     case 'change_password':
                         this.$router.push({path: "/changepsw"});
@@ -68,7 +52,6 @@ export default {
                     case 'to_homepage':
                         this.$router.push({path: "/me"})
                 }
-            }
         },
         logout() {
             this.$api
