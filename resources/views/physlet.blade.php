@@ -22,14 +22,14 @@
             overflow: hidden;
         }
 
-        #app {
+        #rotate-animate {
             position: relative;
             width: 600px;
             height: 36px;
             user-select: none;
         }
 
-        #app div {
+        #rotate-animate div {
             position: absolute;
             width: 20px;
             height: 36px;
@@ -41,27 +41,27 @@
             color: #337ab7;
         }
 
-        #app div:nth-child(2) {
+        #rotate-animate div:nth-child(2) {
             animation-delay: .2s;
         }
 
-        #app div:nth-child(3) {
+        #rotate-animate div:nth-child(3) {
             animation-delay: .4s;
         }
 
-        #app div:nth-child(4) {
+        #rotate-animate div:nth-child(4) {
             animation-delay: .6s;
         }
 
-        #app div:nth-child(5) {
+        #rotate-animate div:nth-child(5) {
             animation-delay: .8s;
         }
 
-        #app div:nth-child(6) {
+        #rotate-animate div:nth-child(6) {
             animation-delay: 1.0s;
         }
 
-        #app div:nth-child(7) {
+        #rotate-animate div:nth-child(7) {
             animation-delay: 1.2s;
         }
 
@@ -90,8 +90,8 @@
     <link rel="stylesheet" href="{{ mix('/css/bootstrap.css') }}">
 </head>
 <body>
-<div id="app">
-    <physlet id="app">
+<physlet id="app">
+    <div id="rotate-animate">
         <div>G</div>
         <div>N</div>
         <div>I</div>
@@ -99,10 +99,10 @@
         <div>A</div>
         <div>O</div>
         <div>L</div>
-    </physlet>
-</div>
+    </div>
+</physlet>
 <script type="text/javascript">
-    const arrakis_authenticated = {{ Auth::user() ? 'true' : 'false'}};
+    const physlet_authenticated = {{ Auth::user() ? 'true' : 'false'}};
     const asset_version = '{{ config('asset_version') }}';
 </script>
 <script type="text/javascript" src="{{ mix('/js/manifest.js') }}"></script>
