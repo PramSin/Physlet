@@ -192,7 +192,7 @@ export default {
             });
 
         },
-        dateFormat(row, column) {
+        dateFormat(row, column) {//todo 加载动画
             let date = row[column.property];
             if (date === undefined) {
                 return "";

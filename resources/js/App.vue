@@ -90,6 +90,7 @@ export default {
     computed: {
         //todo 加载的动画
         //todo async
+        //todo 手机界面适应
         is_authorized() {
             return this.display_username !== '';
         },
@@ -160,5 +161,9 @@ html, body {
     &::-webkit-scrollbar-track {
         background: #ededed;
     }
+}
+
+.el-link.el-link--default {
+    text-decoration: none;
 }
 </style>
