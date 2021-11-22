@@ -12,11 +12,6 @@
                 label="名称"
                 width="180">
             </el-table-column>
-            <!--            <el-table-column
-                            prop="version"
-                            label="版本"
-                            width="180">
-                        </el-table-column>-->
             <el-table-column
                 :formatter="dateFormat"
                 prop="created_at"
@@ -29,6 +24,9 @@
             </el-table-column>
 
         </el-table>
+
+        <simulation-card
+        style="width: 25%"/>
     </div>
 
 
@@ -36,9 +34,13 @@
 
 <script>
 import moment from 'moment'
+import SimulationCard from "./SimulationCard";
 
 export default {
     name: "Home",
+    components: {
+        SimulationCard,
+    },
     data() {
         return {
             All_simulation_list: [],
