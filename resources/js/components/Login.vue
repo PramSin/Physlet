@@ -1,33 +1,44 @@
 <template>
-    <el-form
-        ref="form"
-        :model="form"
-        label-position="top"
-        @submit.native.prevent
-        :rules="rules"
-        style="width: 50%"
-    >
-        <el-form-item label="邮箱" prop="emailOrUsername">
-            <el-input
-                v-model.trim="form.emailOrUsername"
-                clearable
-            ></el-input>
-        </el-form-item>
-        <el-form-item label="密码" prop="password">
-            <el-input
-                v-model.trim="form.password"
-                clearable
-                show-password
-            ></el-input>
-        </el-form-item>
-        <br/><br/>
-        <el-checkbox label="记住账号" v-model="isRemember"></el-checkbox>
-        <br/>
-        <el-button type="text" @click="to_register">没有帐号？点击注册</el-button>
-        <br/>
-        <el-button type="primary" native-type="submit" @click="onSubmit">登录</el-button>
-    </el-form>
-
+    <el-container>
+        <el-aside></el-aside>
+        <el-main style="text-align: center">
+            <el-card style="text-align: center;width: 400px;display: inline-block;margin-top: 150px; border-radius: 15px">
+                <el-form
+                    ref="form"
+                    :model="form"
+                    label-position="top"
+                    @submit.native.prevent
+                    :rules="rules"
+                    :show-message="false"
+                    :hide-required-asterisk="true"
+                    label-width="30px"
+                >
+                    <el-form-item label="邮箱" prop="emailOrUsername">
+                        <el-input
+                            v-model.trim="form.emailOrUsername"
+                            clearable
+                            style="width: 250px"
+                        ></el-input>
+                    </el-form-item>
+                    <el-form-item label="密码" prop="password">
+                        <el-input
+                            v-model.trim="form.password"
+                            clearable
+                            show-password
+                            :hide-required-asterisk="true"
+                            :show-message="false"
+                            style="width: 250px"
+                        ></el-input>
+                    </el-form-item>
+                    <br/>
+                    <el-button type="text" @click="to_register">没有帐号？点击注册</el-button>
+                    <br/>
+                    <el-button type="primary" native-type="submit" @click="onSubmit">登录</el-button>
+                </el-form>
+            </el-card>
+        </el-main>
+        <el-aside></el-aside>
+    </el-container>
 </template>
 
 
@@ -58,7 +69,7 @@ export default {
             .get('/physlet_api/userInfo')
             .then(response => {
                 if (response.data.data.username !== '') {
-                    this.$router.replace({path:'/me'})
+                    this.$router.replace({path: '/me'})
                 }
             })
     },
@@ -68,7 +79,7 @@ export default {
             this.$refs.form.validate((valid) => {
                 if (valid) {
                     if (this.$store.state.debug) {
-                        this.$router.replace({path: '/home'})
+                        this.$router.replace({path: '/portal'})
                     } else {
                         this.$api
                             .post('/physlet_api/login', this.form)
@@ -84,7 +95,7 @@ export default {
                                         title: response.data.message,
                                         message: null,
                                     });
-                                    this.$router.replace({path: '/home'})
+                                    this.$router.replace({path: '/portal'})
                                     location.reload()
                                 }
                             })
@@ -101,7 +112,7 @@ export default {
 
         to_register() {
             this.$router.replace({
-                path: "/login",
+                path: "/register",
             });
         },
 

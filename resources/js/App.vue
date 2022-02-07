@@ -1,30 +1,42 @@
 <template>
     <el-container style="padding: 0; margin: 0">
-        <el-aside width=15% style="background-color: rgb(238, 241, 246);">
-            <el-header class="list-group-item">
-                <el-link :underline='false' @click="to_login"
-                         style="font-size: 20px;margin-top: 15px;vertical-align: top;">{{ username }}
-                </el-link>
-                <el-dropdown v-if="is_authorized" @command='handleCommand' style="margin-top: 20px">
-                    <i class="el-icon-setting" style=" margin-right: 10px; font-size: 20px"></i>
-                    <el-dropdown-menu slot="dropdown">
-                        <el-dropdown-item command="to_homepage">查看</el-dropdown-item>
-                        <el-dropdown-item command="change_password">修改密码</el-dropdown-item>
-                        <el-dropdown-item command="exit">登出</el-dropdown-item>
-                    </el-dropdown-menu>
-                </el-dropdown>
+        <template>
+            <!--   电脑客户端情况  -->
+            <el-header>
+                <el-menu :default-active="current_path()" :router="jumpto" class="el-menu-demo" mode="horizontal">
+                    <el-menu-item index="/portal">
+                        主页
+                    </el-menu-item>
+                    <el-menu-item index="/me">
+                        我的
+                    </el-menu-item>
+                    <el-menu-item index="/about">
+                        关于我们
+                    </el-menu-item>
+                    <el-menu-item style="margin: 0px">
+                        <template>
+                            <el-input placeholder="搜索" v-model="search" clearable
+                                      style="padding-bottom: 7px"></el-input>
+                        </template>
+                    </el-menu-item>
+                    <el-submenu index="4" :style="{marginLeft: top_blank_width+'px', paddingRight: 0}">
+                        <template slot="title">
+                            <el-avatar style="margin-right: 0px"></el-avatar>
+                        </template>
+                        <el-menu-item index="/changepsw">修改密码</el-menu-item>
+                        <el-menu-item @click="logout">登出</el-menu-item>
+                    </el-submenu>
+                </el-menu>
             </el-header>
-            <router-link class="list-group-item" active-class="active" to="/home">Home</router-link>
-            <router-link class="list-group-item" active-class="active" to="/me">Me</router-link>
-            <router-link class="list-group-item" active-class="active" to="/about">About</router-link>
-        </el-aside>
-
-        <el-container>
-            <el-main>
-                <router-view></router-view>
-            </el-main>
+            <el-container>
+                <el-aside style="width: 150px"></el-aside>
+                <el-main>
+                    <router-view></router-view>
+                </el-main>
+                <el-aside style="width: 150px"></el-aside>
+            </el-container>
             <el-footer style="margin: 0px"></el-footer>
-        </el-container>
+        </template>
     </el-container>
 </template>
 
@@ -33,9 +45,13 @@ export default {
     name: 'App',
     data() {
         return {
+            jumpto: true,
+            search: '',
             display_username: '',
+            window_width: window.innerWidth,
         }
     },
+
     mounted() {
         this.$api
             .get('/physlet_api/userInfo')
@@ -64,6 +80,9 @@ export default {
                     this.$router.push({path: "/me"})
             }
         },
+        current_path() {
+            return this.$route.path
+        },
         logout() {
             this.$api
                 .get('/physlet_api/logout')
@@ -76,9 +95,6 @@ export default {
                     } else {
                         location.reload()
                         this.$message('注销成功！');
-                        this.$router.replace({path: '/home'}).catch(() => {
-                        })
-                        /*console.log('2222222222222222')*/
                     }
                 })
                 .catch()
@@ -91,8 +107,14 @@ export default {
         //todo 加载的动画
         //todo async
         //todo 手机界面适应
+        top_blank_width() {
+            return this.window_width - 605
+        },
         is_authorized() {
-            return this.display_username !== '';
+            return this.display_username !== ''
+        },
+        ClientWidth() {
+            return document.body.clientWidth <= 768
         },
         username() {
             if (this.display_username !== '') {

@@ -1,123 +1,147 @@
 <template>
-    <div style="width: 100%">
-        <h3>我的模拟（点击展示）</h3>
-        <el-table
-            @row-click="jump_to_My_simulation"
-            stripe
-            :data="Simulation_list"
-            style="width: 100%">
-            <el-table-column
-                prop="version_id"
-                v-if=false
-                label="version_id">
-            </el-table-column>
-            <el-table-column
-                prop="id"
-                v-if=false
-                label="id">
-            </el-table-column>
-            <el-table-column
-                prop="category_id"
-                v-if=false
-                label="category_id">
-            </el-table-column>
-            <el-table-column
-                prop="name"
-                label="名称"
-                width="180">
-            </el-table-column>
-            <el-table-column
-                prop="category.name"
-                label="类别">
-            </el-table-column>
-            <el-table-column
-                prop="access"
-                label="可见性">
-            </el-table-column>
-            <el-table-column
-                :formatter="dateFormat"
-                prop="created_at"
-                label="创建时间">
-            </el-table-column>
-            <el-table-column
-                prop="likes"
-                label="赞"
-                width="50">
-            </el-table-column>
-            <el-table-column
-                prop="shares"
-                label="分享">
-            </el-table-column>
-            <el-table-column
-                fixed="right"
-                label="操作"
-                width="100">
-                <template slot-scope="scope">
-                    <el-button type="text" size="small" @click="edit_Simulation(scope.row)">编辑</el-button>
-                </template>
+    <el-container>
+        <el-aside></el-aside>
+        <el-main>
+            <h3>我的模拟（点击展示）</h3>
+            <el-table
+                stripe
+                :data="Simulation_list"
+                style="width: 100%">
+                <el-table-column
+                    prop="version_id"
+                    v-if=false
+                    label="version_id">
+                </el-table-column>
+                <el-table-column
+                    prop="id"
+                    v-if=false
+                    label="id">
+                </el-table-column>
+                <el-table-column
+                    prop="category_id"
+                    v-if=false
+                    label="category_id">
+                </el-table-column>
+                <el-table-column
+                    prop="name"
+                    label="名称"
+                    width="180"
+                >
+                </el-table-column>
+                <el-table-column
+                    prop="category.name"
+                    label="类别">
+                </el-table-column>
+                <el-table-column
+                    prop="access"
+                    label="可见性">
+                </el-table-column>
+                <el-table-column
+                    :formatter="dateFormat"
+                    prop="created_at"
+                    label="创建时间">
+                </el-table-column>
+                <el-table-column
+                    prop="likes"
+                    label="赞"
+                    width="50">
+                </el-table-column>
+                <el-table-column
+                    prop="shares"
+                    label="分享">
+                </el-table-column>
+                <el-table-column
+                    fixed="right"
+                    label="操作"
+                    width="100">
+                    <template slot-scope="scope">
+                        <el-button type="text" size="small" @click="edit_form_visibility = true">编辑</el-button>
+                        <el-button type="text" size="small" @click="jump_to_My_simulation">查看</el-button>
+                    </template>
 
-            </el-table-column>
-        </el-table>
-        <br/>
-        <h3>上传模拟</h3>
-        <el-form label-width="100px" style="width: 40%">
-            <el-form-item label="名称" required>
-                <el-input
-                    placeholder="请填写模拟名称"
-                    v-model="simulation_name"
-                    clearable
-                ></el-input>
-            </el-form-item>
+                </el-table-column>
+            </el-table>
+            <el-dialog title="编辑模拟" :visible.sync="edit_form_visibility">
+                <el-form :inline="true" :model="edit_form">
+                    <el-form-item label="类别">
+                        <el-select v-model="edit_form.category" placeholder="类别">
+                            <el-option value="热学" label="热学"></el-option>
+                            <el-option value="电学" label="电学"></el-option>
+                        </el-select>
+                    </el-form-item>
+                    <el-form-item label="可见性">
+                        <el-select v-model="edit_form.accessibility" placeholder="可见性">
+                            <el-option value="0" label="私人"></el-option>
+                            <el-option value="1" label="公共"></el-option>
+                        </el-select>
+                    </el-form-item>
+                    <el-form-item>
+                        <el-button type="primary" @click="submit_edit">查询</el-button>
+                    </el-form-item>
+                </el-form>
+            </el-dialog>
             <br/>
-            <el-form-item label="类别" required>
-                <el-select style="margin-top: 15px" v-model="category" placeholder="请选择模拟类别">
-                    <el-option
-                        v-for="(item, index) of category_list"
-                        :value="item.value"
-                        :label="item.label"
-                        :key="index">
-                    </el-option>
-                </el-select>
-            </el-form-item>
-            <br/>
-            <el-form-item label="简介" required>
-                <el-input
-                    placeholder="请填写简介"
-                    v-model="synopsis"
-                    clearable
-                ></el-input>
-            </el-form-item>
-            <br/>
-            <el-form-item label="可见性" required>
-                <el-select style="margin-top: 15px" v-model="access" placeholder="请选择可见性">
-                    <el-option
-                        v-for="(access_item, index) of access_list"
-                        :value="access_item.value"
-                        :label="access_item.label"
-                        :key="index">
-                    </el-option>
-                </el-select>
-            </el-form-item>
-            <br/>
-            <el-form-item label="文件" required>
-                <el-upload ref="upload"
-                           class="upload-demo"
-                           action=""
-                           :show-file-list="show_file"
-                           :before-remove="beforeRemove"
-                           :file-list="fileList"
-                           :on-change="uploadFile"
-                           :auto-upload="false"
-                           style="margin-top: 15px">
-                    <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
-                    <div slot="tip" class="el-upload__tip">必须为zip格式，不超过100mb</div>
-                </el-upload>
-            </el-form-item>
-            <el-form-item>
-                <el-button size="small" type="success" @click="submitFile">点击上传</el-button>
-            </el-form-item>
-        </el-form>
-    </div>
+            <h3>上传模拟</h3>
+            <el-form label-width="100px" style="width: 40%">
+                <el-form-item label="名称" required>
+                    <el-input
+                        placeholder="请填写模拟名称"
+                        v-model="simulation_name"
+                        clearable
+                    ></el-input>
+                </el-form-item>
+                <br/>
+                <el-form-item label="类别" required>
+                    <el-select style="margin-top: 15px" v-model="category" placeholder="请选择模拟类别">
+                        <el-option
+                            v-for="(item, index) of category_list"
+                            :value="item.value"
+                            :label="item.label"
+                            :key="index">
+                        </el-option>
+                    </el-select>
+                </el-form-item>
+                <br/>
+                <el-form-item label="简介" required>
+                    <el-input
+                        placeholder="请填写简介"
+                        v-model="synopsis"
+                        clearable
+                    ></el-input>
+                </el-form-item>
+                <br/>
+                <el-form-item label="可见性" required>
+                    <el-select style="margin-top: 15px" v-model="access" placeholder="请选择可见性">
+                        <el-option
+                            v-for="(access_item, index) of access_list"
+                            :value="access_item.value"
+                            :label="access_item.label"
+                            :key="index">
+                        </el-option>
+                    </el-select>
+                </el-form-item>
+                <br/>
+                <el-form-item label="文件" required>
+                    <el-upload ref="upload"
+                               class="upload-demo"
+                               action=""
+                               :show-file-list="show_file"
+                               :before-remove="beforeRemove"
+                               :file-list="fileList"
+                               :on-change="uploadFile"
+                               :auto-upload="false"
+                               style="margin-top: 15px">
+                        <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
+                        <div slot="tip" class="el-upload__tip">必须为zip格式，不超过100mb</div>
+                    </el-upload>
+                </el-form-item>
+                <el-form-item>
+                    <el-button size="small" type="success" @click="submitFile">点击上传</el-button>
+                </el-form-item>
+            </el-form>
+        </el-main>
+        <el-aside></el-aside>
+    </el-container>
 </template>
 
 
@@ -128,6 +152,11 @@ export default {
     name: "Me",
     data() {
         return {
+            edit_form: {
+                category: "",
+                accessibility: ""
+            },
+            edit_form_visibility: false,
             access_list: [
                 {
                     value: 0,
@@ -178,7 +207,27 @@ export default {
     },
     methods: {
         jump_to_My_simulation(row) {
-            this.$router.replace({path: "/demo", query: {version: row.version_id}});
+            this.$router.push({path: "/demo", query: {version: row.version_id}});
+        },
+        save_change() {
+            // console.log(this.$route.query.id);
+            let params = {
+                //TODO 这里表单要变
+                simulation: this.$route.query.id,
+                category: this.category_changed,
+                access: this.access_changed,
+            }
+            this.$api
+                .post('/physlet_api/editSimulation', params)
+                .then(response => {
+                    if (response.data.code === 200) {
+                        window.alert("成功！")
+                        this.$router.replace({path:"/me"})
+                    } else {
+                        window.alert(response.data.message)
+                    }
+                })
+
         },
         edit_Simulation(row) {
             console.log(row);
