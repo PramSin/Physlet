@@ -41,7 +41,7 @@
 
 
 export default {
-  name: "Changepsw",
+  name: "ChangePassword",
   data() {
 
     return {
