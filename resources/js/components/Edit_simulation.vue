@@ -68,7 +68,6 @@ export default {
     methods: {
         save_change() {
             // console.log(this.$route.query.id);
-            console.log(this.$route.query);
             let params = {
                 simulation: this.$route.query.id,
                 category: this.category_changed,

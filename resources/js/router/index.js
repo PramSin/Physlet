@@ -1,6 +1,5 @@
 
 import VueRouter from 'vue-router'
-import Home from "../components/Home";
 import About from "../components/About";
 import Login from "../components/Login";
 import Me from "../components/Me";
@@ -9,14 +8,15 @@ import Changepsw from  "../components/Changepsw";
 import Demo from "../components/Demo"
 import PageNotFound from "../components/PageNotFound";
 import Edit_simulation from "../components/Edit_simulation";
+import Portal from "../components/Portal";
 
 
 export default new VueRouter({//TODO 在不存在页面时跳转404
-    mode: 'history',
+    mode: "history",
     routes:[
         {
             path:'/',
-            component:Home
+            component:Portal
         },
         {
             path:'/about',
@@ -27,8 +27,8 @@ export default new VueRouter({//TODO 在不存在页面时跳转404
             component:Demo
         },
         {
-            path:'/home',
-            component:Home
+            path:'/portal',
+            component:Portal
         },
         {
             path:'/login',
