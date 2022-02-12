@@ -71,13 +71,18 @@
 
         </el-main>
         <el-aside>
-            <el-card style="margin-top: 50px">
+            <el-card style="margin-top: 50px" v-if="!is_authorized">
                 <div slot="header" style="text-align: center">
                     <el-avatar :size="125"></el-avatar>
                     <div style="text-align:center; font-size: 20px">name</div>
                 </div>
                 <div style="text-align: center">
                     我的模拟们
+                </div>
+            </el-card>
+            <el-card style="margin-top: 50px" v-else>
+                <div style="text-align: center; font-size: large">
+                    登录查看我的模拟
                 </div>
             </el-card>
         </el-aside>
@@ -99,6 +104,7 @@ export default {
         return {
             rank_method: "",
             rank_tag: "",
+            loading_simulations: false,
             All_simulation_list: [],
             tag_list: [
                 {
@@ -129,6 +135,14 @@ export default {
     },
 
     methods: {
+        is_authorized() {
+            this.$api
+                .get('/physlet_api/checkLogin')
+                .then(response => {
+                        return response.data.code === 200;
+                    }
+                )
+        },
         jump_to_simulation(row) {
             this.$router.push({path: "/demo", query: {version: row.version_id}});
         },
@@ -142,21 +156,24 @@ export default {
     },
     mounted() {
         this.$api
-            .get('/physlet_api/getSimulations')
+            .get('/physlet_api/getSims')
             .then(response => {
+                this.loading_simulations = true
                 let data = response.data.data;
-                console.log(data)
                 for (let syn = 0; syn < data.length; syn++) {
                     let simulation_list = {};
-                    simulation_list.version_id = data[syn].version.id
-                    simulation_list.id = data[syn].id
-                    simulation_list.name = data[syn].version.name
+                    simulation_list.simulation_id = data[syn].sid
+                    simulation_list.simulation_name = data[syn].sname
+                    simulation_list.creator_name = data[syn].cname
+                    simulation_list.creator_id = data[syn].cid
+                    simulation_list.synopsis = data[syn].synopsis
                     simulation_list.likes = data[syn].likes
-                    simulation_list.created_at = data[syn].created_at
+                    simulation_list.uname = data[syn].uname
+                    simulation_list.url = data[syn].url
+                    simulation_list.create_time = data[syn].create_time
                     this.All_simulation_list.push(simulation_list)
                 }
-// TODO 模拟缩略图
-
+               this.loading_simulations = false
             })
     }
 }

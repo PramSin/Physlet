@@ -4,7 +4,7 @@ import About from "../components/About";
 import Login from "../components/Login";
 import Me from "../components/Me";
 import Register from "../components/Register";
-import Changepsw from  "../components/Changepsw";
+import ChangePassword from "../components/ChangePassword";
 import Demo from "../components/Demo"
 import PageNotFound from "../components/PageNotFound";
 import Edit_simulation from "../components/Edit_simulation";
@@ -43,8 +43,8 @@ export default new VueRouter({//TODO 在不存在页面时跳转404
             component:Register
         },
         {
-            path:'/changepsw',
-            component:Changepsw
+            path:'/change_password',
+            component:ChangePassword
         },
         {
             path:'/edit_simulation',

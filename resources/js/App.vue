@@ -7,25 +7,30 @@
                     <el-menu-item index="/portal">
                         主页
                     </el-menu-item>
-                    <el-menu-item index="/me">
-                        我的
-                    </el-menu-item>
+                   <el-tooltip class="item" effect="dark" content="请先登录才能上传模拟" placement="bottom" v-if="!is_authorized">
+                       <el-menu-item index="/me" :disabled="!is_authorized">
+                           我的模拟
+                       </el-menu-item>
+                   </el-tooltip>
                     <el-menu-item index="/about">
                         关于我们
                     </el-menu-item>
-                    <el-menu-item style="margin: 0px">
+                    <el-menu-item style="margin: 0px" index="/search">
                         <template>
                             <el-input placeholder="搜索" v-model="search" clearable
                                       style="padding-bottom: 7px"></el-input>
                         </template>
                     </el-menu-item>
-                    <el-submenu index="4" :style="{marginLeft: top_blank_width+'px', paddingRight: 0}">
+                    <el-submenu index="user_information" style="float: right" v-if="is_authorized">
                         <template slot="title">
                             <el-avatar style="margin-right: 0px"></el-avatar>
                         </template>
-                        <el-menu-item index="/changepsw">修改密码</el-menu-item>
+                        <el-menu-item index="/change_password">修改密码</el-menu-item>
                         <el-menu-item @click="logout">登出</el-menu-item>
                     </el-submenu>
+                    <el-menu-item index="unauthorized" style="float: right" v-else>
+                        <el-link type="primary" :underline=false style="font-size: large">请登录</el-link>
+                    </el-menu-item>
                 </el-menu>
             </el-header>
             <el-container>
@@ -111,7 +116,12 @@ export default {
             return this.window_width - 605
         },
         is_authorized() {
-            return this.display_username !== ''
+            this.$api
+                .get('/physlet_api/checkLogin')
+                .then(response => {
+                        return response.data.code === 200;
+                    }
+                )
         },
         ClientWidth() {
             return document.body.clientWidth <= 768
