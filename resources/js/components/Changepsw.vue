@@ -78,7 +78,7 @@ export default {
       this.$refs.form.validate((valid) => {
         if (valid) {
           if (this.$store.state.debug) {
-            this.$router.replace({path: '/home'} )
+            this.$router.replace({path: '/portal'} )
           }
           else {
             this.$api

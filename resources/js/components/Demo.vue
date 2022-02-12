@@ -22,6 +22,13 @@
             :disabled='disable_rate'
             @change="post_rate">
         </el-rate>
+        <div style="margin: 10px 0;"></div>
+        <el-link type="info"
+                 v-if="show_cancel_rate"
+                 :underline="false"
+                 @click="cancel_rate"
+        >取消评分
+        </el-link>
         <h3>评论区</h3>
         <div style="margin: 20px 0;"></div>
         <div v-for="comment in comments">
@@ -46,6 +53,8 @@ export default {
 
     data() {
         return {
+            show_cancel_rate: false,
+            loading_demo: false,
             fullscreen_class: "background-color: #66afe9",
             fullscreen: false,
             teleport: true,
@@ -60,14 +69,31 @@ export default {
         }
     },
     methods: {
+        cancel_rate() {
+            let params = this.$route.query
+            params.rate = '0'
+            this.$api
+                .get('/physlet_api/postRate', {params})
+                .then(() => {
+                        this.disable_rate = false
+                        this.rate_to_post = null
+                        this.show_cancel_rate = false
+                    }
+                )
+        },
         toggle() {
             this.fullscreen = !this.fullscreen
         },
         post_rate(value) {
-            if (value >= 3) {
-
-            }
-            this.disable_rate = true
+            let params = this.$route.query
+            params.rate = '' + value
+            this.$api
+                .get('/physlet_api/postRate', {params})
+                .then(() => {
+                        this.disable_rate = true
+                        this.show_cancel_rate = true
+                    }
+                )
         },
         post_comment() {//todo 发表评论区
         },
@@ -80,6 +106,7 @@ export default {
                 let data = response.data.data;
                 this.demo_src = data
             })
+            .then()
     },
     mounted() {
         if (this.demo_src === '') {
