@@ -50,11 +50,11 @@ export default {
     data() {
         return {
             form: {
-                emailOrUsername: '',
+                email_or_username: '',
                 password: '',
             },
             rules: {
-                emailOrUsername: [
+                email_or_username: [
                     {required: true, message: '邮箱不能为空', trigger: 'blur'},
                 ],
                 password: [
@@ -66,7 +66,7 @@ export default {
     },
     mounted() {
         this.$api
-            .get('/physlet_api/userInfo')
+            .get('/physlet_api/myInfo')
             .then(response => {
                 if (response.data.data.username !== '') {
                     this.$router.replace({path: '/me'})

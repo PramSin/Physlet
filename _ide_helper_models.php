@@ -47,9 +47,9 @@ namespace App\Models{
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection|Comment[] $children
  * @property-read int|null $children_count
- * @property-read Comment $parent
- * @property-read \App\Models\Simulation $simulation
- * @property-read \App\Models\User $user
+ * @property-read Comment|null $parent
+ * @property-read \App\Models\Simulation|null $simulation
+ * @property-read \App\Models\User|null $user
  * @method static \Database\Factories\CommentFactory factory(...$parameters)
  * @method static \Illuminate\Database\Eloquent\Builder|Comment newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Comment newQuery()
@@ -89,10 +89,10 @@ namespace App\Models{
  * @property int $shares
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \App\Models\Category $category
+ * @property-read \App\Models\Category|null $category
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Comment[] $comments
  * @property-read int|null $comments_count
- * @property-read \App\Models\User $user
+ * @property-read \App\Models\User|null $user
  * @property-read \App\Models\SimulationWithVersion|null $version
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\SimulationWithVersion[] $versions
  * @property-read int|null $versions_count
@@ -128,8 +128,8 @@ namespace App\Models{
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Comment[] $comments
  * @property-read int|null $comments_count
- * @property-read \App\Models\Simulation $simulation
- * @property-read \App\Models\Simulation $status
+ * @property-read \App\Models\Simulation|null $simulation
+ * @property-read \App\Models\Simulation|null $status
  * @method static \Database\Factories\SimulationWithVersionFactory factory(...$parameters)
  * @method static \Illuminate\Database\Eloquent\Builder|SimulationWithVersion newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|SimulationWithVersion newQuery()
@@ -155,6 +155,7 @@ namespace App\Models{
  * @property string $slug
  * @property string $username
  * @property string|null $phone_number
+ * @property string|null $avatar
  * @property string $email
  * @property \Illuminate\Support\Carbon|null $email_verified_at
  * @property string $password
@@ -177,6 +178,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|User newQuery()
  * @method static \Illuminate\Database\Query\Builder|User onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|User query()
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereAvatar($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereDeletedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereEmail($value)

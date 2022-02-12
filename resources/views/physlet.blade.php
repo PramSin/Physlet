@@ -102,7 +102,7 @@
     </div>
 </physlet>
 <script type="text/javascript">
-    const arrakis_authenticated = {{ Auth::user() ? 'true' : 'false'}};
+    const physlet_authenticated = {{ Auth::user() ? 'true' : 'false'}};
     const asset_version = '{{ config('asset_version') }}';
 </script>
 <script type="text/javascript" src="{{ mix('/js/manifest.js') }}"></script>

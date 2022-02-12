@@ -8,6 +8,7 @@ use Auth;
 use Exception;
 use Hash;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Mail;
 
 class UserAuthController extends Controller
@@ -17,11 +18,58 @@ class UserAuthController extends Controller
         'message' => 'unknown error',
     ];
 
-    protected function userInfo(Request $request): array
+    protected function myInfo(Request $request): array
     {
+        $user = $request->user();
+
+        $sims = 0;
+        $likes = 0;
+        foreach ($user->simulations as $simulation) {
+            $sims += 1;
+            $likes += $simulation->likes;
+        }
+
+        $data = [
+            'uid' => $user->id,
+            'uname' => $user->username,
+            'avatar' => Storage::url($user->avatar),
+            'sims' => $sims,
+            'likes' => $likes
+        ];
         $this->r['code'] = 200;
         $this->r['message'] = "获取用户信息成功";
-        $this->r['data'] = $request->user();
+        $this->r['data'] = $data;
+        return $this->r;
+    }
+
+    protected function userInfo(Request $request)
+    {
+        $user = User::find($request->post('uid'));
+        $sims = 0;
+        $likes = 0;
+        foreach ($user->simulations as $simulation) {
+            $sims += 1;
+            $likes += $simulation->likes;
+        }
+
+        $data = [
+            'uid' => $user->id,
+            'uname' => $user->username,
+            'avatar' => Storage::url($user->avatar),
+            'sims' => $sims,
+            'likes' => $likes
+        ];
+
+        $this->r['code'] = 200;
+        $this->r['message'] = "获取用户信息成功";
+        $this->r['data'] = $data;
+        return $this->r;
+    }
+
+    protected function checkLogin(Request $request)
+    {
+        $this->r['code'] = $request->user() ? 200 : 403;
+        $this->r['message'] = $request->user() ? "已登录" : "当前用户未登录";
         return $this->r;
     }
 
@@ -30,6 +78,7 @@ class UserAuthController extends Controller
         try {
             $user_name = $request->post('username');
             $email = $request->post('email');
+            $number = $request->post('number');
             $password = $request->post('password');
             if (User::whereEmail($email)->exists()) {
                 throw new Exception("邮箱{$email}已注册");
@@ -42,19 +91,25 @@ class UserAuthController extends Controller
             $user->username = $user_name;
             $user->slug = $user_name;
             $user->email = $email;
+            $user->phone_number = $number;
             $user->password = Hash::make($password);
             $user->save();
 
             Mail::to($user)->send(new RegisteredMail($user));
 
-            Auth::login($user);
-
-
+//            Auth::login($user);
+            $data = [
+                'uid' => $user->id,
+                'uname' => $user->username
+            ];
             $this->r['code'] = 200;
             $this->r['message'] = '注册成功，等待邮箱验证';
+            $this->r['data'] = $data;
         } catch (Exception $e) {
             $this->r['code'] = 400;
             $this->r['message'] = $e->getMessage();
+            $user = User::whereEmail($request->post('email'));
+            $user->delete();
         }
 
         return $this->r;
@@ -81,7 +136,7 @@ class UserAuthController extends Controller
     protected function login(Request $request): array
     {
         try {
-            $emailOrUsername = $request->post('emailOrUsername');
+            $emailOrUsername = $request->post('email_or_username');
             $password = $request->post('password');
 
             if (User::whereUsername($emailOrUsername)->exists()) {
@@ -96,9 +151,15 @@ class UserAuthController extends Controller
             }
 
             if (Auth::attempt(['email' => $email, 'password' => $password], true)) {
+                $user = User::whereEmail($email)->first();
+
+                $data = [
+                    'uid' => $user->id,
+                    'uname' => $user->username
+                ];
                 $this->r['code'] = 200;
                 $this->r['message'] = "登陆成功";
-                $this->r['data'] = User::whereEmail($email)->first();
+                $this->r['data'] = $data;
             } else {
                 $this->r['code'] = 400;
                 $this->r['message'] = "密码错误";
@@ -138,8 +199,66 @@ class UserAuthController extends Controller
                 $user->save();
 
                 Auth::logout();
+                $data = [
+                    'uid' => $user->id,
+                    'uname' => $user->username
+                ];
                 $this->r['code'] = 200;
                 $this->r['message'] = "密码修改成功";
+                $this->r['data'] = $data;
+            }
+        } catch (Exception $e) {
+            $this->r['code'] = 400;
+            $this->r['message'] = $e->getMessage();
+        }
+
+        return $this->r;
+    }
+
+    protected function changeInfo(Request $request)
+    {
+        try {
+            $user = $request->user();
+            $uname = $request->post('username');
+            $number = $request->post('number');
+
+            $user->username = $uname;
+            $user->phone_number = $number;
+            $user->save();
+
+            $data = [
+                'uid' => $user->id,
+                'uname' => $user->username
+            ];
+            $this->r['code'] = 200;
+            $this->r['message'] = "信息修改成功";
+            $this->r['data'] = $data;
+        } catch (Exception $e) {
+            $this->r['code'] = 400;
+            $this->r['message'] = $e->getMessage();
+        }
+
+        return $this->r;
+    }
+
+    protected function uploadAvatar(Request $request)
+    {
+        try {
+            if ($request->hasFile('image')) {
+                $user = $request->user();
+                if (Storage::exists($user->avatar)) {
+                    Storage::delete($user->avatar);
+                }
+                $avatar = $request->file('image')
+                    ->store("public/avatar");
+                $user->avatar = $avatar;
+                $user->save();
+                $this->r['code'] = 200;
+                $this->r['message'] = "头像上传成功";
+            } else {
+                $this->r['code'] = 400;
+                $this->r['message'] = $_FILES['file'];
+                return $this->r;
             }
         } catch (Exception $e) {
             $this->r['code'] = 400;

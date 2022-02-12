@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use App\Models\Comment;
 use App\Models\Simulation;
 use App\Models\SimulationWithVersion;
 use Exception;
@@ -77,8 +78,8 @@ class SimulationController extends Controller
     protected function uploadSimulation(Request $request): array
     {
         try {
-            $name = $request->post('name');
-            $category = $request->post('category');
+            $name = $request->post('sname');
+            $category = $request->post('cid');
             $synopsis = $request->post('synopsis');
             $access = $request->post('access');
 
@@ -108,9 +109,13 @@ class SimulationController extends Controller
                 'synopsis' => $synopsis,
             ]);
 
+            $data = [
+                'sid' => $sim->id,
+                'url' => Storage::url($sim->version->root_path)
+            ];
             $this->r['code'] = 200;
             $this->r['message'] = "模拟程序上传成功";
-            $this->r['data'] = $sim->load('version');
+            $this->r['data'] = $data;
         } catch (Exception $e) {
             $this->r['code'] = 400;
             $this->r['message'] = $e->getMessage();
@@ -122,10 +127,25 @@ class SimulationController extends Controller
     protected function editSimulation(Request $request): array
     {
         try {
-            $simulation = Simulation::findOrFail($request->post('simulation'));
+            $simulation = Simulation::findOrFail($request->post('sid'));
             if ($simulation->user->id === $request->user()->id) {
-                $simulation->category_id = $request->post('category');
+                $simulation->category_id = $request->post('cid');
                 $simulation->access = $request->post('access');
+
+                if ($request->hasFile('file')) {
+                    $package = $request->file('file')
+                        ->store("public/" . Category::findOrFail($simulation->category->name)
+                                ->name
+                        );
+                    $file = self::unzip_file($package);
+                } else {
+                    $file = $simulation->version->root_path;
+                }
+                $simulation->version->name = $request->post('cname');
+                $simulation->version->synopsis = $request->post('synopsis');
+                $simulation->version->root_path = $file;
+
+                $simulation->version->save();
                 $simulation->save();
 
                 $this->r['code'] = 200;
@@ -146,7 +166,7 @@ class SimulationController extends Controller
     protected function deleteSimulation(Request $request): array
     {
         try {
-            $simulation = Simulation::findOrFail($request->post('simulation'));
+            $simulation = Simulation::findOrFail($request->post('sid'));
             if ($request->user()->id === $simulation->user->id) {
                 foreach ($simulation->versions as $version) {
                     $version->delete();
@@ -162,6 +182,34 @@ class SimulationController extends Controller
                 $this->r['code'] = 400;
                 $this->r['message'] = "无法删除他人创建的模拟";
             }
+        } catch (Exception $e) {
+            $this->r['code'] = 400;
+            $this->r['message'] = $e->getMessage();
+        }
+
+        return $this->r;
+    }
+
+    protected function getSimulation(Request $request)
+    {
+        try {
+            $sim = Simulation::find($request->post('sid'));
+
+            $data = [
+                'sid' => $sim->id,
+                'sname' => $sim->version->name,
+                'cid' => $sim->category_id,
+                'cname' => $sim->category->name,
+                'synopsis' => $sim->version->synopsis,
+                'likes' => $sim->likes,
+                'uid' => $sim->user_id,
+                'uname' => $sim->user->username,
+                'url' => Storage::url($sim->version->root_path),
+                'create_time' => $sim->created_at
+            ];
+            $this->r['code'] = 200;
+            $this->r['message'] = "获取模拟成功";
+            $this->r['data'] = $data;
         } catch (Exception $e) {
             $this->r['code'] = 400;
             $this->r['message'] = $e->getMessage();
@@ -369,5 +417,103 @@ class SimulationController extends Controller
         }
 
         return $this->r;
+    }
+
+    protected function sendComment(Request $request)
+    {
+        try {
+            $sid = $request->post('sid');
+            $content = $request->post('content');
+            $pid = $request->post('pid') ? $request->post('pid') : 0;
+
+            $comment = Comment::create(
+                [
+                    'user_id' => $request->user()->id,
+                    'simulation_id' => $sid,
+                    'parent_id' => $pid,
+                    'content' => $content
+                ]
+            );
+
+            $comment->save();
+
+            $this->r['code'] = 200;
+            $this->r['message'] = "发送评论成功";
+        } catch (Exception $e) {
+            $this->r['code'] = 400;
+            $this->r['message'] = $e->getMessage();
+        }
+
+        return $this->r;
+    }
+
+    protected function deleteComment(Request $request)
+    {
+        try {
+            $com = Comment::find($request->post('coid'));
+            $com->delete();
+
+            $this->r['code'] = 200;
+            $this->r['message'] = "删除评论成功";
+        } catch (Exception $e) {
+            $this->r['code'] = 400;
+            $this->r['message'] = $e->getMessage();
+        }
+
+        return $this->r;
+    }
+
+    protected function checkLike(Request $request)
+    {
+        try {
+            $user = $request->user();
+            $sid = $request->post('sid');
+
+            $this->r['code'] = 200;
+            $this->r['message'] = "获取状态成功";
+            $this->r['data'] = $user->liked()->where('id', '=', $sid)->exists();
+        } catch (Exception $e) {
+            $this->r['code'] = 400;
+            $this->r['message'] = $e->getMessage();
+        }
+
+        return $this->r;
+    }
+
+    protected function like(Request $request)
+    {
+        try {
+            $user = $request->user();
+            $sid = $request->post('sid');
+
+            if ($user->liked()->where('id', '=', $sid)->exists()) {
+                $user->liked()->detach($sid);
+
+                $this->r['message'] = "取消点赞";
+            } else {
+                $user->liked()->attach($sid);
+                $this->r['message'] = "点赞成功";
+            }
+
+            $this->r['code'] = 200;
+        } catch (Exception $e) {
+            $this->r['code'] = 400;
+            $this->r['message'] = $e->getMessage();
+        }
+
+        return $this->r;
+    }
+
+    protected function download(Request $request)
+    {
+        try {
+            $sim = Simulation::find($request->post('sid'));
+            $string = $sim->version->root_path;
+            return Storage::download(substr($string, 0, strlen($string) - 11) . ".zip");
+        } catch (Exception $e) {
+            $this->r['code'] = 400;
+            $this->r['message'] = $e->getMessage();
+            return $this->r;
+        }
     }
 }

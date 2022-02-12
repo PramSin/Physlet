@@ -54,7 +54,7 @@ export default {
 
     mounted() {
         this.$api
-            .get('/physlet_api/userInfo')
+            .get('/physlet_api/myInfo')
             .then(response => {
                 this.display_username = response.data.data.username
             })

@@ -42,7 +42,7 @@ class DatabaseSeeder extends Seeder
         User::factory(3)
             ->has(User::factory(3), 'followings')
             ->create();
-//        SimulationWithVersion::factory(10)->create();
-//        Comment::factory(20)->create();
+        SimulationWithVersion::factory(10)->create();
+        Comment::factory(20)->create();
     }
 }
