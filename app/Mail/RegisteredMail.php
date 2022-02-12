@@ -27,7 +27,7 @@ class RegisteredMail extends Mailable
      *
      * @return $this
      */
-    public function build()
+    public function build(): RegisteredMail
     {
         return $this
             ->subject(env('APP_NAME') . ' 注册成功')

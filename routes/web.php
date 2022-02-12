@@ -20,25 +20,48 @@ Route::middleware(['web'])->group(function () {
     Route::prefix('physlet_api')->name('physlet.')->group(function () {
         Route::middleware('auth')->group(function () {
             Route::get('/logout', 'UserAuthController@logout')->name('logout');
-            Route::get('/userInfo', 'UserAuthController@userInfo')->name('userInfo');
             Route::post('/changePassword', 'UserAuthController@changePassword')->name('changePassword');
-            Route::get('/getMySimulations', 'SimulationController@getMySimulations')->name('getMySimulations');
-            Route::post('/uploadSimulation', 'SimulationController@uploadSimulation')->name('uploadSimulation');
-            Route::post('/editSimulation', 'SimulationController@editSimulation')->name('editSimulation');
-            Route::post('/deleteSimulation', 'SimulationController@deleteSimulation')->name('deleteSimulation');
-            Route::get('/getVersion', 'SimulationController@getVersion')->name('getVersion');
-            Route::post('/setVersion', 'SimulationController@setVersion')->name('setVersion');
-            Route::post('/addVersion', 'SimulationController@addVersion')->name('addVersion');
-            Route::post('/editVersion', 'SimulationController@editVersion')->name('editVersion');
-            Route::post('/deleteVersion', 'SimulationController@deleteVersion')->name('deleteVersion');
-            Route::get('/getMyPackage', 'SimulationController@getMyPackage')->name('getMyPackage');
+            Route::get('/myInfo', 'UserAuthController@myInfo')->name('userInfo');
+            Route::post('/changeInfo', 'UserAuthController@changeInfo')->name('changeInfo');
+            Route::post('/uploadAvatar', 'UserAuthController@uploadAvatar')->name('uploadAvatar');
+
+            Route::post('/getMySims', 'ListController@getMySimulations');
+
+            Route::post('/sendCom', 'SimulationController@sendComment');
+            Route::post('/deleteCom', 'SimulationController@deleteComment');
+            Route::post('/checkLike', 'SimulationController@checkLike');
+            Route::post('/like', 'SimulationController@like');
+            Route::post('/download', 'SimulationController@download');
+            Route::post('/editSim', 'SimulationController@editSimulation');
+            Route::post('/deleteSim', 'SimulationController@deleteSimulation');
+            Route::post('/uploadSim', 'SimulationController@uploadSimulation');
+
+//            Route::get('/getMySimulations', 'SimulationController@getMySimulations')->name('getMySimulations');
+//            Route::post('/uploadSimulation', 'SimulationController@uploadSimulation')->name('uploadSimulation');
+//            Route::post('/editSimulation', 'SimulationController@editSimulation')->name('editSimulation');
+//            Route::post('/deleteSimulation', 'SimulationController@deleteSimulation')->name('deleteSimulation');
+//            Route::get('/getVersion', 'SimulationController@getVersion')->name('getVersion');
+//            Route::post('/setVersion', 'SimulationController@setVersion')->name('setVersion');
+//            Route::post('/addVersion', 'SimulationController@addVersion')->name('addVersion');
+//            Route::post('/editVersion', 'SimulationController@editVersion')->name('editVersion');
+//            Route::post('/deleteVersion', 'SimulationController@deleteVersion')->name('deleteVersion');
+//            Route::get('/getMyPackage', 'SimulationController@getMyPackage')->name('getMyPackage');
         });
-        Route::get('/getPackage', 'SimulationController@getPackage')->name('getPackage');
-        Route::get('/getCategories', 'SimulationController@getCategories')->name('getCategories');
-        Route::get('/getSimulations', 'SimulationController@getSimulations')->name('getSimulations');
-        Route::post('/login', 'UserAuthController@login')->name('login');
         Route::post('/register', 'UserAuthController@register')->name('register');
+        Route::post('/login', 'UserAuthController@login')->name('login');
         Route::get('/confirmEmail/{token}', 'UserAuthController@confirmEmail')->name('confirmEmail');
+        Route::get('/checkLogin', 'UserAuthController@checkLogin')->name('checkLogin');
+        Route::post('/userInfo', 'UserAuthController@userInfo')->name('userInfo');
+
+        Route::post('/getSims', 'ListController@getSimulations')->name('getSims');
+        Route::post('/search', 'ListController@search')->name('search');
+        Route::post('/filter', 'ListController@filter')->name('filter');
+        Route::get('/getCats', 'ListController@getCategories')->name('getCats');
+        Route::post('/getComs', 'ListController@getComments')->name('getComs');
+        Route::post('/getHisSims', 'ListController@getHisSimulations')->name('getHisSims');
+
+        Route::post('/getSim', 'SimulationController@getSimulation')->name('getSim');
+//        Route::get('/getPackage', 'SimulationController@getPackage')->name('getPackage');
     });
 
     /** Physlet [View] */

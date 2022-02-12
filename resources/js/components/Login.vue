@@ -7,9 +7,9 @@
         :rules="rules"
         style="width: 50%"
     >
-        <el-form-item label="邮箱" prop="emailOrUsername">
+        <el-form-item label="邮箱" prop="email_or_username">
             <el-input
-                v-model.trim="form.emailOrUsername"
+                v-model.trim="form.email_or_username"
                 clearable
             ></el-input>
         </el-form-item>
@@ -39,11 +39,11 @@ export default {
     data() {
         return {
             form: {
-                emailOrUsername: '',
+                email_or_username: '',
                 password: '',
             },
             rules: {
-                emailOrUsername: [
+                email_or_username: [
                     {required: true, message: '邮箱不能为空', trigger: 'blur'},
                 ],
                 password: [
@@ -55,7 +55,7 @@ export default {
     },
     mounted() {
         this.$api
-            .get('/physlet_api/userInfo')
+            .get('/physlet_api/myInfo')
             .then(response => {
                 if (response.data.data.username !== '') {
                     this.$router.replace({path:'/me'})

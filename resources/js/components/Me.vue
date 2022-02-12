@@ -252,7 +252,7 @@ export default {
                 }
             })
         this.$api
-            .get('/physlet_api/userInfo')
+            .get('/physlet_api/myInfo')
             .then(response => {
                 this.username = response.data.data.username
             })

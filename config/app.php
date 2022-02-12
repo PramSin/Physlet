@@ -167,6 +167,8 @@ return [
          */
         Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
         OwenIt\Auditing\AuditingServiceProvider::class,
+        Laravel\Scout\ScoutServiceProvider::class,
+        Vanry\Scout\TNTSearchScoutServiceProvider::class,
 
         /*
          * Application Service Providers...
