@@ -42,7 +42,7 @@
 
 <script>
 export default {
-    name: "Edit_simulation",
+    name: "EditSimulation",
     data() {
         return {
             access_list: [

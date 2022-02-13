@@ -25,6 +25,7 @@
                         <template slot="title">
                             <el-avatar style="margin-right: 0px" v-loading="loading_small_avatar" :src="small_avatar_url"></el-avatar>
                         </template>
+                        <el-menu-item index="/user_info">账户信息</el-menu-item>
                         <el-menu-item index="/change_password">修改密码</el-menu-item>
                         <el-menu-item @click="logout">登出</el-menu-item>
                     </el-submenu>

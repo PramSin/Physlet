@@ -22,36 +22,37 @@
         <el-main>
             <h2>我们的主页信息啥的，可以展示现有的实验模拟</h2>
             <h3>模拟展示（点击查看详情）</h3>
-<!--            <el-card>
-                <el-table
-                    @row-click="jump_to_simulation"
-                    stripe
-                    :data="All_simulation_list"
-                    style="width: 100%">
-                    <el-table-column
-                        prop="name"
-                        label="名称"
-                        width="180">
-                    </el-table-column>
+            <!--            <el-card>
+                            <el-table
+                                @row-click="jump_to_simulation"
+                                stripe
+                                :data="All_simulation_list"
+                                style="width: 100%">
+                                <el-table-column
+                                    prop="name"
+                                    label="名称"
+                                    width="180">
+                                </el-table-column>
 
-                    <el-table-column
-                        :formatter="dateFormat"
-                        prop="created_at"
-                        label="创建时间">
-                    </el-table-column>
-                    <el-table-column
-                        prop="likes"
-                        label="赞"
-                        width="50">
-                    </el-table-column>
+                                <el-table-column
+                                    :formatter="dateFormat"
+                                    prop="created_at"
+                                    label="创建时间">
+                                </el-table-column>
+                                <el-table-column
+                                    prop="likes"
+                                    label="赞"
+                                    width="50">
+                                </el-table-column>
 
-                </el-table>
-            </el-card>-->
-            <el-card style="border-radius: 15px" v-loading="loading_simulations" v-for="simulation in All_simulation_list">
+                            </el-table>
+                        </el-card>-->
+            <el-card style="border-radius: 15px" v-loading="loading_simulations"
+                     v-for="simulation in All_simulation_list">
                 <div slot="header">
                     <div>
                         <i class="el-icon-data-analysis" style="margin-right: 5px; font-size: 15px"></i>
-                        <el-tag size="small">{{ simulation.catagory_name}}</el-tag>
+                        <el-tag size="small">{{ simulation.catagory_name }}</el-tag>
                     </div>
                     <h3 style="margin-right: 3px; width: 80%" v-if="!loading_simulations">{{ simulation.user_name }} /
                         {{ simulation.simulation_name }}</h3>
@@ -76,7 +77,7 @@
                     <div style="text-align:center; font-size: 20px">name</div>
                 </div>
                 <div style="text-align: center" v-if="!loading_avatar">
-                    共上传了{{this.number_of_simulations}}个模拟, 点击查看
+                    共上传了{{ this.number_of_simulations }}个模拟, 点击查看
                 </div>
             </el-card>
             <el-card style="margin-top: 50px" v-else>
@@ -144,7 +145,7 @@ export default {
             this.$api
                 .get('/physlet_api/checkLogin')
                 .then(response => {
-                    return response.data.code === 200;
+                        return response.data.code === 200;
                     }
                 )
         },
@@ -179,32 +180,32 @@ export default {
                 }
                 this.loading_simulations = false
             })
-            this.$api
-                .get('/physlet_api/checkLogin')
-                .then(response => {
-                        if (response.data.code === 200) {
-                            this.$api
-                                .get('/physlet_api/myInfo')
-                                .then(response => {
-                                    this.avatar_url = response.data.data.avatar
-                                    this.display_username = response.data.data.uname
-                                    this.number_of_simulations = response.data.data.sims
-                                    this.loading_avatar = false
-                                })
-                        }
+        this.$api
+            .get('/physlet_api/checkLogin')
+            .then(response => {
+                    if (response.data.code === 200) {
+                        this.$api
+                            .get('/physlet_api/myInfo')
+                            .then(response => {
+                                this.avatar_url = response.data.data.avatar
+                                this.display_username = response.data.data.uname
+                                this.number_of_simulations = response.data.data.sims
+                                this.loading_avatar = false
+                            })
                     }
-                )
-            this.$api
-                .get('/physlet_api/getCats')
-                .then(response => {
-                    let data = response.data.data;
-                    for (let syn = 0; syn < data.length; syn++) {
-                        let category = {};
-                        category.rank_category_name = data[syn].cname
-                        category.rank_category_id = data[syn].cid
-                        this.rank_category.push(category)
-                    }
-                })
+                }
+            )
+        this.$api
+            .get('/physlet_api/getCats')
+            .then(response => {
+                let data = response.data.data;
+                for (let syn = 0; syn < data.length; syn++) {
+                    let category = {};
+                    category.rank_category_name = data[syn].cname
+                    category.rank_category_id = data[syn].cid
+                    this.rank_category.push(category)
+                }
+            })
     }
 }
 

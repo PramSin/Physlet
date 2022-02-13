@@ -7,11 +7,12 @@ import Register from "../components/Register";
 import ChangePassword from "../components/ChangePassword";
 import Demo from "../components/Demo"
 import PageNotFound from "../components/PageNotFound";
-import Edit_simulation from "../components/Edit_simulation";
+import EditSimulation from "../components/EditSimulation";
 import Portal from "../components/Portal";
+import UserInfo from "../components/UserInfo";
 
 
-export default new VueRouter({//TODO 在不存在页面时跳转404
+export default new VueRouter({
     mode: "history",
     routes:[
         {
@@ -48,7 +49,11 @@ export default new VueRouter({//TODO 在不存在页面时跳转404
         },
         {
             path:'/edit_simulation',
-            component:Edit_simulation
+            component:EditSimulation
+        },
+        {
+            path:'/user_info',
+            component:UserInfo
         },
         { path: "*", component: PageNotFound }
     ]

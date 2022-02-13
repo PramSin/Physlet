@@ -29,8 +29,6 @@
       ></el-input>
     </el-form-item>
     <br/><br/>
-    <el-checkbox label="记住账号" v-model="isRemember"></el-checkbox>
-    <br/>
     <el-button type="primary" native-type="submit" @click="onSubmit">改变密码</el-button>
   </el-form>
 
