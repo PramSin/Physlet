@@ -7,7 +7,7 @@
                     <el-menu-item index="/portal">
                         主页
                     </el-menu-item>
-                   <el-tooltip class="item" effect="dark" content="请先登录才能上传模拟" placement="bottom" :disabled="is_authorized()">
+                   <el-tooltip class="item" effect="dark" content="请先登录才能上传模拟" placement="bottom" :disabled="!authorized">
                        <el-menu-item index="/me" :disabled="!is_authorized">
                            我的模拟
                        </el-menu-item>
@@ -55,6 +55,7 @@ export default {
             search: '',
             loading_small_avatar: true,
             small_avatar_url: "",
+            authorized: false,
         }
     },
 
@@ -78,7 +79,11 @@ export default {
             this.$api
                 .get('/physlet_api/checkLogin')
                 .then(response => {
-                        return response.data.code === 200;
+                       if (response.data.code === 200) {
+                           this.authorized = true
+                           return response.data.code
+                       }
+                       else return false
                     }
                 )
         },

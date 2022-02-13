@@ -21,7 +21,6 @@ Vue.prototype.$api.interceptors.response.use(
         return request
     },
     (error) => {
-        console.log(error.response.status)
         if (error.response.status === 401) {
             router.push({path:'/login'});
             return error

@@ -74,7 +74,7 @@
             <el-card style="margin-top: 50px" v-if="is_authorized">
                 <div slot="header" style="text-align: center">
                     <el-avatar :size="125" :src="avatar_url" v-loading="loading_avatar"></el-avatar>
-                    <div style="text-align:center; font-size: 20px">name</div>
+                    <div style="text-align:center; font-size: 20px" v-if="!loading_avatar">{{ this.display_username }}</div>
                 </div>
                 <div style="text-align: center" v-if="!loading_avatar">
                     共上传了{{ this.number_of_simulations }}个模拟, 点击查看
