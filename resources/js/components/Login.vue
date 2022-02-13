@@ -13,9 +13,9 @@
                     :hide-required-asterisk="true"
                     label-width="30px"
                 >
-                    <el-form-item label="邮箱" prop="emailOrUsername">
+                    <el-form-item label="邮箱" prop="email_or_username">
                         <el-input
-                            v-model.trim="form.emailOrUsername"
+                            v-model.trim="form.email_or_username"
                             clearable
                             style="width: 250px"
                         ></el-input>
@@ -66,9 +66,9 @@ export default {
     },
     mounted() {
         this.$api
-            .get('/physlet_api/myInfo')
+            .get('/physlet_api/userInfo')
             .then(response => {
-                if (response.data.data.username !== '') {
+                if (response.data.data.uname !== '') {
                     this.$router.replace({path: '/me'})
                 }
             })

@@ -230,7 +230,6 @@ export default {
 
         },
         edit_Simulation(row) {
-            console.log(row);
             this.$router.push({
                 path: "/edit_simulation", query: {
                     id: row.id,

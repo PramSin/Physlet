@@ -10,19 +10,19 @@
                         :label="rank_list.label"
                         :value="rank_list.method"></el-option>
                 </el-select>
-                <el-select multiple v-model="rank_tag" placeholder="按标签筛选" style="margin-top: 20px">
+                <el-select v-model="rank_tag" placeholder="按标签筛选" style="margin-top: 20px">
                     <el-option
-                        v-for="tag in tag_list"
-                        :key="tag.tag"
-                        :label="tag.label"
-                        :value="tag.tag"></el-option>
+                        v-for="category in rank_category"
+                        :key="category.rank_category_id"
+                        :label="category.rank_category_name"
+                        :value="category.rank_category_id"></el-option>
                 </el-select>
             </el-card>
         </el-aside>
         <el-main>
             <h2>我们的主页信息啥的，可以展示现有的实验模拟</h2>
             <h3>模拟展示（点击查看详情）</h3>
-            <el-card>
+<!--            <el-card>
                 <el-table
                     @row-click="jump_to_simulation"
                     stripe
@@ -46,38 +46,37 @@
                     </el-table-column>
 
                 </el-table>
-            </el-card>
-            <el-card style="border-radius: 15px">
+            </el-card>-->
+            <el-card style="border-radius: 15px" v-loading="loading_simulations" v-for="simulation in All_simulation_list">
                 <div slot="header">
                     <div>
                         <i class="el-icon-data-analysis" style="margin-right: 5px; font-size: 15px"></i>
-                        <el-tag size="small">标签一</el-tag>
-                        <el-tag size="small">标签二</el-tag>
-                        <el-tag size="small">标签三</el-tag>
+                        <el-tag size="small">{{ simulation.catagory_name}}</el-tag>
                     </div>
-                    <h3 style="margin-right: 3px; width: 80%">作者名字/{{ this.All_simulation_list[1].name }}</h3>
+                    <h3 style="margin-right: 3px; width: 80%" v-if="!loading_simulations">{{ simulation.user_name }} /
+                        {{ simulation.simulation_name }}</h3>
                 </div>
-                <span>这里是简介</span>
+                <span v-if="!loading_simulations">{{ simulation.synopsis }}</span>
                 <br/>
                 <span
-                    style="font-size: small; color: gray">创建时间 {{
-                        this.All_simulation_list[1].created_at.slice(0, 10)
+                    style="font-size: small; color: gray" v-if="!loading_simulations">创建时间 {{
+                        simulation.create_time.slice(0, 10)
                     }}</span>
                 <div style="float: right">
-                    <span>likes {{ this.All_simulation_list[1].likes }}</span>
+                    <span v-if="!loading_simulations">likes {{ simulation.likes }}</span>
                 </div>
 
             </el-card>
 
         </el-main>
         <el-aside>
-            <el-card style="margin-top: 50px" v-if="!is_authorized">
+            <el-card style="margin-top: 50px" v-if="is_authorized">
                 <div slot="header" style="text-align: center">
-                    <el-avatar :size="125"></el-avatar>
+                    <el-avatar :size="125" :src="avatar_url" v-loading="loading_avatar"></el-avatar>
                     <div style="text-align:center; font-size: 20px">name</div>
                 </div>
-                <div style="text-align: center">
-                    我的模拟们
+                <div style="text-align: center" v-if="!loading_avatar">
+                    共上传了{{this.number_of_simulations}}个模拟, 点击查看
                 </div>
             </el-card>
             <el-card style="margin-top: 50px" v-else>
@@ -104,7 +103,13 @@ export default {
         return {
             rank_method: "",
             rank_tag: "",
-            loading_simulations: false,
+            loading_simulations: true,
+            loading_avatar: true,
+            avatar_url: "",
+            rank_category: [],
+            display_username: "",
+            loading_rank_category: true,
+            number_of_simulations: 0,
             All_simulation_list: [],
             tag_list: [
                 {
@@ -139,7 +144,7 @@ export default {
             this.$api
                 .get('/physlet_api/checkLogin')
                 .then(response => {
-                        return response.data.code === 200;
+                    return response.data.code === 200;
                     }
                 )
         },
@@ -156,25 +161,50 @@ export default {
     },
     mounted() {
         this.$api
-            .get('/physlet_api/getSims')
+            .post('/physlet_api/getSims')
             .then(response => {
-                this.loading_simulations = true
                 let data = response.data.data;
                 for (let syn = 0; syn < data.length; syn++) {
                     let simulation_list = {};
                     simulation_list.simulation_id = data[syn].sid
                     simulation_list.simulation_name = data[syn].sname
-                    simulation_list.creator_name = data[syn].cname
-                    simulation_list.creator_id = data[syn].cid
+                    simulation_list.catagory_name = data[syn].cname
+                    simulation_list.catagory_id = data[syn].cid
                     simulation_list.synopsis = data[syn].synopsis
                     simulation_list.likes = data[syn].likes
-                    simulation_list.uname = data[syn].uname
+                    simulation_list.user_name = data[syn].uname
                     simulation_list.url = data[syn].url
                     simulation_list.create_time = data[syn].create_time
                     this.All_simulation_list.push(simulation_list)
                 }
-               this.loading_simulations = false
+                this.loading_simulations = false
             })
+            this.$api
+                .get('/physlet_api/checkLogin')
+                .then(response => {
+                        if (response.data.code === 200) {
+                            this.$api
+                                .get('/physlet_api/myInfo')
+                                .then(response => {
+                                    this.avatar_url = response.data.data.avatar
+                                    this.display_username = response.data.data.uname
+                                    this.number_of_simulations = response.data.data.sims
+                                    this.loading_avatar = false
+                                })
+                        }
+                    }
+                )
+            this.$api
+                .get('/physlet_api/getCats')
+                .then(response => {
+                    let data = response.data.data;
+                    for (let syn = 0; syn < data.length; syn++) {
+                        let category = {};
+                        category.rank_category_name = data[syn].cname
+                        category.rank_category_id = data[syn].cid
+                        this.rank_category.push(category)
+                    }
+                })
     }
 }
 

@@ -7,7 +7,7 @@
                     <el-menu-item index="/portal">
                         主页
                     </el-menu-item>
-                   <el-tooltip class="item" effect="dark" content="请先登录才能上传模拟" placement="bottom" v-if="!is_authorized">
+                   <el-tooltip class="item" effect="dark" content="请先登录才能上传模拟" placement="bottom" :disabled="is_authorized()">
                        <el-menu-item index="/me" :disabled="!is_authorized">
                            我的模拟
                        </el-menu-item>
@@ -23,7 +23,7 @@
                     </el-menu-item>
                     <el-submenu index="user_information" style="float: right" v-if="is_authorized">
                         <template slot="title">
-                            <el-avatar style="margin-right: 0px"></el-avatar>
+                            <el-avatar style="margin-right: 0px" v-loading="loading_small_avatar" :src="small_avatar_url"></el-avatar>
                         </template>
                         <el-menu-item index="/change_password">修改密码</el-menu-item>
                         <el-menu-item @click="logout">登出</el-menu-item>
@@ -52,19 +52,35 @@ export default {
         return {
             jumpto: true,
             search: '',
-            display_username: '',
-            window_width: window.innerWidth,
+            loading_small_avatar: true,
+            small_avatar_url: "",
         }
     },
 
     mounted() {
         this.$api
-            .get('/physlet_api/myInfo')
+            .get('/physlet_api/checkLogin')
             .then(response => {
-                this.display_username = response.data.data.username
-            })
+                    if (response.data.code === 200) {
+                        this.$api
+                            .get('/physlet_api/myInfo')
+                            .then(response => {
+                                this.small_avatar_url = response.data.data.avatar
+                                this.loading_small_avatar = false
+                            })
+                    }
+                }
+            )
     },
     methods: {
+        is_authorized() {
+            this.$api
+                .get('/physlet_api/checkLogin')
+                .then(response => {
+                        return response.data.code === 200;
+                    }
+                )
+        },
         to_login() {
             if (this.display_username !== '') {
                 this.$router.push({path: '/login'})
@@ -72,18 +88,6 @@ export default {
                 this.$router.push({path: '/me'})
             }
 
-        },
-        handleCommand(command) {
-            switch (command) {
-                case 'change_password':
-                    this.$router.push({path: "/changepsw"});
-                    break;
-                case 'exit':
-                    this.logout();
-                    break;
-                case 'to_homepage':
-                    this.$router.push({path: "/me"})
-            }
         },
         current_path() {
             return this.$route.path
@@ -100,6 +104,8 @@ export default {
                     } else {
                         location.reload()
                         this.$message('注销成功！');
+                        this.$router.replace({path: '/portal'})
+
                     }
                 })
                 .catch()
@@ -109,20 +115,6 @@ export default {
         },
     },
     computed: {
-        //todo 加载的动画
-        //todo async
-        //todo 手机界面适应
-        top_blank_width() {
-            return this.window_width - 605
-        },
-        is_authorized() {
-            this.$api
-                .get('/physlet_api/checkLogin')
-                .then(response => {
-                        return response.data.code === 200;
-                    }
-                )
-        },
         ClientWidth() {
             return document.body.clientWidth <= 768
         },
