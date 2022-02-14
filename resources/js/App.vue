@@ -7,8 +7,8 @@
                     <el-menu-item index="/portal">
                         主页
                     </el-menu-item>
-                   <el-tooltip class="item" effect="dark" content="请先登录才能上传模拟" placement="bottom" :disabled="!authorized">
-                       <el-menu-item index="/me" :disabled="!is_authorized">
+                   <el-tooltip class="item" effect="dark" content="请先登录才能上传模拟" placement="bottom" :disabled="authorized">
+                       <el-menu-item index="/me" :disabled="!authorized">
                            我的模拟
                        </el-menu-item>
                    </el-tooltip>
@@ -21,7 +21,7 @@
                                       style="padding-bottom: 7px"></el-input>
                         </template>
                     </el-menu-item>
-                    <el-submenu index="user_information" style="float: right" v-if="is_authorized">
+                    <el-submenu index="user_information" style="float: right" v-if="authorized">
                         <template slot="title">
                             <el-avatar style="margin-right: 0px" v-loading="loading_small_avatar" :src="small_avatar_url"></el-avatar>
                         </template>
@@ -29,7 +29,7 @@
                         <el-menu-item index="/change_password">修改密码</el-menu-item>
                         <el-menu-item @click="logout">登出</el-menu-item>
                     </el-submenu>
-                    <el-menu-item index="unauthorized" style="float: right" v-else>
+                    <el-menu-item index="/login" style="float: right" v-else>
                         <el-link type="primary" :underline=false style="font-size: large">请登录</el-link>
                     </el-menu-item>
                 </el-menu>
@@ -64,6 +64,7 @@ export default {
             .get('/physlet_api/checkLogin')
             .then(response => {
                     if (response.data.code === 200) {
+                        this.authorized = true
                         this.$api
                             .get('/physlet_api/myInfo')
                             .then(response => {
@@ -75,18 +76,6 @@ export default {
             )
     },
     methods: {
-        is_authorized() {
-            this.$api
-                .get('/physlet_api/checkLogin')
-                .then(response => {
-                       if (response.data.code === 200) {
-                           this.authorized = true
-                           return response.data.code
-                       }
-                       else return false
-                    }
-                )
-        },
         to_login() {
             if (this.display_username !== '') {
                 this.$router.push({path: '/login'})

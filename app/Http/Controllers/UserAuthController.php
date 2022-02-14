@@ -254,7 +254,7 @@ class UserAuthController extends Controller
                 $user->avatar = $avatar;
                 $user->save();
                 $this->r['code'] = 200;
-                $this->r['message'] = "头像上传成功";
+                $this->r['message'] = $avatar;
             } else {
                 $this->r['code'] = 400;
                 $this->r['message'] = $_FILES['file'];

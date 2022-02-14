@@ -3,64 +3,27 @@
         <el-aside></el-aside>
         <el-main>
             <h3>我的模拟（点击展示）</h3>
-            <el-table
-                stripe
-                :data="Simulation_list"
-                style="width: 100%">
-                <el-table-column
-                    prop="version_id"
-                    v-if=false
-                    label="version_id">
-                </el-table-column>
-                <el-table-column
-                    prop="id"
-                    v-if=false
-                    label="id">
-                </el-table-column>
-                <el-table-column
-                    prop="category_id"
-                    v-if=false
-                    label="category_id">
-                </el-table-column>
-                <el-table-column
-                    prop="name"
-                    label="名称"
-                    width="180"
-                >
-                </el-table-column>
-                <el-table-column
-                    prop="category.name"
-                    label="类别">
-                </el-table-column>
-                <el-table-column
-                    prop="access"
-                    label="可见性">
-                </el-table-column>
-                <el-table-column
-                    :formatter="dateFormat"
-                    prop="created_at"
-                    label="创建时间">
-                </el-table-column>
-                <el-table-column
-                    prop="likes"
-                    label="赞"
-                    width="50">
-                </el-table-column>
-                <el-table-column
-                    prop="shares"
-                    label="分享">
-                </el-table-column>
-                <el-table-column
-                    fixed="right"
-                    label="操作"
-                    width="100">
-                    <template slot-scope="scope">
-                        <el-button type="text" size="small" @click="edit_form_visibility = true">编辑</el-button>
-                        <el-button type="text" size="small" @click="jump_to_My_simulation">查看</el-button>
-                    </template>
+            <el-card style="border-radius: 15px" v-loading="loading_my_simulations"
+                     v-for="simulation in my_simulation_list">
+                <div slot="header">
+                    <div>
+                        <i class="el-icon-data-analysis" style="margin-right: 5px; font-size: 15px"></i>
+                        <el-tag size="small">{{ simulation.catagory_name }}</el-tag>
+                    </div>
+                    <h3 style="margin-right: 3px; width: 80%" v-if="!loading_my_simulations">
+                        {{ simulation.simulation_name }}</h3>
+                </div>
+                <span v-if="!loading_my_simulations">{{ simulation.synopsis }}</span>
+                <br/>
+                <span
+                    style="font-size: small; color: gray" v-if="!loading_my_simulations">创建时间 {{
+                        simulation.create_time.slice(0, 10)
+                    }}</span>
+                <div style="float: right">
+                    <span v-if="!loading_my_simulations">likes {{ simulation.likes }}</span>
+                </div>
 
-                </el-table-column>
-            </el-table>
+            </el-card>
             <el-dialog title="编辑模拟" :visible.sync="edit_form_visibility">
                 <el-form :inline="true" :model="edit_form">
                     <el-form-item label="类别">
@@ -76,7 +39,7 @@
                         </el-select>
                     </el-form-item>
                     <el-form-item>
-                        <el-button type="primary" @click="submit_edit">查询</el-button>
+                        <el-button type="primary">查询</el-button>
                     </el-form-item>
                 </el-form>
             </el-dialog>
@@ -92,12 +55,12 @@
                 </el-form-item>
                 <br/>
                 <el-form-item label="类别" required>
-                    <el-select style="margin-top: 15px" v-model="category" placeholder="请选择模拟类别">
+                    <el-select style="margin-top: 15px" v-model="upload_category" placeholder="请选择模拟类别">
                         <el-option
-                            v-for="(item, index) of category_list"
-                            :value="item.value"
-                            :label="item.label"
-                            :key="index">
+                            v-for="item of upload_category_list"
+                            :key="item.upload_category_id"
+                            :value="item.upload_category_id"
+                            :label="item.upload_category_name">
                         </el-option>
                     </el-select>
                 </el-form-item>
@@ -152,6 +115,9 @@ export default {
     name: "Me",
     data() {
         return {
+            loading_my_simulations: true,
+            my_simulation_list: [],
+            upload_category_list: [],
             edit_form: {
                 category: "",
                 accessibility: ""
@@ -169,7 +135,7 @@ export default {
             ],
             simulation_name: '',
             synopsis: '',
-            category: '',
+            upload_category: "",
             access: 0,
             category_list: [],
             Simulation_list: [],
@@ -212,7 +178,6 @@ export default {
         save_change() {
             // console.log(this.$route.query.id);
             let params = {
-                //TODO 这里表单要变
                 simulation: this.$route.query.id,
                 category: this.category_changed,
                 access: this.access_changed,
@@ -222,7 +187,7 @@ export default {
                 .then(response => {
                     if (response.data.code === 200) {
                         window.alert("成功！")
-                        this.$router.replace({path:"/me"})
+                        this.$router.replace({path: "/me"})
                     } else {
                         window.alert(response.data.message)
                     }
@@ -258,14 +223,13 @@ export default {
         },
         submitFile() {
             const formData = new FormData();
-            formData.append('name', this.simulation_name)
-            formData.append('category', this.category)
+            formData.append('sname', this.simulation_name)
+            formData.append('cid', this.upload_category)
             formData.append('synopsis', this.synopsis)
             formData.append('access', this.access)
-            // const file = this.Images
             formData.append('file', this.files.raw);
             const headers = {'Content-Type': 'multipart/form-data;boundary=","'};
-            this.$api.post('/physlet_api/uploadSimulation',
+            this.$api.post('/physlet_api/uploadSim',
                 formData,
                 {headers},
             ).then((res) => {
@@ -274,52 +238,42 @@ export default {
                 location.reload()
             });
         },
-        handleDropdownCommand(command) {
-            switch (command) {
-                case 'change_password':
-                    this.$router.push({path: '/Changepsw'});
-                    break;
-                case 'exit':
-                    this.logout();
-                    break;
-            }
-        },
     },
 
     mounted() {
-        this.$refs.upload.clearFiles()
         this.$api
-            .get('/physlet_api/getCategories')
+            .post('/physlet_api/getMySims')
             .then(response => {
                 let data = response.data.data;
                 for (let syn = 0; syn < data.length; syn++) {
-                    let category = {};
-                    category.label = data[syn].name
-                    category.value = data[syn].id
-                    this.category_list.push(category)
+                    let simulation_list = {};
+                    simulation_list.simulation_id = data[syn].sid
+                    simulation_list.simulation_name = data[syn].sname
+                    simulation_list.catagory_name = data[syn].cname
+                    simulation_list.catagory_id = data[syn].cid
+                    simulation_list.synopsis = data[syn].synopsis
+                    simulation_list.likes = data[syn].likes
+                    simulation_list.access = data[syn].access
+                    simulation_list.create_time = data[syn].create_time
+                    this.my_simulation_list.push(simulation_list)
                 }
+                this.loading_my_simulations = false
             })
+        this.$refs.upload.clearFiles()
         this.$api
             .get('/physlet_api/myInfo')
             .then(response => {
                 this.username = response.data.data.username
             })
         this.$api
-            .get('/physlet_api/getMySimulations')
+            .get('/physlet_api/getCats')
             .then(response => {
                 let data = response.data.data;
                 for (let syn = 0; syn < data.length; syn++) {
-                    let simulation_list = {};
-                    simulation_list.version_id = data[syn].version.id
-                    simulation_list.name = data[syn].version.name
-                    simulation_list.access = (data[syn].access ? '公开' : '私人')
-                    simulation_list.id = data[syn].id
-                    simulation_list.category = data[syn].category
-                    simulation_list.likes = data[syn].likes
-                    simulation_list.category_id = data[syn].category_id
-                    simulation_list.created_at = data[syn].created_at
-                    simulation_list.shares = data[syn].shares
-                    this.Simulation_list.push(simulation_list)
+                    let category = {};
+                    category.upload_category_name = data[syn].cname
+                    category.upload_category_id = data[syn].cid
+                    this.upload_category_list.push(category)
                 }
             })
     }

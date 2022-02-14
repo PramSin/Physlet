@@ -3,13 +3,13 @@
         <el-aside>
             <el-card style="margin-top: 50px">
                 <div slot="header">筛选器</div>
-                <el-select v-model="rank_method" placeholder="排序方式">
+<!--                <el-select v-model="rank_method" placeholder="排序方式">
                     <el-option
                         v-for="rank_list in rank"
                         :key="rank_list.method"
                         :label="rank_list.label"
                         :value="rank_list.method"></el-option>
-                </el-select>
+                </el-select>-->
                 <el-select v-model="rank_tag" placeholder="按标签筛选" style="margin-top: 20px">
                     <el-option
                         v-for="category in rank_category"
@@ -22,31 +22,6 @@
         <el-main>
             <h2>我们的主页信息啥的，可以展示现有的实验模拟</h2>
             <h3>模拟展示（点击查看详情）</h3>
-            <!--            <el-card>
-                            <el-table
-                                @row-click="jump_to_simulation"
-                                stripe
-                                :data="All_simulation_list"
-                                style="width: 100%">
-                                <el-table-column
-                                    prop="name"
-                                    label="名称"
-                                    width="180">
-                                </el-table-column>
-
-                                <el-table-column
-                                    :formatter="dateFormat"
-                                    prop="created_at"
-                                    label="创建时间">
-                                </el-table-column>
-                                <el-table-column
-                                    prop="likes"
-                                    label="赞"
-                                    width="50">
-                                </el-table-column>
-
-                            </el-table>
-                        </el-card>-->
             <el-card style="border-radius: 15px" v-loading="loading_simulations"
                      v-for="simulation in All_simulation_list">
                 <div slot="header">
@@ -71,7 +46,7 @@
 
         </el-main>
         <el-aside>
-            <el-card style="margin-top: 50px" v-if="is_authorized">
+            <el-card style="margin-top: 50px" v-if="authorized">
                 <div slot="header" style="text-align: center">
                     <el-avatar :size="125" :src="avatar_url" v-loading="loading_avatar"></el-avatar>
                     <div style="text-align:center; font-size: 20px" v-if="!loading_avatar">{{ this.display_username }}</div>
@@ -102,6 +77,7 @@ export default {
     },
     data() {
         return {
+            authorized: false,
             rank_method: "",
             rank_tag: "",
             loading_simulations: true,
@@ -141,14 +117,6 @@ export default {
     },
 
     methods: {
-        is_authorized() {
-            this.$api
-                .get('/physlet_api/checkLogin')
-                .then(response => {
-                        return response.data.code === 200;
-                    }
-                )
-        },
         jump_to_simulation(row) {
             this.$router.push({path: "/demo", query: {version: row.version_id}});
         },
@@ -184,6 +152,7 @@ export default {
             .get('/physlet_api/checkLogin')
             .then(response => {
                     if (response.data.code === 200) {
+                        this.authorized = true
                         this.$api
                             .get('/physlet_api/myInfo')
                             .then(response => {
