@@ -9,6 +9,12 @@
                     <div>
                         <i class="el-icon-data-analysis" style="margin-right: 5px; font-size: 15px"></i>
                         <el-tag size="small">{{ simulation.catagory_name }}</el-tag>
+                        <div style="float: right">
+                            <el-button size="small" @click="open_edit_form(simulation)">编辑</el-button>
+                            <el-popconfirm title="确定删除? " @confirm="delete_simulation(simulation)">
+                                <el-button slot="reference" size="small">删除</el-button>
+                            </el-popconfirm>
+                        </div>
                     </div>
                     <h3 style="margin-right: 3px; width: 80%" v-if="!loading_my_simulations">
                         {{ simulation.simulation_name }}</h3>
@@ -24,22 +30,40 @@
                 </div>
 
             </el-card>
-            <el-dialog title="编辑模拟" :visible.sync="edit_form_visibility">
-                <el-form :inline="true" :model="edit_form">
+            <el-dialog title="编辑模拟" :visible.sync="edit_form_visibility" :center="true">
+                <el-form :inline="false" :model="edit_form">
+                    <el-form-item label="名称" style="width: 35%">
+                        <el-input
+                            placeholder=""
+                            v-model="edit_form.sname"
+                            clearable>
+                        </el-input>
+                    </el-form-item>
                     <el-form-item label="类别">
-                        <el-select v-model="edit_form.category" placeholder="类别">
-                            <el-option value="热学" label="热学"></el-option>
-                            <el-option value="电学" label="电学"></el-option>
+                        <el-select v-model="edit_form.cid" placeholder="类别">
+                            <el-option
+                                v-for="category in edit_category_list"
+                                :key="category.edit_category_id"
+                                :label="category.edit_category_name"
+                                :value="category.edit_category_id"></el-option>
                         </el-select>
                     </el-form-item>
+                    <el-form-item label="简介">
+                        <el-input
+                            type="textarea"
+                            autosize
+                            placeholder=""
+                            v-model="edit_form.synopsis">
+                        </el-input>
+                    </el-form-item>
                     <el-form-item label="可见性">
-                        <el-select v-model="edit_form.accessibility" placeholder="可见性">
+                        <el-select v-model="edit_form.access" placeholder="可见性">
                             <el-option value="0" label="私人"></el-option>
                             <el-option value="1" label="公共"></el-option>
                         </el-select>
                     </el-form-item>
                     <el-form-item>
-                        <el-button type="primary">查询</el-button>
+                        <el-button type="primary" @click="submit_edit">提交</el-button>
                     </el-form-item>
                 </el-form>
             </el-dialog>
@@ -117,10 +141,15 @@ export default {
         return {
             loading_my_simulations: true,
             my_simulation_list: [],
+            simulation_to_edit: [],
             upload_category_list: [],
+            edit_category_list: [],
             edit_form: {
-                category: "",
-                accessibility: ""
+                sid: "",
+                sname: "",
+                cid: "",
+                synopsis: "",
+                access: "",
             },
             edit_form_visibility: false,
             access_list: [
@@ -172,11 +201,45 @@ export default {
         },
     },
     methods: {
+        open_edit_form(simulation) {
+            console.log(simulation)
+            this.edit_form_visibility = true
+            this.edit_form.sid = simulation.simulation_id
+            this.edit_form.cid = simulation.catagory_id
+            this.edit_form.synopsis = simulation.synopsis
+            this.edit_form.access = simulation.access
+            this.edit_form.sname = simulation.simulation_name
+        },
+        delete_simulation(simulation) {
+            this.$api
+                .post('/physlet_api/deleteSim', {sid: simulation.simulation_id})
+                .then(response => {
+                    if (response.data.code === 200) {
+                       this.$message({
+                           message: "删除成功!",
+                           type: "success"
+                       })
+                    } else {
+                        window.alert(response.data.message)
+                    }
+                })
+        },
+        submit_edit() {
+            this.$api
+                .post('/physlet_api/editSim', this.edit_form)
+                .then(response => {
+                    if (response.data.code === 200) {
+                        window.alert("成功！")
+                        this.$router.replace({path: "/me"})
+                    } else {
+                        window.alert(response.data.message)
+                    }
+                })
+        },
         jump_to_My_simulation(row) {
             this.$router.push({path: "/demo", query: {version: row.version_id}});
         },
         save_change() {
-            // console.log(this.$route.query.id);
             let params = {
                 simulation: this.$route.query.id,
                 category: this.category_changed,
@@ -270,10 +333,14 @@ export default {
             .then(response => {
                 let data = response.data.data;
                 for (let syn = 0; syn < data.length; syn++) {
-                    let category = {};
+                    let category = {}
+                    let edit_category = {}
                     category.upload_category_name = data[syn].cname
+                    edit_category.edit_category_name = data[syn].cname
                     category.upload_category_id = data[syn].cid
+                    edit_category.edit_category_id = data[syn].cid
                     this.upload_category_list.push(category)
+                    this.edit_category_list.push(edit_category)
                 }
             })
     }

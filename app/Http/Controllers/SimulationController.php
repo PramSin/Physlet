@@ -134,14 +134,14 @@ class SimulationController extends Controller
 
                 if ($request->hasFile('file')) {
                     $package = $request->file('file')
-                        ->store("public/" . Category::findOrFail($simulation->category->name)
+                        ->store("public/" . Category::findOrFail($request->post('cid'))
                                 ->name
                         );
                     $file = self::unzip_file($package);
                 } else {
                     $file = $simulation->version->root_path;
                 }
-                $simulation->version->name = $request->post('cname');
+                $simulation->version->name = $request->post('sname');
                 $simulation->version->synopsis = $request->post('synopsis');
                 $simulation->version->root_path = $file;
 

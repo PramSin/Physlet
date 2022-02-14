@@ -199,7 +199,8 @@ class ListController extends Controller
                     'synopsis' => $simulation->version->synopsis,
                     'likes' => $simulation->likes,
                     'uname' => $simulation->user->username,
-                    'create_time' => $simulation->created_at
+                    'create_time' => $simulation->created_at,
+                    'access' => $simulation->access
                 ];
             }
 

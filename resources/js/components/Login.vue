@@ -74,7 +74,6 @@ export default {
             })
     },
     methods: {
-        //todo 输入框宽度
         onSubmit() {
             this.$refs.form.validate((valid) => {
                 if (valid) {
