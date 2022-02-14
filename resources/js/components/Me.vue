@@ -95,7 +95,7 @@
                                :auto-upload="false"
                                style="margin-top: 15px">
                         <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
-                        <div slot="tip" class="el-upload__tip">必须为zip格式，不超过100mb</div>
+                        <div slot="tip" class="el-upload__tip">必须为zip格式，不超过20mb</div>
                     </el-upload>
                 </el-form-item>
                 <el-form-item>

@@ -7,11 +7,12 @@
                 class="avatar-uploader"
                 action=""
                 :show-file-list ="false"
+                :auto-upload="false"
                 :on-change="upload_avatar">
                 <img v-if="upload_avatar_url" :src="upload_avatar_url" class="avatar">
                 <i v-else class="el-icon-plus avatar-uploader-icon"></i>
             </el-upload>
-            <el-button size="small" type="success" @click="submit_avatar">点击上传</el-button>
+            <el-button size="small" type="success" @click="submit_avatar">点击上传头像</el-button>
         </el-main>
         <el-aside>
             <el-card style="margin-top: 50px">
@@ -40,7 +41,7 @@ export default {
     methods: {
         upload_avatar(file) {
             this.files = file;
-            console.log(this.files)
+            this.upload_avatar_url = URL.createObjectURL(this.files.raw);
         },
         submit_avatar() {
             const formData = new FormData();
@@ -65,7 +66,6 @@ export default {
                             .get('/physlet_api/myInfo')
                             .then(response => {
                                 this.avatar_url = response.data.data.avatar
-                                console.log(this.avatar_url)
                                 this.display_username = response.data.data.uname
                                 this.number_of_simulations = response.data.data.sims
                                 this.loading_avatar = false
