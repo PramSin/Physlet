@@ -1,31 +1,57 @@
 <template>
     <div style="height: 100%;width: 100%">
         <div>
+            <h2>{{simulation_user_name}}/{{ simulation_name }}</h2>
+        </div>
+        <el-divider></el-divider>
+        <div>
+            <h3>简介</h3>
+            <h4>{{synopsis}}</h4>
+            <h4>点赞数: {{likes}}</h4>
+            <el-button type="text" :icon="if_like()" :disabled="like" @click="submit_like" size="large">点赞</el-button>
+        </div>
+        <el-divider></el-divider>
+        <div>
             <h3>展示区</h3>
             <div style="background-color: white;">
-                <el-button size="small" type="primary" @click="toggle">全屏</el-button>
-                <el-button type="text" :icon="if_like()" :disabled="like" @click="submit_like">点赞</el-button>
+                <el-button size="small" type="primary" @click="toggle" v-if="simulation_exists">全屏</el-button>
             </div>
         </div>
         <div style="margin: 15px 0;"></div>
         <fullscreen :fullscreen="fullscreen" :teleport="teleport" :page-only="pageOnly"
-                    :fullscreen-class="fullscreen_class" style="height: 100%;width: 100%">
-            <iframe :src="demo_src" allow="fullscreen" style="height: 100%;width: 100%"
+                    :fullscreen-class="fullscreen_class" style="height: 100%;width: 100%"
+                    v-if="simulation_exists">
+            <iframe :src="simulation_url" allow="fullscreen" style="height: 100%;width: 100%"
                     ref="demo_iframe"></iframe>
         </fullscreen>
+        <h2 v-if="!simulation_exists">对不起, 不存在预览!</h2>
         <div style="margin: 10px 0;"></div>
+        <el-divider></el-divider>
         <h3>评论区</h3>
-        <div style="margin_top: 20px;"></div>
-        <div v-for="(parent_comment, index) in parent_comments_list">
-            <el-divider content-position="left">{{ parent_comment.user_id }}</el-divider>
+        <div v-for="(parent_comment, index) in parent_comments_list" style="margin-top: 30px">
+            <el-divider content-position="left">
+                <div>
+                    <el-avatar size="small" :src="parent_comment.avatar_url" style="vertical-align:middle;"></el-avatar>
+                    <span style="vertical-align:middle; margin-left: 5px">{{ parent_comment.user_name }}</span>
+                </div>
+            </el-divider>
             <div>{{ parent_comment.comment_content }}</div>
-            <div style="float:right; width: 90%" v-for="comment in comments_list"
-                 v-if="parent_comment.coid === comment.pid">{{ comment.comment_content }}
+            <div style="margin-left: 10%" v-for="comment in comments_list"
+                 v-if="parent_comment.comment_id === comment.parent_comment_id">
+                <el-avatar size="small" :src="comment.avatar_url"
+                           style="vertical-align:middle; margin: 10px"></el-avatar>
+                <span style="vertical-align:middle; margin-left: 10px">{{ comment.comment_content }}</span>
+                <el-button type="text" @click="delete_comment(comment)" size="small"
+                           v-if="user_id === comment.user_id" style="margin-left: 20px">删除
+                </el-button>
             </div>
             <el-divider content-position="right">
-                <div><span>{{ parent_comment.create_time }}</span>
+                <div style="height: 32px"><span>{{ parent_comment.create_time }}</span>
                     <el-divider direction="vertical"></el-divider>
-                    <el-button type="text" @click="reply_comment(parent_comment)">回复</el-button>
+                    <el-button type="text" @click="reply_comment(parent_comment)" size="small">回复</el-button>
+                    <el-button type="text" @click="delete_comment(parent_comment)" size="small"
+                               v-if="user_id === parent_comment.user_id">删除
+                    </el-button>
                 </div>
             </el-divider>
         </div>
@@ -47,8 +73,14 @@ export default {
 
     data() {
         return {
+            likes: 0,
+            simulation_name: "",
+            synopsis: "",
+            simulation_user_name: "",
             show_cancel_rate: false,
             loading_demo: false,
+            user_id: "",
+            simulation_exists: true,
             fullscreen_class: "background-color: #66afe9",
             fullscreen: false,
             teleport: true,
@@ -56,22 +88,35 @@ export default {
             comment_to_post: '',
             comments_list: [],
             parent_comments_list: [],
-            like: false,
+            like: true,
             disable_rate: false,
             current_simulation_id: "",
             rate_to_post: null,
             colors: ['#99A9BF', '#F7BA2A', '#FF9900'],
-            demo_src: '',
-            // https://www.openstreetmap.org/export/embed.html?bbox=-0.004017949104309083%2C51.47612752641776%2C0.00030577182769775396%2C51.478569861898606&layer=mapnik
+            simulation_url: "",
         }
     },
     methods: {
+        delete_comment(comment) {
+            this.$api
+                .post("/physlet_api/deleteCom", {coid: comment.comment_id})
+                .then(response => {
+                    if (response.data.code === 200) {
+                        this.$message({
+                            message: "删除评论成功!",
+                            type: "success"
+                        })
+                        location.reload()
+                    } else window.alert(response.data.message)
+                })
+        },
         submit_like() {
             this.$api
                 .post("/physlet_api/like", {sid: this.current_simulation_id})
                 .then(response => {
                     if (response.data.code === 200) {
                         this.like = true
+                        location.reload()
                     } else window.alert(response.data.message)
                 })
         },
@@ -115,9 +160,14 @@ export default {
                 inputValidator: this.reply_validator,
                 inputErrorMessage: "评论不能为空"
             })
-                .then(({content}) => {
+                .then(({value}) => {
+                    console.log(value)
                     this.$api
-                        .post("/physlet_api/sendCom", {sid: this.current_simulation_id, content: content, pid:parent_comment.coid})
+                        .post("/physlet_api/sendCom", {
+                            sid: this.current_simulation_id,
+                            content: value,
+                            pid: parent_comment.comment_id
+                        })
                         .then(response => {
                             if (response.data.code === 200) {
                                 this.$message({
@@ -132,52 +182,73 @@ export default {
         reply_validator(comment) {
             return comment !== "";
         },
-        },
-        beforeMount() {
-            let params = this.$route.query
-            this.current_simulation_id = params.sid
-            this.$api
-                .post('/physlet_api/getSim', params)
-                .then(response => {
-                    let data = response.data.data;
-                    this.demo_src = data
-                })
-        },
-        mounted() {
-            if (this.demo_src === '') {
-                this.demo_src = 'https://www.openstreetmap.org/export/embed.html?bbox=-0.004017949104309083%2C51.47612752641776%2C0.00030577182769775396%2C51.478569861898606&layer=mapnik'
-            }
-            this.$api
-                .post("/physlet_api/checkLike", {sid: this.current_simulation_id})
-                .then(response => {
-                    if (response.data.code === 200) {
-                        this.like = true
-                    }
-                })
-            this.$api
-                .post("/physlet_api/getComs", {sid: this.current_simulation_id})
-                .then(response => {
-                    let data = response.data.data;
-                    for (let syn = 0; syn < data.length; syn++) {
-                        if (data[syn].pid === 0) {
-                            let parent_comment = {}
-                            parent_comment.user_id = data[syn].uid
-                            parent_comment.comment_id = data[syn].coid
-                            parent_comment.comment_content = data[syn].content
-                            parent_comment.create_time = data[syn].create_time
-                            this.parent_comments_list.push(parent_comment)
-                        } else {
-                            let comment = {}
-                            comment.user_id = data[syn].uid
-                            comment.parent_comment_id = data[syn].pid
-                            comment.comment_content = data[syn].content
-                            this.comments_list.push(comment)
-                        }
-                    }
+    },
+    beforeMount() {
+        let params = this.$route.query
+        this.current_simulation_id = params.sid
+        this.$api
+            .post('/physlet_api/getSim', params)
+            .then(response => {
+                if (response.data.code === 404) {
+                    this.simulation_exists = false
+                    this.synopsis = response.data.data.synopsis
+                    this.simulation_name = response.data.data.sname
+                    this.simulation_user_name = response.data.data.uname
+                    this.likes = response.data.data.likes
+                }
+                else if (response.data.code === 200) {
+                    this.simulation_url = response.data.data.url
+                    this.synopsis = response.data.data.synopsis
+                    this.simulation_name = response.data.data.sname
+                    this.simulation_user_name = response.data.data.uname
+                    this.likes = response.data.data.likes
+                }
+            })
+        this.$api
+            .get("/physlet_api/myInfo")
+            .then(response => {
+                if (response.data.code === 200) {
+                    this.user_id = response.data.data.uid;
+                } else window.alert(response.data.message)
+            })
+    },
+    mounted() {
+        this.$api
+            .post("/physlet_api/checkLike", {sid: this.current_simulation_id})
+            .then(response => {
+                if (response.data.code === 200) {
                     console.log(response.data.data)
-                })
-        }
+                    this.like = response.data.data
+                }
+            })
+        this.$api
+            .post("/physlet_api/getComs", {sid: this.current_simulation_id})
+            .then(response => {
+                let data = response.data.data;
+                for (let syn = 0; syn < data.length; syn++) {
+                    if (data[syn].pid === 0) {
+                        let parent_comment = {}
+                        parent_comment.user_id = data[syn].uid
+                        parent_comment.comment_avatar_url = data[syn].avatar
+                        parent_comment.user_name = data[syn].uname
+                        parent_comment.comment_id = data[syn].coid
+                        parent_comment.comment_content = data[syn].content
+                        parent_comment.create_time = data[syn].create_time
+                        this.parent_comments_list.push(parent_comment)
+                    } else {
+                        let comment = {}
+                        comment.user_id = data[syn].uid
+                        comment.comment_avatar_url = data[syn].avatar
+                        comment.user_name = data[syn].uname
+                        comment.parent_comment_id = data[syn].pid
+                        comment.comment_id = data[syn].coid
+                        comment.comment_content = data[syn].content
+                        this.comments_list.push(comment)
+                    }
+                }
+            })
     }
+}
 </script>
 
 <style scoped>

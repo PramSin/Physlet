@@ -517,7 +517,7 @@ class SimulationController extends Controller
                 $sim->likes += 1;
                 $this->r['message'] = "点赞成功";
             }
-
+            $sim->save();
             $this->r['code'] = 200;
         } catch (Exception $e) {
             $this->r['code'] = 400;

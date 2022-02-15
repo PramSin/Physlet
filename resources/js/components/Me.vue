@@ -4,7 +4,7 @@
         <el-main>
             <h3>我的模拟（点击展示）</h3>
             <el-card style="border-radius: 15px" v-loading="loading_my_simulations"
-                     v-for="simulation in my_simulation_list">
+                     v-for="simulation in my_simulation_list" @click.native="jump_to_my_simulation(simulation)">
                 <div slot="header">
                     <div>
                         <i class="el-icon-data-analysis" style="margin-right: 5px; font-size: 15px"></i>
@@ -20,7 +20,8 @@
                         {{ simulation.simulation_name }}</h3>
                 </div>
                 <span v-if="!loading_my_simulations">{{ simulation.synopsis }}</span>
-                <span v-if="!loading_my_simulations" style="float: right; font-size: small">{{ simulation_access(simulation) }}</span>
+                <span v-if="!loading_my_simulations"
+                      style="float: right; font-size: small">{{ simulation_access(simulation) }}</span>
                 <br/>
                 <span
                     style="font-size: small; color: gray" v-if="!loading_my_simulations">创建时间 {{
@@ -205,8 +206,7 @@ export default {
         simulation_access(simulation) {
             if (simulation.access === 1) {
                 return "公共"
-            }
-            else return "私人"
+            } else return "私人"
         },
         open_edit_form(simulation) {
             console.log(simulation)
@@ -222,10 +222,10 @@ export default {
                 .post('/physlet_api/deleteSim', {sid: simulation.simulation_id})
                 .then(response => {
                     if (response.data.code === 200) {
-                       this.$message({
-                           message: "删除成功!",
-                           type: "success"
-                       })
+                        this.$message({
+                            message: "删除成功!",
+                            type: "success"
+                        })
                     } else {
                         window.alert(response.data.message)
                     }
@@ -247,8 +247,8 @@ export default {
                     }
                 })
         },
-        jump_to_My_simulation(row) {
-            this.$router.push({path: "/demo", query: {version: row.version_id}});
+        jump_to_my_simulation(simulation) {
+            this.$router.push({path: "/demo", query: {sid: simulation.simulation_id}});
         },
         edit_Simulation(row) {
             this.$router.push({
@@ -301,6 +301,7 @@ export default {
             .post('/physlet_api/getMySims')
             .then(response => {
                 let data = response.data.data;
+                console.log(data)
                 for (let syn = 0; syn < data.length; syn++) {
                     let simulation_list = {};
                     simulation_list.simulation_id = data[syn].sid

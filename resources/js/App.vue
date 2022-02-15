@@ -1,6 +1,5 @@
 <template>
     <el-container style="padding: 0; margin: 0">
-        <template>
             <!--   电脑客户端情况  -->
             <el-header>
                 <el-menu :default-active="current_path()" :router="jumpto" class="el-menu-demo" mode="horizontal">
@@ -34,15 +33,16 @@
                     </el-menu-item>
                 </el-menu>
             </el-header>
-            <el-container>
-                <el-aside style="width: 150px"></el-aside>
-                <el-main>
-                    <router-view></router-view>
-                </el-main>
-                <el-aside style="width: 150px"></el-aside>
-            </el-container>
-            <el-footer style="margin: 0px"></el-footer>
-        </template>
+            <el-main>
+                <el-container>
+                    <el-aside style="width: 150px"></el-aside>
+                    <el-main>
+                        <router-view></router-view>
+                    </el-main>
+                    <el-aside style="width: 150px"></el-aside>
+                </el-container>
+            </el-main>
+            <el-footer>1111111</el-footer>
     </el-container>
 </template>
 

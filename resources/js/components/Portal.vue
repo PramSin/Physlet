@@ -1,7 +1,7 @@
 <template>
     <el-container>
         <el-aside>
-            <el-card style="margin-top: 50px">
+            <el-card>
                 <div slot="header">筛选器</div>
                 <!--                <el-select v-model="rank_method" placeholder="排序方式">
                                     <el-option
@@ -45,7 +45,7 @@
 
         </el-main>
         <el-aside>
-            <el-card style="margin-top: 50px" v-if="authorized">
+            <el-card v-if="authorized">
                 <div slot="header" style="text-align: center">
                     <el-avatar :size="125" :src="avatar_url" v-loading="loading_avatar"></el-avatar>
                     <div style="text-align:center; font-size: 20px" v-if="!loading_avatar">{{ this.display_username }}

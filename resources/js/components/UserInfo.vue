@@ -15,7 +15,7 @@
             <el-button size="small" type="success" @click="submit_avatar">点击上传头像</el-button>
         </el-main>
         <el-aside>
-            <el-card style="margin-top: 50px">
+            <el-card>
                 <div style="text-align: center">
                     <el-avatar :size="125" :src="avatar_url" v-loading="loading_avatar"></el-avatar>
                     <div style="text-align:center; font-size: 20px; margin-top: 20px">欢迎, {{this.display_username}}</div>
