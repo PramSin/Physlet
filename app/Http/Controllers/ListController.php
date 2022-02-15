@@ -182,8 +182,7 @@ class ListController extends Controller
     protected function getMySimulations(Request $request)
     {
         try {
-            $simulations = Simulation::where("access", "=", 1)
-                ->where('user_id', '=', $request->user()->id)
+            $simulations = Simulation::where('user_id', '=', $request->user()->id)
                 ->orderByDesc('likes')
                 ->skip($request->post('opt') * 10)
                 ->take(10)->get()

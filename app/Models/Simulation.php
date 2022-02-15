@@ -13,7 +13,7 @@ use Laravel\Scout\Searchable;
 class Simulation extends Model
 {
     use HasFactory;
-    use Searchable;
+//    use Searchable;
 
     protected $fillable = [
         'user_id',
