@@ -8,6 +8,7 @@ use Exception;
 use App\Models\Simulation;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ListController extends Controller
 {
@@ -162,8 +163,10 @@ class ListController extends Controller
                 $data[] = [
                     'coid' => $comment->id,
                     'content' => $comment->content,
-                    'create_time' => $comment->created_at,
+                    'create_time' => $comment->created_at->format('Y-m-d h:M:S'),
                     'uid' => $comment->user_id,
+                    'uname' => $comment->user->username,
+                    'avatar' => Storage::url($comment->user->avatar),
                     'sid' => $comment->simulation_id,
                     'pid' => $comment->parent_id
                 ];
