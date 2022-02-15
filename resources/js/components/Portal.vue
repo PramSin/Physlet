@@ -3,13 +3,13 @@
         <el-aside>
             <el-card style="margin-top: 50px">
                 <div slot="header">筛选器</div>
-<!--                <el-select v-model="rank_method" placeholder="排序方式">
-                    <el-option
-                        v-for="rank_list in rank"
-                        :key="rank_list.method"
-                        :label="rank_list.label"
-                        :value="rank_list.method"></el-option>
-                </el-select>-->
+                <!--                <el-select v-model="rank_method" placeholder="排序方式">
+                                    <el-option
+                                        v-for="rank_list in rank"
+                                        :key="rank_list.method"
+                                        :label="rank_list.label"
+                                        :value="rank_list.method"></el-option>
+                                </el-select>-->
                 <el-select v-model="rank_tag" placeholder="按标签筛选" style="margin-top: 20px">
                     <el-option
                         v-for="category in rank_category"
@@ -35,13 +35,11 @@
                 <span v-if="!loading_simulations">{{ simulation.synopsis }}</span>
                 <br/>
                 <span
-                    style="font-size: small; color: gray" v-if="!loading_simulations">创建时间 {{
-                        simulation.create_time.slice(0, 10)
-                    }}</span>
+                    style="font-size: small; color: gray"
+                    v-if="!loading_simulations">创建时间 {{ simulation.create_time.slice(0, 10) }}</span>
                 <div style="float: right">
                     <span v-if="!loading_simulations">likes {{ simulation.likes }}</span>
                 </div>
-
             </el-card>
 
         </el-main>
@@ -49,11 +47,12 @@
             <el-card style="margin-top: 50px" v-if="authorized">
                 <div slot="header" style="text-align: center">
                     <el-avatar :size="125" :src="avatar_url" v-loading="loading_avatar"></el-avatar>
-                    <div style="text-align:center; font-size: 20px" v-if="!loading_avatar">{{ this.display_username }}</div>
+                    <div style="text-align:center; font-size: 20px" v-if="!loading_avatar">{{ this.display_username }}
+                    </div>
                 </div>
-                <div style="text-align: center" v-if="!loading_avatar">
+                <el-link style="display:flex; justify-content:center" :underline="false" v-if="!loading_avatar" @click="jump_to_my_page">
                     共上传了{{ this.number_of_simulations }}个模拟, 点击查看
-                </div>
+                </el-link>
             </el-card>
             <el-card style="margin-top: 50px" v-else>
                 <div style="text-align: center; font-size: large">
@@ -117,6 +116,9 @@ export default {
     },
 
     methods: {
+        jump_to_my_page() {
+            this.$router.push({path: "/me"})
+        },
         jump_to_simulation(row) {
             this.$router.push({path: "/demo", query: {version: row.version_id}});
         },
@@ -159,6 +161,7 @@ export default {
                                 this.avatar_url = response.data.data.avatar
                                 this.display_username = response.data.data.uname
                                 this.number_of_simulations = response.data.data.sims
+                                console.log(response.data.data.sims)
                                 this.loading_avatar = false
                             })
                     }

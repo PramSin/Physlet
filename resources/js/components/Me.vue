@@ -20,6 +20,7 @@
                         {{ simulation.simulation_name }}</h3>
                 </div>
                 <span v-if="!loading_my_simulations">{{ simulation.synopsis }}</span>
+                <span v-if="!loading_my_simulations" style="float: right; font-size: small">{{ simulation_access(simulation) }}</span>
                 <br/>
                 <span
                     style="font-size: small; color: gray" v-if="!loading_my_simulations">创建时间 {{
@@ -67,9 +68,10 @@
                     </el-form-item>
                 </el-form>
             </el-dialog>
-            <br/>
-            <h3>上传模拟</h3>
-            <el-form label-width="100px" style="width: 40%">
+        </el-main>
+        <el-aside>
+            <h3 style="margin-top: 40px">上传模拟</h3>
+            <el-form label-width="100px" style="width: 90%">
                 <el-form-item label="名称" required>
                     <el-input
                         placeholder="请填写模拟名称"
@@ -126,8 +128,7 @@
                     <el-button size="small" type="success" @click="submitFile">点击上传</el-button>
                 </el-form-item>
             </el-form>
-        </el-main>
-        <el-aside></el-aside>
+        </el-aside>
     </el-container>
 </template>
 
@@ -201,6 +202,12 @@ export default {
         },
     },
     methods: {
+        simulation_access(simulation) {
+            if (simulation.access === 1) {
+                return "公共"
+            }
+            else return "私人"
+        },
         open_edit_form(simulation) {
             console.log(simulation)
             this.edit_form_visibility = true
@@ -275,7 +282,7 @@ export default {
             }
             return moment(date).format("YYYY-MM-DD HH:mm:ss");
         },
-        beforeRemove(file, fileList) {
+        beforeRemove(file) {
             return this.$confirm(`确定移除 ${file.name}？`);
         },
         uploadFile(file, fileList) {
@@ -290,8 +297,8 @@ export default {
             formData.append('cid', this.upload_category)
             formData.append('synopsis', this.synopsis)
             formData.append('access', this.access)
-            formData.append('file', this.files.raw);
-            const headers = {'Content-Type': 'multipart/form-data;boundary=","'};
+            formData.append('file', this.files.raw)
+            const headers = {'Content-Type': 'multipart/form-data;boundary=","'}
             this.$api.post('/physlet_api/uploadSim',
                 formData,
                 {headers},
@@ -350,63 +357,4 @@ export default {
 </script>
 
 <style>
-.header {
-    padding: 5px 15px;
-    background-color: #f6f6f6;
-    line-height: 50px;
-}
-
-.saving-state {
-    font-size: .8rem;
-    margin-right: 10px;
-}
-
-.el-main {
-    padding: 5px 15px 0;
-}
-
-.el-container {
-    padding: 0;
-    margin: 0;
-    height: calc(100% - 60px);
-}
-
-.footer {
-    margin-bottom: -60px;
-    padding: 0 15px;
-    background-color: #f6f6f6;
-    text-align: right;
-    line-height: 60px;
-    font-size: 12px;
-}
-
-.footer-item {
-    margin-left: 5px;
-    color: #888;
-}
-
-.selected-node {
-    background-color: #fadab8;
-}
-
-.tree-node {
-    width: 100%;
-    height: 26px;
-    line-height: 26px;
-    font-size: 14px;
-}
-
-.tree-node .pull-right {
-    float: right;
-}
-
-.tree-node .actions {
-    transition: opacity .3s;
-    opacity: 0;
-}
-
-.tree-node:hover .actions {
-    opacity: 1;
-}
-
 </style>
