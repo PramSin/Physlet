@@ -21,13 +21,15 @@ class CommentFactory extends Factory
      *
      * @return array
      */
-    public function definition()
+    public function definition(): array
     {
+        $sim = Simulation::find(array_rand(Simulation::all()->toarray()) + 1);
         return [
-            'user_id' => User::findOrFail(rand(1, 9)),
+            'user_id' => array_rand(User::all()->toarray()) + 1,
             'content' => $this->faker->paragraph,
-            'simulation_id' => Simulation::findOrFail(rand(1, 9)),
-            'parent_id' => 0
+            'simulation_id' => $sim->id,
+            'parent_id' => (lcg_value() > 0.4 || !$sim->comments->count()) ?
+                0 : $sim->comments[array_rand($sim->comments->toArray())]->id
         ];
     }
 }
