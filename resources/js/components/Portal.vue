@@ -23,7 +23,8 @@
             <h2>我们的主页信息啥的，可以展示现有的实验模拟</h2>
             <h3>模拟展示（点击查看详情）</h3>
             <el-card style="border-radius: 15px" v-loading="loading_simulations"
-                     v-for="simulation in All_simulation_list">
+                     v-for="simulation in All_simulation_list"
+                     @click.native="jump_to_simulation(simulation)">
                 <div slot="header">
                     <div>
                         <i class="el-icon-data-analysis" style="margin-right: 5px; font-size: 15px"></i>
@@ -119,8 +120,8 @@ export default {
         jump_to_my_page() {
             this.$router.push({path: "/me"})
         },
-        jump_to_simulation(row) {
-            this.$router.push({path: "/demo", query: {version: row.version_id}});
+        jump_to_simulation(simulation) {
+            this.$router.push({path: "/demo", query: {sid: simulation.simulation_id}});
         },
         dateFormat(row, column) {
             let date = row[column.property];

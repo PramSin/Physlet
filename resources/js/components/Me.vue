@@ -236,8 +236,12 @@ export default {
                 .post('/physlet_api/editSim', this.edit_form)
                 .then(response => {
                     if (response.data.code === 200) {
-                        window.alert("成功！")
-                        this.$router.replace({path: "/me"})
+                        this.$message({
+                            message: "修改成功!",
+                            type: "success"
+                        })
+                        this.edit_form_visibility = false
+                        location.reload()
                     } else {
                         window.alert(response.data.message)
                     }
@@ -245,24 +249,6 @@ export default {
         },
         jump_to_My_simulation(row) {
             this.$router.push({path: "/demo", query: {version: row.version_id}});
-        },
-        save_change() {
-            let params = {
-                simulation: this.$route.query.id,
-                category: this.category_changed,
-                access: this.access_changed,
-            }
-            this.$api
-                .post('/physlet_api/editSimulation', params)
-                .then(response => {
-                    if (response.data.code === 200) {
-                        window.alert("成功！")
-                        this.$router.replace({path: "/me"})
-                    } else {
-                        window.alert(response.data.message)
-                    }
-                })
-
         },
         edit_Simulation(row) {
             this.$router.push({

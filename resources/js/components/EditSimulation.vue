@@ -78,7 +78,6 @@ export default {
                 .then(response => {
                     if (response.data.code === 200) {
                         window.alert("成功！")
-                        this.$router.replace({path: '/me'})
                     } else {
                         window.alert(response.data.message)
                     }

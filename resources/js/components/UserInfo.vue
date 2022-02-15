@@ -53,7 +53,11 @@ export default {
             ).then((res) => {
                 res.data.files; // binary representation of the file
                 res.status; // HTTP status
-/*                location.reload()*/
+                this.$message({
+                    message: "设置头像成功!",
+                    type: "success"
+                })
+                location.reload()
             });
         },
     },
