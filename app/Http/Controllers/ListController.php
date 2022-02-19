@@ -20,8 +20,8 @@ class ListController extends Controller
     protected function getSimulations(Request $request)
     {
         try {
-            $simulations = Simulation::where("access", "=", 1)
-                ->orderByDesc('likes')
+            $sims = Simulation::where("access", "=", 1);
+            $simulations = $sims->orderByDesc('likes')
                 ->skip($request->post('opt') * 10)
                 ->take(10)->get()
                 ->load('version', 'category');
@@ -43,6 +43,7 @@ class ListController extends Controller
             $this->r['code'] = 200;
             $this->r['message'] = "获取模拟成功";
             $this->r['data'] = $data;
+            $this->r['number'] = $sims->count();
         } catch (Exception $e) {
             $this->r['code'] = 400;
             $this->r['message'] = $e->getMessage();
@@ -54,7 +55,7 @@ class ListController extends Controller
     protected function search(Request $request)
     {
         try {
-            $simulations = Simulation::where("access", "=", 1)
+            $sims = Simulation::where("access", "=", 1)
                 ->whereHas('version', function (Builder $query) use ($request) {
                     $query
                         ->where(
@@ -65,7 +66,9 @@ class ListController extends Controller
                             'synopsis', 'like',
                             '%' . $request->post('key') . '%'
                         );
-                })->orderByDesc('likes')
+                });
+
+            $simulations = $sims->orderByDesc('likes')
                 ->skip($request->post('opt') * 10)
                 ->take(10)->get()
                 ->load('version', 'category');
@@ -87,6 +90,7 @@ class ListController extends Controller
             $this->r['code'] = 200;
             $this->r['message'] = "搜索模拟成功";
             $this->r['data'] = $data;
+            $this->r['number'] = $sims->count();
         } catch (Exception $e) {
             $this->r['code'] = 400;
             $this->r['message'] = $e->getMessage();
@@ -98,9 +102,9 @@ class ListController extends Controller
     protected function filter(Request $request)
     {
         try {
-            $simulations = Simulation::where("access", "=", 1)
-                ->where('category_id', $request->post('cid'))
-                ->orderByDesc('likes')
+            $sims = Simulation::where("access", "=", 1)
+                ->where('category_id', $request->post('cid'));
+            $simulations = $sims->orderByDesc('likes')
                 ->skip($request->post('opt') * 10)
                 ->take(10)->get()
                 ->load('version', 'category');
@@ -122,6 +126,7 @@ class ListController extends Controller
             $this->r['code'] = 200;
             $this->r['message'] = "筛选模拟成功";
             $this->r['data'] = $data;
+            $this->r['number'] = $sims->count();
         } catch (Exception $e) {
             $this->r['code'] = 400;
             $this->r['message'] = $e->getMessage();
@@ -155,15 +160,15 @@ class ListController extends Controller
     protected function getComments(Request $request)
     {
         try {
-            $comments = Comment::where('simulation_id', $request->post('sid'))
-                ->skip($request->post('opt') * 10)
+            $coms = Comment::where('simulation_id', $request->post('sid'));
+            $comments = $coms->skip($request->post('opt') * 10)
                 ->take(10)->get();
             $data = [];
             foreach ($comments as $comment) {
                 $data[] = [
                     'coid' => $comment->id,
                     'content' => $comment->content,
-                    'create_time' => $comment->created_at->format('Y-m-d h:M:S'),
+                    'create_time' => $comment->created_at->format('Y-m-d h:i:s'),
                     'uid' => $comment->user_id,
                     'uname' => $comment->user->username,
                     'avatar' => Storage::url($comment->user->avatar),
@@ -174,6 +179,7 @@ class ListController extends Controller
             $this->r['code'] = 200;
             $this->r['message'] = "获取分类成功";
             $this->r['data'] = $data;
+            $this->r['number'] = $coms->count();
         } catch (Exception $e) {
             $this->r['code'] = 400;
             $this->r['message'] = $e->getMessage();
@@ -185,8 +191,8 @@ class ListController extends Controller
     protected function getMySimulations(Request $request)
     {
         try {
-            $simulations = Simulation::where('user_id', '=', $request->user()->id)
-                ->orderByDesc('likes')
+            $sims = Simulation::where('user_id', '=', $request->user()->id);
+            $simulations = $sims->orderByDesc('likes')
                 ->skip($request->post('opt') * 10)
                 ->take(10)->get()
                 ->load('version', 'category');
@@ -209,6 +215,7 @@ class ListController extends Controller
             $this->r['code'] = 200;
             $this->r['message'] = "获取模拟成功";
             $this->r['data'] = $data;
+            $this->r['number'] = $sims->count();
         } catch (Exception $e) {
             $this->r['code'] = 400;
             $this->r['message'] = $e->getMessage();
@@ -220,9 +227,10 @@ class ListController extends Controller
     protected function getHisSimulations(Request $request)
     {
         try {
-            $simulations = Simulation::where("access", "=", 1)
-                ->where('user_id', '=', $request->post('uid'))
-                ->orderByDesc('likes')
+            $sims = Simulation::where("access", "=", 1)
+                ->where('user_id', '=', $request->post('uid'));
+
+            $simulations = $sims->orderByDesc('likes')
                 ->skip($request->post('opt') * 10)
                 ->take(10)->get()
                 ->load('version', 'category');
@@ -244,6 +252,7 @@ class ListController extends Controller
             $this->r['code'] = 200;
             $this->r['message'] = "获取模拟成功";
             $this->r['data'] = $data;
+            $this->r['number'] = $sims->count();
         } catch (Exception $e) {
             $this->r['code'] = 400;
             $this->r['message'] = $e->getMessage();
