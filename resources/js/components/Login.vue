@@ -66,12 +66,13 @@ export default {
     },
     mounted() {
         this.$api
-            .get('/physlet_api/userInfo')
+            .get('/physlet_api/myInfo')
             .then(response => {
-                if (response.data.data.uname !== '') {
-                    this.$router.replace({path: '/me'})
+                if (response.data.code === 200) {
+                        this.$router.replace({path: '/me'})
                 }
             })
+            .catch(()=>{})
     },
     methods: {
         onSubmit() {

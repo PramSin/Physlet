@@ -216,22 +216,24 @@ export default {
         this.$api
             .post('/physlet_api/getSims')
             .then(response => {
-                let data = response.data.data;
-                for (let syn = 0; syn < data.length; syn++) {
-                    let simulation_list = {};
-                    simulation_list.simulation_id = data[syn].sid
-                    simulation_list.simulation_name = data[syn].sname
-                    simulation_list.catagory_name = data[syn].cname
-                    simulation_list.catagory_id = data[syn].cid
-                    simulation_list.synopsis = data[syn].synopsis
-                    simulation_list.likes = data[syn].likes
-                    simulation_list.user_name = data[syn].uname
-                    simulation_list.url = data[syn].url
-                    simulation_list.create_time = data[syn].create_time
-                    this.All_simulation_list.push(simulation_list)
+                if (response.data.code === 200) {
+                    let data = response.data.data;
+                    for (let syn = 0; syn < data.length; syn++) {
+                        let simulation_list = {};
+                        simulation_list.simulation_id = data[syn].sid
+                        simulation_list.simulation_name = data[syn].sname
+                        simulation_list.catagory_name = data[syn].cname
+                        simulation_list.catagory_id = data[syn].cid
+                        simulation_list.synopsis = data[syn].synopsis
+                        simulation_list.likes = data[syn].likes
+                        simulation_list.user_name = data[syn].uname
+                        simulation_list.url = data[syn].url
+                        simulation_list.create_time = data[syn].create_time
+                        this.All_simulation_list.push(simulation_list)
+                    }
+                    this.total_simulation_amount = response.data.number
+                    this.loading_simulations = false
                 }
-                this.total_simulation_amount = response.data.number
-                this.loading_simulations = false
             })
         this.$api
             .get('/physlet_api/checkLogin')
