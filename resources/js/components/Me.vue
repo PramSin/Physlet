@@ -30,8 +30,16 @@
                 <div style="float: right">
                     <span v-if="!loading_my_simulations">likes {{ simulation.likes }}</span>
                 </div>
-
             </el-card>
+            <el-pagination
+                style="display:table; margin:0 auto; "
+                @current-change="current_page"
+                layout="prev, pager, next"
+                :hide-on-single-page="true"
+                :pager-count="11"
+                :page-size="10"
+                :total="50">
+            </el-pagination>
             <el-dialog title="编辑模拟" :visible.sync="edit_form_visibility" :center="true">
                 <el-form :inline="false" :model="edit_form">
                     <el-form-item label="名称" style="width: 35%">
@@ -203,6 +211,28 @@ export default {
         },
     },
     methods: {
+        current_page(current) {
+            this.my_simulation_list.splice(0, this.my_simulation_list.length)
+            this.loading_my_simulations = true
+            this.$api
+                .post('/physlet_api/getMySims', {opt: current - 1})
+                .then(response => {
+                    let data = response.data.data;
+                    for (let syn = 0; syn < data.length; syn++) {
+                        let simulation_list = {};
+                        simulation_list.simulation_id = data[syn].sid
+                        simulation_list.simulation_name = data[syn].sname
+                        simulation_list.catagory_name = data[syn].cname
+                        simulation_list.catagory_id = data[syn].cid
+                        simulation_list.synopsis = data[syn].synopsis
+                        simulation_list.likes = data[syn].likes
+                        simulation_list.access = data[syn].access
+                        simulation_list.create_time = data[syn].create_time
+                        this.my_simulation_list.push(simulation_list)
+                    }
+                    this.loading_my_simulations = false
+                })
+        },
         simulation_access(simulation) {
             if (simulation.access === 1) {
                 return "公共"
@@ -295,13 +325,11 @@ export default {
             });
         },
     },
-
     mounted() {
         this.$api
             .post('/physlet_api/getMySims')
             .then(response => {
                 let data = response.data.data;
-                console.log(data)
                 for (let syn = 0; syn < data.length; syn++) {
                     let simulation_list = {};
                     simulation_list.simulation_id = data[syn].sid

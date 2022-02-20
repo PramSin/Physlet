@@ -17,32 +17,45 @@
                         :label="category.rank_category_name"
                         :value="category.rank_category_id"></el-option>
                 </el-select>
+                <el-button style="margin-left: 15px" type="primary" icon="el-icon-check" @click="submit_rank" circle></el-button>
             </el-card>
         </el-aside>
         <el-main>
             <h2>我们的主页信息啥的，可以展示现有的实验模拟</h2>
             <h3>模拟展示（点击查看详情）</h3>
-            <el-card style="border-radius: 15px" v-loading="loading_simulations"
-                     v-for="simulation in All_simulation_list"
-                     @click.native="jump_to_simulation(simulation)">
-                <div slot="header">
-                    <div>
-                        <i class="el-icon-data-analysis" style="margin-right: 5px; font-size: 15px"></i>
-                        <el-tag size="small">{{ simulation.catagory_name }}</el-tag>
+            <div>
+                <el-card style="border-radius: 15px" v-loading="loading_simulations"
+                         v-for="simulation in All_simulation_list"
+                         @click.native="jump_to_simulation(simulation)">
+                    <div slot="header">
+                        <div>
+                            <i class="el-icon-data-analysis" style="margin-right: 5px; font-size: 15px"></i>
+                            <el-tag size="small">{{ simulation.catagory_name }}</el-tag>
+                        </div>
+                        <h3 style="margin-right: 3px; width: 80%" v-if="!loading_simulations">{{ simulation.user_name }}
+                            /
+                            {{ simulation.simulation_name }}</h3>
                     </div>
-                    <h3 style="margin-right: 3px; width: 80%" v-if="!loading_simulations">{{ simulation.user_name }} /
-                        {{ simulation.simulation_name }}</h3>
-                </div>
-                <span v-if="!loading_simulations">{{ simulation.synopsis }}</span>
-                <br/>
-                <span
-                    style="font-size: small; color: gray"
-                    v-if="!loading_simulations">创建时间 {{ simulation.create_time.slice(0, 10) }}</span>
-                <div style="float: right">
-                    <span v-if="!loading_simulations">likes {{ simulation.likes }}</span>
-                </div>
-            </el-card>
-
+                    <span v-if="!loading_simulations">{{ simulation.synopsis }}</span>
+                    <br/>
+                    <span
+                        style="font-size: small; color: gray"
+                        v-if="!loading_simulations">创建时间 {{ simulation.create_time.slice(0, 10) }}</span>
+                    <div style="float: right">
+                        <span v-if="!loading_simulations">likes {{ simulation.likes }}</span>
+                    </div>
+                </el-card>
+            </div>
+            <el-pagination
+                style="display:table; margin:0 auto; "
+                @current-change="current_change"
+                :current-page="current_page"
+                layout="prev, pager, next"
+                :hide-on-single-page="true"
+                :pager-count="11"
+                :page-size="10"
+                :total="50">
+            </el-pagination>
         </el-main>
         <el-aside>
             <el-card v-if="authorized">
@@ -51,7 +64,8 @@
                     <div style="text-align:center; font-size: 20px" v-if="!loading_avatar">{{ this.display_username }}
                     </div>
                 </div>
-                <el-link style="display:flex; justify-content:center" :underline="false" v-if="!loading_avatar" @click="jump_to_my_page">
+                <el-link style="display:flex; justify-content:center" :underline="false" v-if="!loading_avatar"
+                         @click="jump_to_my_page">
                     共上传了{{ this.number_of_simulations }}个模拟, 点击查看
                 </el-link>
             </el-card>
@@ -77,6 +91,9 @@ export default {
     },
     data() {
         return {
+            current_page: 1,
+            total_simulation_amount: 0,
+            clientHeight: "",
             authorized: false,
             rank_method: "",
             rank_tag: "",
@@ -117,6 +134,76 @@ export default {
     },
 
     methods: {
+        submit_rank() {
+            this.All_simulation_list.splice(0, this.All_simulation_list.length)
+            this.loading_simulations = true
+            this.$api
+                .post('/physlet_api/filter', {cid: this.rank_tag})
+                .then(response => {
+                    let data = response.data.data;
+                    for (let syn = 0; syn < data.length; syn++) {
+                        let simulation_list = {};
+                        simulation_list.simulation_id = data[syn].sid
+                        simulation_list.simulation_name = data[syn].sname
+                        simulation_list.catagory_name = data[syn].cname
+                        simulation_list.catagory_id = data[syn].cid
+                        simulation_list.synopsis = data[syn].synopsis
+                        simulation_list.likes = data[syn].likes
+                        simulation_list.user_name = data[syn].uname
+                        simulation_list.url = data[syn].url
+                        simulation_list.create_time = data[syn].create_time
+                        this.All_simulation_list.push(simulation_list)
+                    }
+                    this.loading_simulations = false
+                })
+        },
+        current_change(current) {
+            this.All_simulation_list.splice(0, this.All_simulation_list.length)
+            this.loading_simulations = true
+            if (this.category.rank_category_id === "") {
+                this.$api
+                    .post('/physlet_api/getSims', {opt: current - 1})
+                    .then(response => {
+                        let data = response.data.data;
+                        for (let syn = 0; syn < data.length; syn++) {
+                            let simulation_list = {};
+                            simulation_list.simulation_id = data[syn].sid
+                            simulation_list.simulation_name = data[syn].sname
+                            simulation_list.catagory_name = data[syn].cname
+                            simulation_list.catagory_id = data[syn].cid
+                            simulation_list.synopsis = data[syn].synopsis
+                            simulation_list.likes = data[syn].likes
+                            simulation_list.user_name = data[syn].uname
+                            simulation_list.url = data[syn].url
+                            simulation_list.create_time = data[syn].create_time
+                            this.All_simulation_list.push(simulation_list)
+                        }
+                        this.loading_simulations = false
+                    })
+            }
+            this.$api
+                .post('/physlet_api/getSims', {opt: current - 1})
+                .then(response => {
+                    let data = response.data.data;
+                    for (let syn = 0; syn < data.length; syn++) {
+                        let simulation_list = {};
+                        simulation_list.simulation_id = data[syn].sid
+                        simulation_list.simulation_name = data[syn].sname
+                        simulation_list.catagory_name = data[syn].cname
+                        simulation_list.catagory_id = data[syn].cid
+                        simulation_list.synopsis = data[syn].synopsis
+                        simulation_list.likes = data[syn].likes
+                        simulation_list.user_name = data[syn].uname
+                        simulation_list.url = data[syn].url
+                        simulation_list.create_time = data[syn].create_time
+                        this.All_simulation_list.push(simulation_list)
+                    }
+                    this.loading_simulations = false
+                })
+        },
+        fetch_simulation() {
+            window.alert(11111)
+        },
         jump_to_my_page() {
             this.$router.push({path: "/me"})
         },
@@ -162,7 +249,6 @@ export default {
                                 this.avatar_url = response.data.data.avatar
                                 this.display_username = response.data.data.uname
                                 this.number_of_simulations = response.data.data.sims
-                                console.log(response.data.data.sims)
                                 this.loading_avatar = false
                             })
                     }

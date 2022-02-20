@@ -10,6 +10,7 @@ import PageNotFound from "../components/PageNotFound";
 import EditSimulation from "../components/EditSimulation";
 import Portal from "../components/Portal";
 import UserInfo from "../components/UserInfo";
+import SearchPage from "../components/SearchPage";
 
 
 export default new VueRouter({
@@ -54,6 +55,10 @@ export default new VueRouter({
         {
             path:'/user_info',
             component:UserInfo
+        },
+        {
+            path: "search_page",
+            component:SearchPage
         },
         { path: "*", component: PageNotFound }
     ]

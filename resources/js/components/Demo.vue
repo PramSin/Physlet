@@ -28,7 +28,7 @@
         <div style="margin: 10px 0;"></div>
         <el-divider></el-divider>
         <h3>评论区</h3>
-        <div v-for="(parent_comment, index) in parent_comments_list" style="margin-top: 30px">
+        <div v-for="(parent_comment, index) in parent_comments_list" style="margin-top: 30px" v-if="!loading_comments">
             <el-divider content-position="left">
                 <div>
                     <el-avatar size="small" :src="parent_comment.avatar_url" style="vertical-align:middle;"></el-avatar>
@@ -62,6 +62,15 @@
             :autosize="{ minRows: 2 }"
             v-model="comment_to_post">
         </el-input>
+        <el-pagination
+            style="display:table; margin:0 auto; "
+            @current-change="current_comment_page"
+            layout="prev, pager, next"
+            :hide-on-single-page="true"
+            :pager-count="11"
+            :page-size="10"
+            :total="50">
+        </el-pagination>
         <div style="margin: 20px"></div>
         <el-button type="primary" native-type="submit" @click="post_comment">评论</el-button>
     </div>
@@ -74,6 +83,7 @@ export default {
     data() {
         return {
             likes: 0,
+            loading_comments: true,
             simulation_name: "",
             synopsis: "",
             simulation_user_name: "",
@@ -97,6 +107,39 @@ export default {
         }
     },
     methods: {
+        current_comment_page(current) {
+            this.comments_list.splice(0, this.comments_list.length)
+            this.loading_comments = true
+            this.$api
+                .post("/physlet_api/getComs", {sid: this.current_simulation_id, opt:current - 1})
+                .then(response => {
+                    if (response.data.code === 200) {
+                        let data = response.data.data;
+                        for (let syn = 0; syn < data.length; syn++) {
+                            if (data[syn].pid === 0) {
+                                let parent_comment = {}
+                                parent_comment.user_id = data[syn].uid
+                                parent_comment.comment_avatar_url = data[syn].avatar
+                                parent_comment.user_name = data[syn].uname
+                                parent_comment.comment_id = data[syn].coid
+                                parent_comment.comment_content = data[syn].content
+                                parent_comment.create_time = data[syn].create_time
+                                this.parent_comments_list.push(parent_comment)
+                            } else {
+                                let comment = {}
+                                comment.user_id = data[syn].uid
+                                comment.comment_avatar_url = data[syn].avatar
+                                comment.user_name = data[syn].uname
+                                comment.parent_comment_id = data[syn].pid
+                                comment.comment_id = data[syn].coid
+                                comment.comment_content = data[syn].content
+                                this.comments_list.push(comment)
+                            }
+                        }
+                        this.loading_comments = false
+                    }
+                })
+        },
         delete_comment(comment) {
             this.$api
                 .post("/physlet_api/deleteCom", {coid: comment.comment_id})
@@ -225,26 +268,29 @@ export default {
             .post("/physlet_api/getComs", {sid: this.current_simulation_id})
             .then(response => {
                 let data = response.data.data;
-                for (let syn = 0; syn < data.length; syn++) {
-                    if (data[syn].pid === 0) {
-                        let parent_comment = {}
-                        parent_comment.user_id = data[syn].uid
-                        parent_comment.comment_avatar_url = data[syn].avatar
-                        parent_comment.user_name = data[syn].uname
-                        parent_comment.comment_id = data[syn].coid
-                        parent_comment.comment_content = data[syn].content
-                        parent_comment.create_time = data[syn].create_time
-                        this.parent_comments_list.push(parent_comment)
-                    } else {
-                        let comment = {}
-                        comment.user_id = data[syn].uid
-                        comment.comment_avatar_url = data[syn].avatar
-                        comment.user_name = data[syn].uname
-                        comment.parent_comment_id = data[syn].pid
-                        comment.comment_id = data[syn].coid
-                        comment.comment_content = data[syn].content
-                        this.comments_list.push(comment)
+                if (response.data.code === 200) {
+                    for (let syn = 0; syn < data.length; syn++) {
+                        if (data[syn].pid === 0) {
+                            let parent_comment = {}
+                            parent_comment.user_id = data[syn].uid
+                            parent_comment.comment_avatar_url = data[syn].avatar
+                            parent_comment.user_name = data[syn].uname
+                            parent_comment.comment_id = data[syn].coid
+                            parent_comment.comment_content = data[syn].content
+                            parent_comment.create_time = data[syn].create_time
+                            this.parent_comments_list.push(parent_comment)
+                        } else {
+                            let comment = {}
+                            comment.user_id = data[syn].uid
+                            comment.comment_avatar_url = data[syn].avatar
+                            comment.user_name = data[syn].uname
+                            comment.parent_comment_id = data[syn].pid
+                            comment.comment_id = data[syn].coid
+                            comment.comment_content = data[syn].content
+                            this.comments_list.push(comment)
+                        }
                     }
+                    this.loading_comments = false
                 }
             })
     }

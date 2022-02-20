@@ -9,6 +9,7 @@ import axios from './api/physlet';
 import store from "./store";
 import VueFullscreen from 'vue-fullscreen'
 
+
 Vue.config.productionTip = false
 Vue.use(VueRouter)
 Vue.use(ElementUI)
