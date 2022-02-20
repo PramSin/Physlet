@@ -54,7 +54,7 @@
                 :hide-on-single-page="true"
                 :pager-count="11"
                 :page-size="10"
-                :total="50">
+                :total="total_simulation_amount">
             </el-pagination>
         </el-main>
         <el-aside>
@@ -106,14 +106,6 @@ export default {
             number_of_simulations: 0,
             All_simulation_list: [],
             tag_list: [
-                {
-                    tag: "热学",
-                    label: "rexue",
-                },
-                {
-                    tag: "电学",
-                    label: "dianxue",
-                }
             ],
             rank: [{
                 method: "time_up",
@@ -160,7 +152,28 @@ export default {
         current_change(current) {
             this.All_simulation_list.splice(0, this.All_simulation_list.length)
             this.loading_simulations = true
-            if (this.category.rank_category_id === "") {
+            if (this.rank_tag !== "") {
+                this.$api
+                    .post('/physlet_api/filter', {cid: this.rank_tag, opt: current - 1})
+                    .then(response => {
+                        let data = response.data.data;
+                        for (let syn = 0; syn < data.length; syn++) {
+                            let simulation_list = {};
+                            simulation_list.simulation_id = data[syn].sid
+                            simulation_list.simulation_name = data[syn].sname
+                            simulation_list.catagory_name = data[syn].cname
+                            simulation_list.catagory_id = data[syn].cid
+                            simulation_list.synopsis = data[syn].synopsis
+                            simulation_list.likes = data[syn].likes
+                            simulation_list.user_name = data[syn].uname
+                            simulation_list.url = data[syn].url
+                            simulation_list.create_time = data[syn].create_time
+                            this.All_simulation_list.push(simulation_list)
+                        }
+                        this.loading_simulations = false
+                    })
+            }
+            else {
                 this.$api
                     .post('/physlet_api/getSims', {opt: current - 1})
                     .then(response => {
@@ -181,25 +194,6 @@ export default {
                         this.loading_simulations = false
                     })
             }
-            this.$api
-                .post('/physlet_api/getSims', {opt: current - 1})
-                .then(response => {
-                    let data = response.data.data;
-                    for (let syn = 0; syn < data.length; syn++) {
-                        let simulation_list = {};
-                        simulation_list.simulation_id = data[syn].sid
-                        simulation_list.simulation_name = data[syn].sname
-                        simulation_list.catagory_name = data[syn].cname
-                        simulation_list.catagory_id = data[syn].cid
-                        simulation_list.synopsis = data[syn].synopsis
-                        simulation_list.likes = data[syn].likes
-                        simulation_list.user_name = data[syn].uname
-                        simulation_list.url = data[syn].url
-                        simulation_list.create_time = data[syn].create_time
-                        this.All_simulation_list.push(simulation_list)
-                    }
-                    this.loading_simulations = false
-                })
         },
         fetch_simulation() {
             window.alert(11111)
@@ -236,6 +230,7 @@ export default {
                     simulation_list.create_time = data[syn].create_time
                     this.All_simulation_list.push(simulation_list)
                 }
+                this.total_simulation_amount = response.data.number
                 this.loading_simulations = false
             })
         this.$api

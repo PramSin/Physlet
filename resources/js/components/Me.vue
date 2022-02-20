@@ -2,7 +2,7 @@
     <el-container>
         <el-aside></el-aside>
         <el-main>
-            <h3>我的模拟（点击展示）</h3>
+            <h3>我的模拟 (共{{my_simulation_amount}}个)</h3>
             <el-card style="border-radius: 15px" v-loading="loading_my_simulations"
                      v-for="simulation in my_simulation_list" @click.native="jump_to_my_simulation(simulation)">
                 <div slot="header">
@@ -38,7 +38,7 @@
                 :hide-on-single-page="true"
                 :pager-count="11"
                 :page-size="10"
-                :total="50">
+                :total="my_simulation_amount">
             </el-pagination>
             <el-dialog title="编辑模拟" :visible.sync="edit_form_visibility" :center="true">
                 <el-form :inline="false" :model="edit_form">
@@ -149,6 +149,7 @@ export default {
     name: "Me",
     data() {
         return {
+            my_simulation_amount: 0,
             loading_my_simulations: true,
             my_simulation_list: [],
             simulation_to_edit: [],
@@ -342,6 +343,7 @@ export default {
                     simulation_list.create_time = data[syn].create_time
                     this.my_simulation_list.push(simulation_list)
                 }
+                this.my_simulation_amount = response.data.number
                 this.loading_my_simulations = false
             })
         this.$refs.upload.clearFiles()

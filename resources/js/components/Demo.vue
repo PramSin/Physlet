@@ -55,22 +55,22 @@
                 </div>
             </el-divider>
         </div>
-        <el-input
-            type="textarea"
-            placeholder="请输入评论"
-            style="width: 50%"
-            :autosize="{ minRows: 2 }"
-            v-model="comment_to_post">
-        </el-input>
         <el-pagination
-            style="display:table; margin:0 auto; "
+            style="display:table; margin:0 auto;"
             @current-change="current_comment_page"
             layout="prev, pager, next"
             :hide-on-single-page="true"
             :pager-count="11"
             :page-size="10"
-            :total="50">
+            :total="total_comment_amount">
         </el-pagination>
+        <el-input
+            type="textarea"
+            placeholder="请输入评论"
+            style="margin-top: 20px"
+            :autosize="{ minRows: 2 }"
+            v-model="comment_to_post">
+        </el-input>
         <div style="margin: 20px"></div>
         <el-button type="primary" native-type="submit" @click="post_comment">评论</el-button>
     </div>
@@ -104,6 +104,7 @@ export default {
             rate_to_post: null,
             colors: ['#99A9BF', '#F7BA2A', '#FF9900'],
             simulation_url: "",
+            total_comment_amount: 0,
         }
     },
     methods: {
@@ -260,7 +261,6 @@ export default {
             .post("/physlet_api/checkLike", {sid: this.current_simulation_id})
             .then(response => {
                 if (response.data.code === 200) {
-                    console.log(response.data.data)
                     this.like = response.data.data
                 }
             })
@@ -290,6 +290,7 @@ export default {
                             this.comments_list.push(comment)
                         }
                     }
+                    this.total_comment_amount = response.data.number
                     this.loading_comments = false
                 }
             })

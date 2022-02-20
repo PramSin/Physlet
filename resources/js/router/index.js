@@ -57,7 +57,7 @@ export default new VueRouter({
             component:UserInfo
         },
         {
-            path: "search_page",
+            path: "/search_page",
             component:SearchPage
         },
         { path: "*", component: PageNotFound }
