@@ -16,8 +16,7 @@
                             </el-popconfirm>
                         </div>
                     </div>
-                    <h3 style="margin-right: 3px; width: 80%" v-if="!loading_my_simulations">
-                        {{ simulation.simulation_name }}</h3>
+                    <el-button type="text" v-if="!loading_my_simulations" @click.stop="jump_to_my_simulation(simulation)" style="font-size: 23px;margin-left: 0">{{ simulation.simulation_name }}</el-button>
                 </div>
                 <span v-if="!loading_my_simulations">{{ simulation.synopsis }}</span>
                 <span v-if="!loading_my_simulations"

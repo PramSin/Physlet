@@ -32,9 +32,8 @@
                             <i class="el-icon-data-analysis" style="margin-right: 5px; font-size: 15px"></i>
                             <el-tag size="small">{{ simulation.catagory_name }}</el-tag>
                         </div>
-                        <h3 style="margin-right: 3px; width: 80%" v-if="!loading_simulations">{{ simulation.user_name }}
-                            /
-                            {{ simulation.simulation_name }}</h3>
+                        <el-button type="text" @click.stop="jump_to_user_page(simulation)" style="font-size: 23px">{{ simulation.user_name }}</el-button>
+                        <el-button type="text" @click.stop="jump_to_simulation(simulation)" style="font-size: 23px;margin-left: 0">/ {{ simulation.simulation_name }}</el-button>
                     </div>
                     <span v-if="!loading_simulations">{{ simulation.synopsis }}</span>
                     <br/>
@@ -126,6 +125,9 @@ export default {
     },
 
     methods: {
+        jump_to_user_page(simulation) {
+            this.$router.push({path: "/user_page", query: {id: simulation.user_id}})
+        },
         submit_rank() {
             this.All_simulation_list.splice(0, this.All_simulation_list.length)
             this.loading_simulations = true
@@ -165,6 +167,7 @@ export default {
                             simulation_list.catagory_id = data[syn].cid
                             simulation_list.synopsis = data[syn].synopsis
                             simulation_list.likes = data[syn].likes
+                            simulation_list.user_id = data[syn].uid
                             simulation_list.user_name = data[syn].uname
                             simulation_list.url = data[syn].url
                             simulation_list.create_time = data[syn].create_time
@@ -186,6 +189,7 @@ export default {
                             simulation_list.catagory_id = data[syn].cid
                             simulation_list.synopsis = data[syn].synopsis
                             simulation_list.likes = data[syn].likes
+                            simulation_list.user_id = data[syn].uid
                             simulation_list.user_name = data[syn].uname
                             simulation_list.url = data[syn].url
                             simulation_list.create_time = data[syn].create_time
@@ -226,6 +230,7 @@ export default {
                         simulation_list.catagory_id = data[syn].cid
                         simulation_list.synopsis = data[syn].synopsis
                         simulation_list.likes = data[syn].likes
+                        simulation_list.user_id = data[syn].uid
                         simulation_list.user_name = data[syn].uname
                         simulation_list.url = data[syn].url
                         simulation_list.create_time = data[syn].create_time

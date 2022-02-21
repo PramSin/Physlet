@@ -13,9 +13,8 @@
                             <i class="el-icon-data-analysis" style="margin-right: 5px; font-size: 15px"></i>
                             <el-tag size="small">{{ simulation.catagory_name }}</el-tag>
                         </div>
-                        <h3 style="margin-right: 3px; width: 80%" v-if="!loading_simulations">{{ simulation.user_name }}
-                            /
-                            {{ simulation.simulation_name }}</h3>
+                        <el-button type="text" v-if="!loading_simulations" @click.stop="jump_to_simulation(simulation)" style="font-size: 23px;margin-left: 0">{{ simulation.simulation_name }}</el-button>
+
                     </div>
                     <span v-if="!loading_simulations">{{ simulation.synopsis }}</span>
                     <br/>

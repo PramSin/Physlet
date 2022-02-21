@@ -1,7 +1,8 @@
 <template>
     <div style="height: 100%;width: 100%">
         <div>
-            <h2 @click="jump_to_creator_page">{{ simulation_user_name }}/{{ simulation_name }}</h2>
+            <el-button type="text" @click="jump_to_creator_page" style="font-size: xx-large">{{ simulation_user_name }}</el-button>
+            <span style="font-size: xx-large; font-weight: bold">/{{ simulation_name }}</span>
         </div>
         <el-divider></el-divider>
         <div>
@@ -31,6 +32,8 @@
         <div v-for="(parent_comment, index) in parent_comments_list" style="margin-top: 30px" v-if="!loading_comments">
             <el-divider content-position="left">
                 <div>
+                    <span>{{index + 1 + current_floor}}</span>
+                    <el-divider direction="vertical" v-if="authorized"></el-divider>
                     <el-avatar size="small" :src="parent_comment.avatar_url" style="vertical-align:middle;"></el-avatar>
                     <span style="vertical-align:middle; margin-left: 5px">{{ parent_comment.user_name }}</span>
                 </div>
@@ -91,6 +94,7 @@ export default {
             my_user_id: "",
             authorized: false,
             creator_id: "",
+            current_floor: 0,
             loading_comments: true,
             simulation_name: "",
             synopsis: "",
@@ -123,6 +127,7 @@ export default {
         },
         current_comment_page(current) {
             this.comments_list.splice(0, this.comments_list.length)
+            this.parent_comments_list.splice(0, this.parent_comments_list.length)
             this.loading_comments = true
             this.$api
                 .post("/physlet_api/getComs", {sid: this.current_simulation_id, opt: current - 1})
@@ -151,6 +156,7 @@ export default {
                             }
                         }
                         this.loading_comments = false
+                        this.current_floor = (current - 1) * 10
                     }
                 })
         },
