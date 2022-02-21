@@ -1,13 +1,13 @@
 <template>
     <div style="height: 100%;width: 100%">
         <div>
-            <h2>{{simulation_user_name}}/{{ simulation_name }}</h2>
+            <h2 @click="jump_to_creator_page">{{ simulation_user_name }}/{{ simulation_name }}</h2>
         </div>
         <el-divider></el-divider>
         <div>
             <h3>简介</h3>
-            <h4>{{synopsis}}</h4>
-            <h4>点赞数: {{likes}}</h4>
+            <h4>{{ synopsis }}</h4>
+            <h4>点赞数: {{ likes }}</h4>
             <el-button type="text" :icon="if_like()" :disabled="like" @click="submit_like" size="large">点赞</el-button>
         </div>
         <el-divider></el-divider>
@@ -47,8 +47,8 @@
             </div>
             <el-divider content-position="right">
                 <div style="height: 32px"><span>{{ parent_comment.create_time }}</span>
-                    <el-divider direction="vertical"></el-divider>
-                    <el-button type="text" @click="reply_comment(parent_comment)" size="small">回复</el-button>
+                    <el-divider direction="vertical" v-if="authorized"></el-divider>
+                    <el-button type="text" @click="reply_comment(parent_comment)" size="small" v-if="authorized">回复</el-button>
                     <el-button type="text" @click="delete_comment(parent_comment)" size="small"
                                v-if="user_id === parent_comment.user_id">删除
                     </el-button>
@@ -64,15 +64,20 @@
             :page-size="10"
             :total="total_comment_amount">
         </el-pagination>
-        <el-input
-            type="textarea"
-            placeholder="请输入评论"
-            style="margin-top: 20px"
-            :autosize="{ minRows: 2 }"
-            v-model="comment_to_post">
-        </el-input>
-        <div style="margin: 20px"></div>
-        <el-button type="primary" native-type="submit" @click="post_comment">评论</el-button>
+        <div v-if="authorized">
+            <el-input
+                type="textarea"
+                placeholder="请输入评论"
+                style="margin-top: 20px"
+                :autosize="{ minRows: 2 }"
+                v-model="comment_to_post">
+            </el-input>
+            <div style="margin: 20px"></div>
+            <el-button type="primary" native-type="submit" @click="post_comment">评论</el-button>
+        </div>
+        <div v-else>
+            <h4>请登录后再评论</h4>
+        </div>
     </div>
 </template>
 
@@ -83,6 +88,9 @@ export default {
     data() {
         return {
             likes: 0,
+            my_user_id: "",
+            authorized: false,
+            creator_id: "",
             loading_comments: true,
             simulation_name: "",
             synopsis: "",
@@ -108,11 +116,16 @@ export default {
         }
     },
     methods: {
+        jump_to_creator_page() {
+            if (this.my_user_id === this.creator_id) {
+                this.$router.push({path: "/me"})
+            } else this.$router.push({path: "/user_page", query: {id: this.creator_id}})
+        },
         current_comment_page(current) {
             this.comments_list.splice(0, this.comments_list.length)
             this.loading_comments = true
             this.$api
-                .post("/physlet_api/getComs", {sid: this.current_simulation_id, opt:current - 1})
+                .post("/physlet_api/getComs", {sid: this.current_simulation_id, opt: current - 1})
                 .then(response => {
                     if (response.data.code === 200) {
                         let data = response.data.data;
@@ -205,7 +218,6 @@ export default {
                 inputErrorMessage: "评论不能为空"
             })
                 .then(({value}) => {
-                    console.log(value)
                     this.$api
                         .post("/physlet_api/sendCom", {
                             sid: this.current_simulation_id,
@@ -236,34 +248,21 @@ export default {
                 if (response.data.code === 404) {
                     this.simulation_exists = false
                     this.synopsis = response.data.data.synopsis
+                    this.creator_id = response.data.data.uid
                     this.simulation_name = response.data.data.sname
                     this.simulation_user_name = response.data.data.uname
                     this.likes = response.data.data.likes
-                }
-                else if (response.data.code === 200) {
+                } else if (response.data.code === 200) {
                     this.simulation_url = response.data.data.url
                     this.synopsis = response.data.data.synopsis
+                    this.creator_id = response.data.data.uid
                     this.simulation_name = response.data.data.sname
                     this.simulation_user_name = response.data.data.uname
                     this.likes = response.data.data.likes
                 }
-            })
-        this.$api
-            .get("/physlet_api/myInfo")
-            .then(response => {
-                if (response.data.code === 200) {
-                    this.user_id = response.data.data.uid;
-                } else window.alert(response.data.message)
             })
     },
     mounted() {
-        this.$api
-            .post("/physlet_api/checkLike", {sid: this.current_simulation_id})
-            .then(response => {
-                if (response.data.code === 200) {
-                    this.like = response.data.data
-                }
-            })
         this.$api
             .post("/physlet_api/getComs", {sid: this.current_simulation_id})
             .then(response => {
@@ -294,6 +293,26 @@ export default {
                     this.loading_comments = false
                 }
             })
+        this.$api
+            .get('/physlet_api/checkLogin')
+            .then(response => {
+                    if (response.data.code === 200) {
+                        this.authorized = true
+                        this.$api
+                            .get('/physlet_api/myInfo')
+                            .then(response => {
+                                this.my_user_id = response.data.data.uid
+                            })
+                        this.$api
+                            .post("/physlet_api/checkLike", {sid: this.current_simulation_id})
+                            .then(response => {
+                                if (response.data.code === 200) {
+                                    this.like = response.data.data
+                                }
+                            })
+                    }
+                }
+            )
     }
 }
 </script>

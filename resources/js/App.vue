@@ -21,7 +21,7 @@
                         </template>
                     </el-menu-item>
                     <el-menu-item style="float: right" index="message">
-                        <el-button size="medium" round icon="el-icon-message-solid">通知</el-button>
+                        <el-button size="medium" round icon="el-icon-message-solid" v-if="authorized">通知</el-button>
                     </el-menu-item>
                     <el-submenu index="user_information" style="float: right" v-if="authorized">
                         <template slot="title">
@@ -40,7 +40,7 @@
                 <el-container>
                     <el-aside style="width: 150px"></el-aside>
                     <el-main>
-                        <router-view :key="componentKey"></router-view>
+                        <router-view :key="$route.fullPath"></router-view>
                     </el-main>
                     <el-aside style="width: 150px"></el-aside>
                 </el-container>
@@ -50,6 +50,7 @@
 </template>
 
 <script>
+
 export default {
     name: 'App',
     data() {
@@ -79,6 +80,11 @@ export default {
                 }
             )
             this.current_path_name = this.$route.path.substring(1)
+    },
+    watch: {
+        "$route"() {
+            this.current_path_name = this.$route.path.substring(1)
+        }
     },
     methods: {
         jump_to(index) {
