@@ -50,31 +50,6 @@ class SimulationController extends Controller
         }
     }
 
-    public function getCategories(): array
-    {
-        $this->r['code'] = 200;
-        $this->r['message'] = "获取目录成功";
-        $this->r['data'] = Category::all();
-        return $this->r;
-    }
-
-    public function getSimulations(): array
-    {
-        $this->r['code'] = 200;
-        $this->r['message'] = "获取模拟成功";
-        $this->r['data'] = Simulation::where("access", "=", 1)
-            ->get()->load('version', 'category');
-        return $this->r;
-    }
-
-    public function getMySimulations(Request $request): array
-    {
-        $this->r['code'] = 200;
-        $this->r['message'] = "获取模拟成功";
-        $this->r['data'] = $request->user()->simulations->load('version', 'category');
-        return $this->r;
-    }
-
     protected function uploadSimulation(Request $request): array
     {
         try {
@@ -385,54 +360,6 @@ class SimulationController extends Controller
             $this->r['code'] = 400;
             $this->r['message'] = $e->getMessage();
         }
-        return $this->r;
-    }
-
-    protected function getPackage(Request $request): array
-    {
-        try {
-            $ver = SimulationWithVersion::findOrFail($request->get('version'));
-            if ($ver->simulation->access or $request->user()->id == $ver->simulation->user_id) {
-                $url = Storage::Url(
-                    $ver->root_path
-                );
-
-                $this->r['code'] = 200;
-                $this->r['message'] = '获取版本链接成功';
-                $this->r['data'] = $url;
-            } else {
-                $this->r['code'] = 400;
-                $this->r['message'] = '没有当前模拟的查看权限';
-            }
-        } catch (Exception $e) {
-            $this->r['code'] = 400;
-            $this->r['message'] = $e->getMessage();
-        }
-
-        return $this->r;
-    }
-
-    protected function getMyPackage(Request $request): array
-    {
-        try {
-            $ver = SimulationWithVersion::findOrFail($request->get('version'));
-            if ($ver->simulation->user->id === $request->user()->id) {
-                $url = Storage::Url(
-                    $ver->root_path
-                );
-
-                $this->r['code'] = 200;
-                $this->r['message'] = '获取版本链接成功';
-                $this->r['data'] = $url;
-            } else {
-                $this->r['code'] = 400;
-                $this->r['message'] = '没有当前模拟的查看权限';
-            }
-        } catch (Exception $e) {
-            $this->r['code'] = 400;
-            $this->r['message'] = $e->getMessage();
-        }
-
         return $this->r;
     }
 

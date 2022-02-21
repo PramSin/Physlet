@@ -47,7 +47,7 @@ class UserAuthController extends Controller
         $user = User::find($request->post('uid'));
         $sims = 0;
         $likes = 0;
-        foreach ($user->simulations as $simulation) {
+        foreach ($user->simulations->where('access', '=', '1') as $simulation) {
             $sims += 1;
             $likes += $simulation->likes;
         }
