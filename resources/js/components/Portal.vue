@@ -148,6 +148,7 @@ export default {
                         simulation_list.create_time = data[syn].create_time
                         this.All_simulation_list.push(simulation_list)
                     }
+                    this.total_simulation_amount = response.data.number
                     this.loading_simulations = false
                 })
         },
