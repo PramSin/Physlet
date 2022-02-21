@@ -54,11 +54,11 @@ Route::middleware(['web'])->group(function () {
         Route::post('/userInfo', 'UserAuthController@userInfo')->name('userInfo');
 
         Route::post('/getSims', 'ListController@getSimulations')->name('getSims');
-        Route::post('/search', 'ListController@search')->name('search');
-        Route::post('/filter', 'ListController@filter')->name('filter');
+        Route::post('/search', 'ListController@getSimulations')->name('search');
+        Route::post('/filter', 'ListController@getSimulations')->name('filter');
+        Route::post('/getHisSims', 'ListController@getSimulations')->name('getHisSims');
         Route::get('/getCats', 'ListController@getCategories')->name('getCats');
         Route::post('/getComs', 'ListController@getComments')->name('getComs');
-        Route::post('/getHisSims', 'ListController@getHisSimulations')->name('getHisSims');
 
         Route::post('/getSim', 'SimulationController@getSimulation')->name('getSim');
 //        Route::get('/getPackage', 'SimulationController@getPackage')->name('getPackage');
