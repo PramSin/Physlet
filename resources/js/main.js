@@ -28,7 +28,8 @@ Vue.prototype.$api.interceptors.response.use(
         }
     }
 )
-// console.log = function() {}
+
+
 new Vue({
     render: h => h(App),
     router,

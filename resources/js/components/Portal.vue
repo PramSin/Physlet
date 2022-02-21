@@ -202,7 +202,7 @@ export default {
             this.$router.push({path: "/me"})
         },
         jump_to_simulation(simulation) {
-            this.$router.push({path: "/demo", query: {sid: simulation.simulation_id}});
+            this.$router.push({path: "/demo", query: {sid: simulation.simulation_id}})
         },
         dateFormat(row, column) {
             let date = row[column.property];
