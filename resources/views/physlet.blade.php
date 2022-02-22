@@ -108,6 +108,8 @@
 <script type="text/javascript" src="{{ mix('/js/manifest.js') }}"></script>
 <script type="text/javascript" src="{{ mix('/js/vendor.js') }}"></script>
 <script type="text/javascript" src="{{ mix('/js/main.js') }}"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
 @if (0 && env('APP_ENV', 'local') == 'local')
     <script type="text/javascript" src="//cdn.staticfile.org/vConsole/3.3.0/vconsole.min.js"></script>
     <script>

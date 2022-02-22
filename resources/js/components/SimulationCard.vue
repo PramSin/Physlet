@@ -21,7 +21,7 @@
             </template>
             <template>
                 <el-image
-                class="image"/>
+                    class="image"/>
                 <div style="padding: 14px;">
                     <span>好吃的汉堡</span>
 

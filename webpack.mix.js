@@ -90,6 +90,9 @@ if (mix.inProduction()) {
                     threshold: 8192,
                 }),
             ],
+            externals: {
+                'font-awesome':'fontAwesome',
+            },
         })
         .version();
 } else {

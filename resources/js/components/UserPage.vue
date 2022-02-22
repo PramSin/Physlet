@@ -14,8 +14,9 @@
                             <i class="el-icon-data-analysis" style="margin-right: 5px; font-size: 15px"></i>
                             <el-tag size="small">{{ simulation.catagory_name }}</el-tag>
                         </div>
-                        <el-button type="text" v-if="!loading_simulations" @click.stop="jump_to_simulation(simulation)" style="font-size: 23px;margin-left: 0">{{ simulation.simulation_name }}</el-button>
-
+                        <el-button type="text" v-if="!loading_simulations" @click.stop="jump_to_simulation(simulation)"
+                                   style="font-size: 23px;margin-left: 0">{{ simulation.simulation_name }}
+                        </el-button>
                     </div>
                     <span v-if="!loading_simulations">{{ simulation.synopsis }}</span>
                     <br/>
@@ -28,7 +29,7 @@
                 </el-card>
             </div>
             <el-pagination>
-            <!-- todo 卡片样式改变 -->
+                <!-- todo 卡片样式改变 -->
                 style="display:table; margin:0 auto; "
                 @current-change="current_change"
                 :current-page="current_page"
@@ -43,13 +44,17 @@
             <el-card>
                 <div slot="header" style="text-align: center">
                     <el-avatar :size="125" :src="avatar_url" v-loading="loading_avatar"></el-avatar>
-                    <div style="text-align:center; font-size: 20px" v-if="!loading_avatar">{{ this.display_username }}</div>
+                    <div style="text-align:center; font-size: 20px" v-if="!loading_avatar">{{
+                            this.display_username
+                        }}
+                    </div>
                 </div>
                 <span v-if="!loading_avatar" style="display:flex; justify-content:center">
                     共上传了{{ this.total_simulation_amount }}个模拟
                 </span>
-                <el-button style="display:table; margin: 20px auto 0;" icon="el-icon-star-on" v-if="authorized" :disabled="followed">
-                    {{this.follow_word}}
+                <el-button style="display:table; margin: 20px auto 0;" icon="el-icon-star-on" v-if="authorized"
+                           :disabled="followed">
+                    {{ this.follow_word }}
                 </el-button>
             </el-card>
         </el-aside>
@@ -61,6 +66,7 @@
 <script>
 import moment from 'moment'
 import SimulationCard from "./SimulationCard";
+
 export default {
     name: "Portal",
     components: {

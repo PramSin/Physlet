@@ -1,7 +1,10 @@
 <template>
     <div style="height: 100%;width: 100%">
         <div>
-            <el-button type="text" @click="jump_to_creator_page" style="font-size: xx-large">{{ simulation_user_name }}</el-button>
+            <el-button type="text" @click="jump_to_creator_page" style="font-size: xx-large">{{
+                    simulation_user_name
+                }}
+            </el-button>
             <span style="font-size: xx-large; font-weight: bold">/{{ simulation_name }}</span>
         </div>
         <el-divider></el-divider>
@@ -32,9 +35,10 @@
         <div v-for="(parent_comment, index) in parent_comments_list" style="margin-top: 30px" v-if="!loading_comments">
             <el-divider content-position="left">
                 <div>
-                    <span>{{index + 1 + current_floor}}</span>
+                    <span>{{ index + 1 + current_floor }}</span>
                     <el-divider direction="vertical" v-if="authorized"></el-divider>
-                    <el-avatar size="small" :src="parent_comment.comment_avatar_url" style="vertical-align:middle;"></el-avatar>
+                    <el-avatar size="small" :src="parent_comment.comment_avatar_url"
+                               style="vertical-align:middle;"></el-avatar>
                     <span style="vertical-align:middle; margin-left: 5px">{{ parent_comment.user_name }}</span>
                 </div>
             </el-divider>
@@ -51,7 +55,8 @@
             <el-divider content-position="right">
                 <div style="height: 32px"><span>{{ parent_comment.create_time }}</span>
                     <el-divider direction="vertical" v-if="authorized"></el-divider>
-                    <el-button type="text" @click="reply_comment(parent_comment)" size="small" v-if="authorized">回复</el-button>
+                    <el-button type="text" @click="reply_comment(parent_comment)" size="small" v-if="authorized">回复
+                    </el-button>
                     <el-button type="text" @click="delete_comment(parent_comment)" size="small"
                                v-if="user_id === parent_comment.user_id">删除
                     </el-button>

@@ -2,7 +2,7 @@
     <el-container>
         <el-aside></el-aside>
         <el-main v-if="!loading_my_simulations">
-            <h3>我的模拟 (共{{my_simulation_amount}}个)</h3>
+            <h3>我的模拟 (共{{ my_simulation_amount }}个)</h3>
             <el-card style="border-radius: 15px" v-loading="loading_my_simulations"
                      v-for="simulation in my_simulation_list"
                      :key="simulation.simulation_id">
@@ -17,7 +17,10 @@
                             </el-popconfirm>
                         </div>
                     </div>
-                    <el-button type="text" v-if="!loading_my_simulations" @click.stop="jump_to_my_simulation(simulation)" style="font-size: 23px;margin-left: 0">{{ simulation.simulation_name }}</el-button>
+                    <el-button type="text" v-if="!loading_my_simulations"
+                               @click.stop="jump_to_my_simulation(simulation)" style="font-size: 23px;margin-left: 0">
+                        {{ simulation.simulation_name }}
+                    </el-button>
                     <br/>
                     <span v-if="!loading_my_simulations">{{ simulation.synopsis }}</span>
                 </div>
@@ -29,7 +32,8 @@
                         simulation.create_time.slice(0, 10)
                     }}</span>
                 <div style="float: right">
-                    <span v-if="!loading_my_simulations">likes {{ simulation.likes }}</span>
+                    <!--          todo 图标          -->
+                    <span v-if="!loading_my_simulations">likes <i class="fa fa-address-book"></i> {{ simulation.likes }}</span>
                 </div>
             </el-card>
             <el-pagination

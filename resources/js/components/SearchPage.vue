@@ -2,7 +2,7 @@
     <el-container>
         <el-aside></el-aside>
         <el-main>
-            <h2>搜索 (共{{total_search_amount}}个结果)</h2>
+            <h2>搜索 (共{{ total_search_amount }}个结果)</h2>
             <h3>模拟展示（点击查看详情）</h3>
             <div>
                 <el-card style="border-radius: 15px" v-loading="loading_simulations"
@@ -82,8 +82,7 @@ export default {
             number_of_simulations: 0,
             All_simulation_list: [],
             search_keywords: "",
-            tag_list: [
-            ],
+            tag_list: [],
         }
     },
 
@@ -91,25 +90,25 @@ export default {
         current_change(current) {
             this.All_simulation_list.splice(0, this.All_simulation_list.length)
             this.loading_simulations = true
-                this.$api
-                    .post('/physlet_api/search', {key: this.search_keywords, opt: current - 1})
-                    .then(response => {
-                        let data = response.data.data;
-                        for (let syn = 0; syn < data.length; syn++) {
-                            let simulation_list = {};
-                            simulation_list.simulation_id = data[syn].sid
-                            simulation_list.simulation_name = data[syn].sname
-                            simulation_list.catagory_name = data[syn].cname
-                            simulation_list.catagory_id = data[syn].cid
-                            simulation_list.synopsis = data[syn].synopsis
-                            simulation_list.likes = data[syn].likes
-                            simulation_list.user_name = data[syn].uname
-                            simulation_list.url = data[syn].url
-                            simulation_list.create_time = data[syn].create_time
-                            this.All_simulation_list.push(simulation_list)
-                        }
-                        this.loading_simulations = false
-                    })
+            this.$api
+                .post('/physlet_api/search', {key: this.search_keywords, opt: current - 1})
+                .then(response => {
+                    let data = response.data.data;
+                    for (let syn = 0; syn < data.length; syn++) {
+                        let simulation_list = {};
+                        simulation_list.simulation_id = data[syn].sid
+                        simulation_list.simulation_name = data[syn].sname
+                        simulation_list.catagory_name = data[syn].cname
+                        simulation_list.catagory_id = data[syn].cid
+                        simulation_list.synopsis = data[syn].synopsis
+                        simulation_list.likes = data[syn].likes
+                        simulation_list.user_name = data[syn].uname
+                        simulation_list.url = data[syn].url
+                        simulation_list.create_time = data[syn].create_time
+                        this.All_simulation_list.push(simulation_list)
+                    }
+                    this.loading_simulations = false
+                })
         },
         jump_to_my_page() {
             this.$router.push({path: "/me"})

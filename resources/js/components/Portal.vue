@@ -17,12 +17,14 @@
                         :label="category.rank_category_name"
                         :value="category.rank_category_id"></el-option>
                 </el-select>
-                <el-button style="margin-left: 15px" type="primary" icon="el-icon-check" @click="submit_rank" circle></el-button>
+                <el-button style="margin-left: 15px" type="primary" icon="el-icon-check" @click="submit_rank"
+                           circle></el-button>
             </el-card>
         </el-aside>
         <el-main>
             <h2>我们的主页信息啥的，可以展示现有的实验模拟</h2>
             <h3>模拟展示（点击查看详情）</h3>
+            <!--     筛选器       -->
             <div>
                 <el-card style="border-radius: 15px" v-loading="loading_simulations"
                          v-for="simulation in All_simulation_list"
@@ -33,11 +35,15 @@
                             <i class="el-icon-data-analysis" style="margin-right: 5px; font-size: 15px"></i>
                             <el-tag size="small">{{ simulation.catagory_name }}</el-tag>
                         </div>
-                        <el-button type="text" @click.stop="jump_to_simulation(simulation)" style="font-size: 23px;margin-left: 0">{{ simulation.simulation_name }}</el-button>
+                        <el-button type="text" @click.stop="jump_to_simulation(simulation)"
+                                   style="font-size: 23px;margin-left: 0">{{ simulation.simulation_name }}
+                        </el-button>
                         <br/>
                         <span v-if="!loading_simulations">{{ simulation.synopsis }}</span>
                     </div>
-                    <el-button type="text" @click.stop="jump_to_user_page(simulation)" style="font-size: small">{{ simulation.user_name }}</el-button>
+                    <el-button type="text" @click.stop="jump_to_user_page(simulation)" style="font-size: small">
+                        {{ simulation.user_name }}
+                    </el-button>
                     <br/>
                     <span
                         style="font-size: small; color: gray"
@@ -106,8 +112,7 @@ export default {
             loading_rank_category: true,
             number_of_simulations: 0,
             All_simulation_list: [],
-            tag_list: [
-            ],
+            tag_list: [],
             rank: [{
                 method: "time_up",
                 label: "按时间升序"
@@ -178,8 +183,7 @@ export default {
                         }
                         this.loading_simulations = false
                     })
-            }
-            else {
+            } else {
                 this.$api
                     .post('/physlet_api/getSims', {opt: current - 1})
                     .then(response => {

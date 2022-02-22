@@ -43,7 +43,6 @@ export default {
     data() {
 
         return {
-
             form: {
                 password: '',
                 ori_password: '',

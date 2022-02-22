@@ -6,7 +6,7 @@
             <el-upload
                 class="avatar-uploader"
                 action=""
-                :show-file-list ="false"
+                :show-file-list="false"
                 :auto-upload="false"
                 :on-change="upload_avatar">
                 <img v-if="upload_avatar_url" :src="upload_avatar_url" class="avatar">
@@ -16,9 +16,11 @@
         </el-main>
         <el-aside>
             <el-card>
+                <!--      todo 修改个人信息          -->
                 <div style="text-align: center">
                     <el-avatar :size="125" :src="avatar_url" v-loading="loading_avatar"></el-avatar>
-                    <div style="text-align:center; font-size: 20px; margin-top: 20px">欢迎, {{this.display_username}}</div>
+                    <div style="text-align:center; font-size: 20px; margin-top: 20px">欢迎, {{ this.display_username }}
+                    </div>
                 </div>
                 <div style="text-align: center" v-if="!loading_avatar">
                 </div>
@@ -89,9 +91,11 @@ export default {
     position: relative;
     overflow: hidden;
 }
+
 .avatar-uploader .el-upload:hover {
     border-color: #409EFF;
 }
+
 .avatar-uploader-icon {
     font-size: 28px;
     color: #8c939d;
@@ -100,6 +104,7 @@ export default {
     line-height: 178px;
     text-align: center;
 }
+
 .avatar {
     width: 178px;
     height: 178px;

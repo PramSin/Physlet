@@ -2,7 +2,8 @@
     <el-container>
         <el-aside></el-aside>
         <el-main style="text-align: center">
-            <el-card style="text-align: center;width: 400px;display: inline-block;margin-top: 150px; border-radius: 15px">
+            <el-card
+                style="text-align: center;width: 400px;display: inline-block;margin-top: 150px; border-radius: 15px">
                 <el-form
                     ref="form"
                     :model="form"
@@ -69,10 +70,11 @@ export default {
             .get('/physlet_api/myInfo')
             .then(response => {
                 if (response.data.code === 200) {
-                        this.$router.replace({path: '/me'})
+                    this.$router.replace({path: '/me'})
                 }
             })
-            .catch(()=>{})
+            .catch(() => {
+            })
     },
     methods: {
         onSubmit() {
