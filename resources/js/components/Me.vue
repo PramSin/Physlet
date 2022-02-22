@@ -4,7 +4,9 @@
         <el-main>
             <h3>我的模拟 (共{{my_simulation_amount}}个)</h3>
             <el-card style="border-radius: 15px" v-loading="loading_my_simulations"
-                     v-for="simulation in my_simulation_list" @click.native="jump_to_my_simulation(simulation)">
+                     v-for="simulation in my_simulation_list"
+                     :key="simulation.simulation_id"
+                     @click.native="jump_to_my_simulation(simulation)">
                 <div slot="header">
                     <div>
                         <i class="el-icon-data-analysis" style="margin-right: 5px; font-size: 15px"></i>

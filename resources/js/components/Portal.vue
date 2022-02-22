@@ -26,6 +26,7 @@
             <div>
                 <el-card style="border-radius: 15px" v-loading="loading_simulations"
                          v-for="simulation in All_simulation_list"
+                         :key="simulation.simulation_id"
                          @click.native="jump_to_simulation(simulation)">
                     <div slot="header">
                         <div>
