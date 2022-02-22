@@ -33,10 +33,11 @@
                             <i class="el-icon-data-analysis" style="margin-right: 5px; font-size: 15px"></i>
                             <el-tag size="small">{{ simulation.catagory_name }}</el-tag>
                         </div>
-                        <el-button type="text" @click.stop="jump_to_user_page(simulation)" style="font-size: 23px">{{ simulation.user_name }}</el-button>
-                        <el-button type="text" @click.stop="jump_to_simulation(simulation)" style="font-size: 23px;margin-left: 0">/ {{ simulation.simulation_name }}</el-button>
+                        <el-button type="text" @click.stop="jump_to_simulation(simulation)" style="font-size: 23px;margin-left: 0">{{ simulation.simulation_name }}</el-button>
+                        <br/>
+                        <span v-if="!loading_simulations">{{ simulation.synopsis }}</span>
                     </div>
-                    <span v-if="!loading_simulations">{{ simulation.synopsis }}</span>
+                    <el-button type="text" @click.stop="jump_to_user_page(simulation)" style="font-size: small">{{ simulation.user_name }}</el-button>
                     <br/>
                     <span
                         style="font-size: small; color: gray"

@@ -1,28 +1,28 @@
 <template>
     <el-container>
         <el-aside></el-aside>
-        <el-main>
+        <el-main v-if="!loading_my_simulations">
             <h3>我的模拟 (共{{my_simulation_amount}}个)</h3>
             <el-card style="border-radius: 15px" v-loading="loading_my_simulations"
                      v-for="simulation in my_simulation_list"
-                     :key="simulation.simulation_id"
-                     @click.native="jump_to_my_simulation(simulation)">
+                     :key="simulation.simulation_id">
                 <div slot="header">
                     <div>
                         <i class="el-icon-data-analysis" style="margin-right: 5px; font-size: 15px"></i>
                         <el-tag size="small">{{ simulation.catagory_name }}</el-tag>
                         <div style="float: right">
-                            <el-button size="small" @click="open_edit_form(simulation)">编辑</el-button>
+                            <el-button size="small" @click.stop="open_edit_form(simulation)">编辑</el-button>
                             <el-popconfirm title="确定删除? " @confirm="delete_simulation(simulation)">
                                 <el-button slot="reference" size="small">删除</el-button>
                             </el-popconfirm>
                         </div>
                     </div>
                     <el-button type="text" v-if="!loading_my_simulations" @click.stop="jump_to_my_simulation(simulation)" style="font-size: 23px;margin-left: 0">{{ simulation.simulation_name }}</el-button>
+                    <br/>
+                    <span v-if="!loading_my_simulations">{{ simulation.synopsis }}</span>
                 </div>
-                <span v-if="!loading_my_simulations">{{ simulation.synopsis }}</span>
                 <span v-if="!loading_my_simulations"
-                      style="float: right; font-size: small">{{ simulation_access(simulation) }}</span>
+                      style="float: left; font-size: small">{{ simulation_access(simulation) }}</span>
                 <br/>
                 <span
                     style="font-size: small; color: gray" v-if="!loading_my_simulations">创建时间 {{
@@ -250,6 +250,7 @@ export default {
             this.edit_form.sname = simulation.simulation_name
         },
         delete_simulation(simulation) {
+            this.loading_my_simulations = true
             this.$api
                 .post('/physlet_api/deleteSim', {sid: simulation.simulation_id})
                 .then(response => {
@@ -262,6 +263,7 @@ export default {
                         window.alert(response.data.message)
                     }
                 })
+            this.loading_my_simulations = false
         },
         submit_edit() {
             this.$api

@@ -29,13 +29,6 @@ class DatabaseSeeder extends Seeder
             'email_verified_at' => now(),
             'password' => Hash::make('test')
         ]);
-        User::create([
-            'username' => 'PramSin',
-            'slug' => 'pram',
-            'email' => 'pram_sin@qq.com',
-            'email_verified_at' => now(),
-            'password' => Hash::make('pl3270823')
-        ]);
         User::factory(3)
             ->has(User::factory(3), 'followers')
             ->create();

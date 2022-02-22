@@ -19,7 +19,7 @@
                     </div>
                     <span v-if="!loading_simulations">{{ simulation.synopsis }}</span>
                     <br/>
-                    <span
+                    <span>
                         style="font-size: small; color: gray"
                         v-if="!loading_simulations">创建时间 {{ simulation.create_time.slice(0, 10) }}</span>
                     <div style="float: right">
@@ -27,7 +27,8 @@
                     </div>
                 </el-card>
             </div>
-            <el-pagination
+            <el-pagination>
+            <!-- todo 卡片样式改变 -->
                 style="display:table; margin:0 auto; "
                 @current-change="current_change"
                 :current-page="current_page"

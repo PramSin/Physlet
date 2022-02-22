@@ -34,14 +34,14 @@
                 <div>
                     <span>{{index + 1 + current_floor}}</span>
                     <el-divider direction="vertical" v-if="authorized"></el-divider>
-                    <el-avatar size="small" :src="parent_comment.avatar_url" style="vertical-align:middle;"></el-avatar>
+                    <el-avatar size="small" :src="parent_comment.comment_avatar_url" style="vertical-align:middle;"></el-avatar>
                     <span style="vertical-align:middle; margin-left: 5px">{{ parent_comment.user_name }}</span>
                 </div>
             </el-divider>
             <div>{{ parent_comment.comment_content }}</div>
             <div style="margin-left: 10%" v-for="comment in comments_list"
                  v-if="parent_comment.comment_id === comment.parent_comment_id">
-                <el-avatar size="small" :src="comment.avatar_url"
+                <el-avatar size="small" :src="comment.comment_avatar_url"
                            style="vertical-align:middle; margin: 10px"></el-avatar>
                 <span style="vertical-align:middle; margin-left: 10px">{{ comment.comment_content }}</span>
                 <el-button type="text" @click="delete_comment(comment)" size="small"
