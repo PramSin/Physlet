@@ -4,31 +4,31 @@
         <el-main>
             <h2>搜索 (共{{ total_search_amount }}个结果)</h2>
             <h3>模拟展示（点击查看详情）</h3>
-            <div>
-                <el-card style="border-radius: 15px" v-loading="loading_simulations"
-                         v-for="simulation in All_simulation_list"
-                         :key="simulation.simulation_id"
-                         @click.native="jump_to_simulation(simulation)">
-                    <div slot="header">
-                        <div>
-                            <i class="el-icon-data-analysis" style="margin-right: 5px; font-size: 15px"></i>
-                            <el-tag size="small">{{ simulation.catagory_name }}</el-tag>
-                        </div>
-                        <h3 style="margin-right: 3px; width: 80%" v-if="!loading_simulations">{{ simulation.user_name }}
-                            /
-                            {{ simulation.simulation_name }}</h3>
+            <el-card style="border-radius: 15px"
+                     v-loading="loading_simulations"
+                     v-if="!loading_simulations"
+                     v-for="simulation in search_simulation_list"
+                     :key="simulation.simulation_id">
+                <div slot="header">
+                    <div>
+                        <i class="el-icon-data-analysis" style="margin-right: 5px; font-size: 15px"></i>
+                        <el-tag size="small">{{ simulation.catagory_name }}</el-tag>
                     </div>
-                    <span v-if="!loading_simulations">{{ simulation.synopsis }}</span>
-                    <br/>
-                    <span
-                        style="font-size: small; color: gray"
-                        v-if="!loading_simulations">创建时间 {{ simulation.create_time.slice(0, 10) }}</span>
-                    <div style="float: right">
-                        <span v-if="!loading_simulations">likes {{ simulation.likes }}</span>
-                    </div>
-                </el-card>
-            </div>
+                    <h3 style="margin-right: 3px; width: 80%" v-if="!loading_simulations">{{ simulation.user_name }}
+                        /
+                        {{ simulation.simulation_name }}</h3>
+                </div>
+                <span v-if="!loading_simulations">{{ simulation.synopsis }}</span>
+                <br/>
+                <span
+                    style="font-size: small; color: gray"
+                    v-if="!loading_simulations">创建时间 {{ simulation.create_time.slice(0, 10) }}</span>
+                <div style="float: right">
+                    <span v-if="!loading_simulations">likes {{ simulation.likes }}</span>
+                </div>
+            </el-card>
             <el-pagination
+                v-if="!loading_simulations"
                 style="display:table; margin:0 auto; "
                 @current-change="current_change"
                 :current-page="current_page"
@@ -38,6 +38,20 @@
                 :page-size="10"
                 :total="total_search_amount">
             </el-pagination>
+            <elcard v-if="!loading_users"
+                    v-for="user in search_user_list"
+                    :key="user.user_id"
+                    @click="jump_to_user_page(user)"
+                    style="cursor: pointer">
+                <div slot="header">
+                    <el-avatar :src="user.avatar_url"></el-avatar>
+                    <h3>{{ user.user_name }}</h3>
+                </div>
+                <div>
+                    <span>共 {{ user.sims }} 个模拟</span>
+                    <span style="float: right"><i class="fa-regular fa-thumbs-up"></i> {{ user.likes }}</span>
+                </div>
+            </elcard>
         </el-main>
         <el-aside>
             <el-card v-if="authorized">
@@ -80,15 +94,20 @@ export default {
             avatar_url: "",
             display_username: "",
             number_of_simulations: 0,
-            All_simulation_list: [],
+            search_simulation_list: [],
             search_keywords: "",
             tag_list: [],
+            search_user_list: [],
+            loading_users: true,
         }
     },
 
     methods: {
+        jump_to_user_page(user) {
+            this.$router.push({path: "/user_page", query: {id: user.user_id}})
+        },
         current_change(current) {
-            this.All_simulation_list.splice(0, this.All_simulation_list.length)
+            this.search_simulation_list.splice(0, this.search_simulation_list.length)
             this.loading_simulations = true
             this.$api
                 .post('/physlet_api/search', {key: this.search_keywords, opt: current - 1})
@@ -105,7 +124,7 @@ export default {
                         simulation_list.user_name = data[syn].uname
                         simulation_list.url = data[syn].url
                         simulation_list.create_time = data[syn].create_time
-                        this.All_simulation_list.push(simulation_list)
+                        this.search_simulation_list.push(simulation_list)
                     }
                     this.loading_simulations = false
                 })
@@ -119,26 +138,44 @@ export default {
     },
     mounted() {
         this.search_keywords = this.$route.query.key
-        this.$api
-            .post('/physlet_api/search', {key: this.search_keywords})
-            .then(response => {
-                let data = response.data.data;
-                for (let syn = 0; syn < data.length; syn++) {
-                    let simulation_list = {};
-                    simulation_list.simulation_id = data[syn].sid
-                    simulation_list.simulation_name = data[syn].sname
-                    simulation_list.catagory_name = data[syn].cname
-                    simulation_list.catagory_id = data[syn].cid
-                    simulation_list.synopsis = data[syn].synopsis
-                    simulation_list.likes = data[syn].likes
-                    simulation_list.user_name = data[syn].uname
-                    simulation_list.url = data[syn].url
-                    simulation_list.create_time = data[syn].create_time
-                    this.All_simulation_list.push(simulation_list)
-                }
-                this.total_search_amount = response.data.number
-                this.loading_simulations = false
-            })
+        if (this.$route.query.type !== "2") {
+            this.$api
+                .post('/physlet_api/search', {key: this.search_keywords})
+                .then(response => {
+                    let data = response.data.data;
+                    for (let syn = 0; syn < data.length; syn++) {
+                        let simulation_list = {};
+                        simulation_list.simulation_id = data[syn].sid
+                        simulation_list.simulation_name = data[syn].sname
+                        simulation_list.catagory_name = data[syn].cname
+                        simulation_list.catagory_id = data[syn].cid
+                        simulation_list.synopsis = data[syn].synopsis
+                        simulation_list.likes = data[syn].likes
+                        simulation_list.user_name = data[syn].uname
+                        simulation_list.url = data[syn].url
+                        simulation_list.create_time = data[syn].create_time
+                        this.search_simulation_list.push(simulation_list)
+                    }
+                    this.total_search_amount = response.data.number
+                    this.loading_simulations = false
+                })
+        } else {
+            this.$api
+                .post('/physlet_api/searchUser', {key: this.search_keywords})
+                .then(response => {
+                    let data = response.data.data;
+                    for (let syn = 0; syn < data.length; syn++) {
+                        let user_list = {};
+                        user_list.user_id = data[syn].uid
+                        user_list.user_name = data[syn].uname
+                        user_list.avatar_url = data[syn].avatar
+                        user_list.sims = data[syn].likes
+                        this.search_user_list.push(user_list)
+                    }
+                    this.total_search_amount = response.data.number
+                    this.loading_users = false
+                })
+        }
         this.$api
             .get('/physlet_api/checkLogin')
             .then(response => {

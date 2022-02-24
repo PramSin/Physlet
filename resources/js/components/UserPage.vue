@@ -7,8 +7,7 @@
             <div>
                 <el-card style="border-radius: 15px" v-loading="loading_simulations"
                          v-for="simulation in user_simulation_list"
-                         :key="simulation.simulation_id"
-                         @click.native="jump_to_simulation(simulation)">
+                         :key="simulation.simulation_id">
                     <div slot="header">
                         <div>
                             <i class="el-icon-data-analysis" style="margin-right: 5px; font-size: 15px"></i>
@@ -17,19 +16,17 @@
                         <el-button type="text" v-if="!loading_simulations" @click.stop="jump_to_simulation(simulation)"
                                    style="font-size: 23px;margin-left: 0">{{ simulation.simulation_name }}
                         </el-button>
+                        <br/>
+                        <span v-if="!loading_simulations">{{ simulation.synopsis }}</span>
                     </div>
-                    <span v-if="!loading_simulations">{{ simulation.synopsis }}</span>
-                    <br/>
-                    <span>
-                        style="font-size: small; color: gray"
-                        v-if="!loading_simulations">创建时间 {{ simulation.create_time.slice(0, 10) }}</span>
+                    <span style="font-size: small; color: gray" v-if="!loading_simulations">
+                       创建时间 {{ simulation.create_time.slice(0, 10) }}</span>
                     <div style="float: right">
                         <span v-if="!loading_simulations">likes {{ simulation.likes }}</span>
                     </div>
                 </el-card>
             </div>
             <el-pagination>
-                <!-- todo 卡片样式改变 -->
                 style="display:table; margin:0 auto; "
                 @current-change="current_change"
                 :current-page="current_page"

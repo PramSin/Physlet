@@ -32,8 +32,7 @@
                         simulation.create_time.slice(0, 10)
                     }}</span>
                 <div style="float: right">
-                    <!--          todo 图标          -->
-                    <span v-if="!loading_my_simulations">likes <i class="fa fa-address-book"></i> {{ simulation.likes }}</span>
+                    <span v-if="!loading_my_simulations"><i class="fa-regular fa-thumbs-up"></i> {{ simulation.likes }}</span>
                 </div>
             </el-card>
             <el-pagination

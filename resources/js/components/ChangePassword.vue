@@ -1,37 +1,42 @@
 <template>
-    <el-form
-        ref="form"
-        :model="form"
-        label-position="top"
-        @submit.native.prevent
-        :rules="rules"
-        style="width: 50%"
-    >
-        <el-form-item label="原密码" prop="ori_password">
-            <el-input
-                v-model.trim="form.ori_password"
-                clearable
-                show-password
-            ></el-input>
-        </el-form-item>
-        <el-form-item label="密码" prop="password">
-            <el-input
-                v-model.trim="form.password"
-                clearable
-                show-password
-            ></el-input>
-        </el-form-item>
-        <el-form-item label="密码确认" prop="password_confirm">
-            <el-input
-                v-model.trim="form.password_confirm"
-                clearable
-                show-password
-            ></el-input>
-        </el-form-item>
-        <br/><br/>
-        <el-button type="primary" native-type="submit" @click="onSubmit">改变密码</el-button>
-    </el-form>
-
+    <el-container>
+        <el-aside></el-aside>
+        <el-main>
+            <el-form
+                ref="form"
+                :model="form"
+                label-position="top"
+                @submit.native.prevent
+                :rules="rules"
+                style="width: 75%"
+            >
+                <el-form-item label="原密码" prop="ori_password">
+                    <el-input
+                        v-model.trim="form.ori_password"
+                        clearable
+                        show-password
+                    ></el-input>
+                </el-form-item>
+                <el-form-item label="密码" prop="password">
+                    <el-input
+                        v-model.trim="form.password"
+                        clearable
+                        show-password
+                    ></el-input>
+                </el-form-item>
+                <el-form-item label="密码确认" prop="password_confirm">
+                    <el-input
+                        v-model.trim="form.password_confirm"
+                        clearable
+                        show-password
+                    ></el-input>
+                </el-form-item>
+                <br/><br/>
+                <el-button type="primary" native-type="submit" @click="onSubmit">改变密码</el-button>
+            </el-form>
+        </el-main>
+        <el-aside></el-aside>
+    </el-container>
 </template>
 
 

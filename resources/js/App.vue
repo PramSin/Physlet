@@ -17,9 +17,13 @@
                 <el-menu-item index="search">
                     <template>
                         <el-input placeholder="搜索" v-model="search_keywords" clearable
-                                  style="width: 200px; margin-right: 10px"></el-input>
-                        <!-- todo 回车搜索,复杂搜索 -->
-                        <el-button type="primary" round @click="submit_search" size="medium">搜索</el-button>
+                                  style="width: 400px">
+                            <el-select v-model="search_type" slot="prepend" style="width: 110px" placeholder="请选择">
+                                <el-option label="搜索模拟" value="1"></el-option>
+                                <el-option label="搜索用户" value="2"></el-option>
+                            </el-select>
+                            <el-button slot="append" @click="submit_search" >搜索</el-button>
+                        </el-input>
                     </template>
                 </el-menu-item>
                 <el-menu-item style="float: right" index="message">
@@ -65,6 +69,7 @@ export default {
             loading_small_avatar: true,
             small_avatar_url: "",
             authorized: false,
+            search_type: "",
         }
     },
     mounted() {
@@ -101,7 +106,7 @@ export default {
         },
         submit_search() {
             this.componentKey = !this.componentKey
-            this.$router.push({path: "/search_page", query: {key: this.search_keywords}}).catch(() => {
+            this.$router.push({path: "/search_page", query: {key: this.search_keywords, type: this.search_type}}).catch(() => {
             })
         },
         to_login() {

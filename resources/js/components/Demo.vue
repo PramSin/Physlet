@@ -11,8 +11,7 @@
         <div>
             <h3>简介</h3>
             <h4>{{ synopsis }}</h4>
-            <h4>点赞数: {{ likes }}</h4>
-            <el-button type="text" :icon="if_like()" :disabled="like" @click="submit_like" size="large">点赞</el-button>
+            <span :style="if_like_colour()" @click="submit_like"><i :class="if_like()"></i> {{ likes }}</span>
         </div>
         <el-divider></el-divider>
         <div>
@@ -189,9 +188,16 @@ export default {
                 })
         },
         if_like() {
-            if (this.like === true) {
-                return "el-icon-caret-top"
-            } else return "el-icon-arrow-up"
+            if (this.like === false) {
+                return "fa-regular fa-thumbs-up"
+            }
+            else return "fa-solid fa-thumbs-up"
+        },
+        if_like_colour() {
+            if (this.like === false) {
+                return "font-weight: bold; font-size: large; color: #000000; cursor:pointer"
+            }
+            else return "font-weight: bold; font-size: large; color: #409EFF; cursor:pointer"
         },
         cancel_rate() {
             let params = this.$route.query

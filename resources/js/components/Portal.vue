@@ -10,7 +10,7 @@
                                         :label="rank_list.label"
                                         :value="rank_list.method"></el-option>
                                 </el-select>-->
-                <el-select v-model="rank_tag" placeholder="按标签筛选" style="margin-top: 20px">
+                <el-select v-model="rank_tag" placeholder="按标签筛选" style="margin-top: 20px; width: 70%">
                     <el-option
                         v-for="category in rank_category"
                         :key="category.rank_category_id"
@@ -28,8 +28,7 @@
             <div>
                 <el-card style="border-radius: 15px" v-loading="loading_simulations"
                          v-for="simulation in All_simulation_list"
-                         :key="simulation.simulation_id"
-                         @click.native="jump_to_simulation(simulation)">
+                         :key="simulation.simulation_id">
                     <div slot="header">
                         <div>
                             <i class="el-icon-data-analysis" style="margin-right: 5px; font-size: 15px"></i>
@@ -49,7 +48,7 @@
                         style="font-size: small; color: gray"
                         v-if="!loading_simulations">创建时间 {{ simulation.create_time.slice(0, 10) }}</span>
                     <div style="float: right">
-                        <span v-if="!loading_simulations">likes {{ simulation.likes }}</span>
+                        <span v-if="!loading_simulations"><i class="fa-regular fa-thumbs-up"></i> {{ simulation.likes }}</span>
                     </div>
                 </el-card>
             </div>
