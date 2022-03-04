@@ -202,6 +202,7 @@ export default {
     computed: {
         user() {
             return this.$store.state.user;
+            console.log(this.$store.state.user)
         },
         tree: {
             get() {
@@ -312,6 +313,7 @@ export default {
             this.show_file = true;
             this.files = file;
             this.fileList = fileList;
+            /*console.log(this.Images)*/
             /*console.log(this.Images)*/
         },
         submitFile() {
