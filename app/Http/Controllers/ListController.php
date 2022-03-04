@@ -247,6 +247,8 @@ class ListController extends Controller
             $this->r['code'] = 400;
             $this->r['message'] = $e->getMessage();
         }
+
+        return $this->r;
     }
 
     protected function getMessages(Request $request)
@@ -277,5 +279,7 @@ class ListController extends Controller
             $this->r['code'] = 400;
             $this->r['message'] = $e->getMessage();
         }
+
+        return $this->r;
     }
 }
