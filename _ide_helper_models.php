@@ -78,6 +78,41 @@ namespace App\Models{
 
 namespace App\Models{
 /**
+ * App\Models\Message
+ *
+ * @property int $id
+ * @property int $state
+ * @property int $class
+ * @property int $user_id
+ * @property int $send_id
+ * @property int $simulation_id
+ * @property int|null $comment_id
+ * @property string $content
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\Comment|null $comment
+ * @property-read \App\Models\User|null $send
+ * @property-read \App\Models\Simulation|null $simulation
+ * @property-read \App\Models\User|null $user
+ * @method static \Illuminate\Database\Eloquent\Builder|Message newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Message newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Message query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Message whereClass($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Message whereCommentId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Message whereContent($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Message whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Message whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Message whereSendId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Message whereSimulationId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Message whereState($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Message whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Message whereUserId($value)
+ */
+	class Message extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
  * App\Models\Simulation
  *
  * @property int $id
@@ -92,6 +127,8 @@ namespace App\Models{
  * @property-read \App\Models\Category|null $category
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Comment[] $comments
  * @property-read int|null $comments_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\User[] $liked
+ * @property-read int|null $liked_count
  * @property-read \App\Models\User|null $user
  * @property-read \App\Models\SimulationWithVersion|null $version
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\SimulationWithVersion[] $versions
@@ -169,6 +206,10 @@ namespace App\Models{
  * @property-read int|null $followers_count
  * @property-read \Illuminate\Database\Eloquent\Collection|User[] $followings
  * @property-read int|null $followings_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Simulation[] $liked
+ * @property-read int|null $liked_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Message[] $messages
+ * @property-read int|null $messages_count
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
  * @property-read int|null $notifications_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Simulation[] $simulations

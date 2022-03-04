@@ -20,28 +20,28 @@ mix.disableSuccessNotifications();
 
 mix
     .options({
-        processCssUrls: true,
-        purifyCss: false,
-        imgLoaderOptions: {
-            enabled: false
-        },
-        uglify: {
-            uglifyOptions: {
-                compress: {
-                    warnings: false
-                },
-                mangle: {
-                    safari10: true
-                },
-                parallel: true
-            }
+    processCssUrls: true,
+    purifyCss: false,
+    imgLoaderOptions: {
+        enabled: false
+    },
+    uglify: {
+        uglifyOptions: {
+            compress: {
+                warnings: false
+            },
+            mangle: {
+                safari10: true
+            },
+            parallel: true
         }
-    })
+    }
+})
     .polyfill({
-        enabled: true,
-        useBuiltIns: "usage",
-        targets: "iOS 7"
-    })
+    enabled: true,
+    useBuiltIns: "usage",
+    targets: "iOS 7"
+})
     .styles(['resources/css/bootstrap.css'], 'public/css/bootstrap.css')
     .js('resources/js/main.js', 'public/js')
     .extract([
