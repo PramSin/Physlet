@@ -92,4 +92,9 @@ class User extends Authenticatable implements AuditableContracts
     {
         return $this->belongsToMany(Simulation::class, 'likes', 'user_id', 'simulation_id');
     }
+
+    public function messages(): HasMany
+    {
+        return $this->hasMany(Message::class);
+    }
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Comment;
+use App\Models\Message;
 use App\Models\Simulation;
 use App\Models\SimulationWithVersion;
 use Exception;
@@ -381,6 +382,33 @@ class SimulationController extends Controller
 
             $comment->save();
 
+            if ($pid == 0) {
+                $message = Message::create(
+                    [
+                        'state' => '1',
+                        'class' => '2',
+                        'user_id' => Simulation::findOrFail($sid)->user_id,
+                        'send_id' => $request->user()->id,
+                        'simulation_id' => $sid,
+                        'content' => $comment->content
+                    ]
+                );
+            } else {
+                $message = Message::create(
+                    [
+                        'state' => '1',
+                        'class' => '3',
+                        'user_id' => Comment::findOrFail($pid)->user_id,
+                        'send_id' => $request->user()->id,
+                        'simulation_id' => $sid,
+                        'comment_id' => $pid,
+                        'content' => $comment->content
+                    ]
+                );
+            }
+
+            $message->save();
+
             $this->r['code'] = 200;
             $this->r['message'] = "发送评论成功";
         } catch (Exception $e) {
@@ -465,5 +493,41 @@ class SimulationController extends Controller
             $this->r['message'] = $e->getMessage();
             return $this->r;
         }
+    }
+
+    protected function read(Request $request)
+    {
+        try {
+            $messages = Message::findMany($request->post('mids'));
+            foreach ($messages as $message) {
+                $message->state = 0;
+                $message->save();
+            }
+            $this->r['code'] = 200;
+            $this->r['message'] = "消息已读";
+        } catch (Exception $e) {
+            $this->r['code'] = 400;
+            $this->r['message'] = $e->getMessage();
+        }
+
+        return $this->r;
+    }
+
+    protected function mark(Request $request)
+    {
+        try {
+            $messages = Message::findMany($request->post('mids'));
+            foreach ($messages as $message) {
+                $message->state = 1;
+                $message->save();
+            }
+            $this->r['code'] = 200;
+            $this->r['message'] = "消息已标记为未读";
+        } catch (Exception $e) {
+            $this->r['code'] = 400;
+            $this->r['message'] = $e->getMessage();
+        }
+
+        return $this->r;
     }
 }
