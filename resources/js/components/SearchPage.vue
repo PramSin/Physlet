@@ -158,6 +158,7 @@ export default {
                     }
                     this.total_search_amount = response.data.number
                     this.loading_simulations = false
+                    // TODO add data structure
                 })
         } else {
             this.$api
