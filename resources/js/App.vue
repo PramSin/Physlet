@@ -1,5 +1,5 @@
 <template>
-    <el-container style="padding: 0; margin: 0">
+    <el-container style="padding: 0; margin: 0" v-if="!loading_topbar">
         <!--   电脑客户端情况  -->
         <el-header>
             <el-menu :default-active="current_path_name" @select="jump_to" class="el-menu-demo" mode="horizontal">
@@ -74,7 +74,8 @@ export default {
             search_type: "",
             message_list: [],
             unread_message_number: 0,
-            message_unread: false
+            message_unread: false,
+            loading_topbar: false
         }
     },
     mounted() {
@@ -164,10 +165,9 @@ export default {
                             message: response.data.message,
                         });
                     } else {
-                        location.reload()
                         this.$message('注销成功！');
-                        this.$router.replace({path: '/portal'})
-
+                        this.$router.replace({path: '/portal'});
+                        this.authorized = false;
                     }
                 })
                 .catch()
