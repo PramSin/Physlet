@@ -20,7 +20,7 @@ class SimulationWithVersionFactory extends Factory
      *
      * @return array
      */
-    public function definition()
+    public function definition(): array
     {
         $sim = Simulation::factory()->create();
         return [
