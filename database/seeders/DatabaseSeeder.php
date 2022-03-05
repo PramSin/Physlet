@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Category;
 use App\Models\Comment;
+use App\Models\Message;
 use App\Models\SimulationWithVersion;
 use App\Models\User;
 use Illuminate\Database\Seeder;
@@ -35,8 +36,9 @@ class DatabaseSeeder extends Seeder
         User::factory(3)
             ->has(User::factory(3), 'followings')
             ->create();
-        SimulationWithVersion::factory(30)->create();
+        SimulationWithVersion::factory(100)->create();
         Comment::factory(300)->create();
         Comment::factory(300)->create();
+        Message::factory(50)->create();
     }
 }

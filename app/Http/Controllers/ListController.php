@@ -272,7 +272,7 @@ class ListController extends Controller
             }
 
             $this->r['code'] = 200;
-            $this->r['message'] = "获取关注列表成功";
+            $this->r['message'] = "获取消息列表成功";
             $this->r['data'] = $data;
             $this->r['number'] = $messages->count();
         } catch (Exception $e) {
