@@ -38,7 +38,7 @@
                 :page-size="10"
                 :total="total_search_amount">
             </el-pagination>
-            <elcard v-if="!loading_users"
+            <el-card v-if="!loading_users"
                     v-for="user in search_user_list"
                     :key="user.user_id"
                     @click="jump_to_user_page(user)"
@@ -51,7 +51,7 @@
                     <span>共 {{ user.sims }} 个模拟</span>
                     <span style="float: right"><i class="fa-regular fa-thumbs-up"></i> {{ user.likes }}</span>
                 </div>
-            </elcard>
+            </el-card>
         </el-main>
         <el-aside>
             <el-card v-if="authorized">
@@ -169,7 +169,8 @@ export default {
                         user_list.user_id = data[syn].uid
                         user_list.user_name = data[syn].uname
                         user_list.avatar_url = data[syn].avatar
-                        user_list.sims = data[syn].likes
+                        user_list.sims = data[syn].sims
+                        user_list.likes = data[syn].likes
                         this.search_user_list.push(user_list)
                     }
                     this.total_search_amount = response.data.number
