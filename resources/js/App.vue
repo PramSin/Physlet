@@ -1,5 +1,5 @@
 <template>
-    <el-container style="padding: 0; margin: 0" v-if="!loading_topbar">
+    <el-container style="padding: 0; margin: 0" v-if="!loading_top_bar">
         <!--   电脑客户端情况  -->
         <el-header>
             <el-menu :default-active="current_path_name" @select="jump_to" class="el-menu-demo" mode="horizontal">
@@ -26,14 +26,16 @@
                         </el-input>
                     </template>
                 </el-menu-item>
-                <el-menu-item style="float: right" index="message">
-                    <el-badge :value="unread_message_number" class="item" :hidden="!message_unread">
-                        <el-button size="medium" round icon="el-icon-message-solid" v-if="authorized">通知</el-button>
-                    </el-badge>
+                <el-menu-item index="message" style="float: right" v-if="authorized">
+                    <el-button size="medium" type="text" style="margin-right: 10px" @click="drawer = true">
+                        <el-badge :value="unread_message_number" class="item" :hidden="!message_unread">
+                            <i class="el-icon-message-solid" style="font-size: x-large"></i>
+                        </el-badge>
+                    </el-button>
                 </el-menu-item>
                 <el-submenu index="user_information" style="float: right" v-if="authorized">
                     <template slot="title">
-                        <el-avatar style="margin-right: 0px" v-loading="loading_small_avatar"
+                        <el-avatar style="margin-right: 0" v-loading="loading_small_avatar"
                                    :src="small_avatar_url"></el-avatar>
                     </template>
                     <el-menu-item index="user_info">账户信息</el-menu-item>
@@ -46,6 +48,27 @@
             </el-menu>
         </el-header>
         <el-main>
+            <el-drawer
+                title="消息列表"
+                :visible.sync="drawer">
+                <div v-for="message in message_list" :key="message.message_id">
+                   <span v-if="message.message_class === 1">
+                            系统消息: {{ message.message_content }}
+                   </span>
+                    <span v-else-if="message.message_class === 2">
+                            {{ message.message_user_name }}点赞了你的模拟{{ message.message_simulation_name }}
+                    </span>
+                    <span v-else-if="message.message_class === 3">
+                            {{ message.message_user_name }}评论: {{ message.message_content }}
+                    </span>
+                    <span v-else-if="message.message_class === 4">
+                            {{ message.message_user_name }}回复了你的评论: {{ message.message_content }}
+                    </span>
+                    <span v-else-if="message.message_class === 5">
+                            {{ message.message_user_name }}: {{ message.message_content }}
+                    </span>
+                </div>
+            </el-drawer>
             <el-container>
                 <el-aside style="width: 150px"></el-aside>
                 <el-main>
@@ -64,6 +87,7 @@ export default {
     name: 'App',
     data() {
         return {
+            drawer: false,
             componentKey: 0,
             jumpto: true,
             current_path_name: "",
@@ -75,7 +99,7 @@ export default {
             message_list: [],
             unread_message_number: 0,
             message_unread: false,
-            loading_topbar: false
+            loading_top_bar: false
         }
     },
     mounted() {
