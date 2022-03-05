@@ -22,12 +22,14 @@
                                 <el-option label="搜索模拟" value="1"></el-option>
                                 <el-option label="搜索用户" value="2"></el-option>
                             </el-select>
-                            <el-button slot="append" @click="submit_search" >搜索</el-button>
+                            <el-button slot="append" @click="submit_search">搜索</el-button>
                         </el-input>
                     </template>
                 </el-menu-item>
                 <el-menu-item style="float: right" index="message">
-                    <el-button size="medium" round icon="el-icon-message-solid" v-if="authorized">通知</el-button>
+                    <el-badge :value="unread_message_number" class="item" :hidden="!message_unread">
+                        <el-button size="medium" round icon="el-icon-message-solid" v-if="authorized">通知</el-button>
+                    </el-badge>
                 </el-menu-item>
                 <el-submenu index="user_information" style="float: right" v-if="authorized">
                     <template slot="title">
@@ -70,6 +72,9 @@ export default {
             small_avatar_url: "",
             authorized: false,
             search_type: "",
+            message_list: [],
+            unread_message_number: 0,
+            message_unread: false
         }
     },
     mounted() {
@@ -83,6 +88,27 @@ export default {
                             .then(response => {
                                 this.small_avatar_url = response.data.data.avatar
                                 this.loading_small_avatar = false
+                            })
+                        this.$api
+                            .get("/physlet_api/messageList")
+                            .then(response => {
+                                let data = response.data.data
+                                for (let syn = 0; syn < data.length; syn++) {
+                                    let message = {};
+                                    message.message_id = data[syn].mid;
+                                    message.message_state = data[syn].state;
+                                    if (message.message_state) this.unread_message_number++;
+                                    message.message_class = data[syn].class;
+                                    message.message_user_id = data[syn].uid;
+                                    message.message_user_name = data[syn].uname;
+                                    message.message_simulation_id = data[syn].sid;
+                                    message.message_simulation_name = data[syn].sname;
+                                    message.message_comment_id = data[syn].coid;
+                                    message.message_comment_cotent = data[syn].content;
+                                    message.message_create_time = data[syn].create_time;
+                                    this.message_list.push(message);
+                                }
+                                if (this.unread_message_number !== 0) this.message_unread = true;
                             })
                     }
                 }
@@ -110,7 +136,10 @@ export default {
         },
         submit_search() {
             this.componentKey = !this.componentKey
-            this.$router.push({path: "/search_page", query: {key: this.search_keywords, type: this.search_type}}).catch(() => {
+            this.$router.push({
+                path: "/search_page",
+                query: {key: this.search_keywords, type: this.search_type}
+            }).catch(() => {
             })
         },
         to_login() {
