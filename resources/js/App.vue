@@ -88,6 +88,10 @@ export default {
                 }
             )
         this.current_path_name = this.$route.path.substring(1)
+        if (this.$route.path === "/search_page") {
+            this.search_keywords = this.$route.query.key;
+            this.search_type = this.$route.query.type
+        }
     },
     watch: {
         "$route"() {
