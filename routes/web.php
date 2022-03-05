@@ -30,7 +30,7 @@ Route::middleware(['web'])->group(function () {
             Route::post('/getFollowings', 'ListController@getSimulations');
             Route::post('/followingList', 'ListController@getUsers');
             Route::post('/followerList', 'ListController@getUsers');
-            Route::post('/messageList', 'ListController@getMessages');
+            Route::get('/messageList', 'ListController@getMessages');
 
             Route::post('/sendCom', 'SimulationController@sendComment');
             Route::post('/deleteCom', 'SimulationController@deleteComment');
