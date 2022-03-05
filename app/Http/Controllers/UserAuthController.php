@@ -34,7 +34,8 @@ class UserAuthController extends Controller
             'uname' => $user->username,
             'avatar' => Storage::url($user->avatar),
             'sims' => $sims,
-            'likes' => $likes
+            'likes' => $likes,
+            'messages' => $user->messages->where('state', '=', '1')->count()
         ];
         $this->r['code'] = 200;
         $this->r['message'] = "获取用户信息成功";
@@ -260,6 +261,28 @@ class UserAuthController extends Controller
                 $this->r['message'] = $_FILES['file'];
                 return $this->r;
             }
+        } catch (Exception $e) {
+            $this->r['code'] = 400;
+            $this->r['message'] = $e->getMessage();
+        }
+
+        return $this->r;
+    }
+
+    protected function follow(Request $request)
+    {
+        try {
+            $user = $request->user();
+            $following = $request->post('uid');
+
+            if ($user->followings()->where('id', '=', $following)->exists()) {
+                $user->followings()->detach($following);
+                $this->r['message'] = "取消关注";
+            } else {
+                $user->followings()->attach($following);
+                $this->r['message'] = "关注成功";
+            }
+            $this->r['code'] = 200;
         } catch (Exception $e) {
             $this->r['code'] = 400;
             $this->r['message'] = $e->getMessage();

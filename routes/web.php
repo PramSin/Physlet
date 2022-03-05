@@ -24,8 +24,13 @@ Route::middleware(['web'])->group(function () {
             Route::get('/myInfo', 'UserAuthController@myInfo')->name('userInfo');
             Route::post('/changeInfo', 'UserAuthController@changeInfo')->name('changeInfo');
             Route::post('/uploadAvatar', 'UserAuthController@uploadAvatar')->name('uploadAvatar');
+            Route::post('/follow', 'UserAuthController@follow')->name('follow');
 
             Route::post('/getMySims', 'ListController@getMySimulations');
+            Route::post('/getFollowings', 'ListController@getSimulations');
+            Route::post('/followingList', 'ListController@getUsers');
+            Route::post('/followerList', 'ListController@getUsers');
+            Route::post('/messageList', 'ListController@getMessages');
 
             Route::post('/sendCom', 'SimulationController@sendComment');
             Route::post('/deleteCom', 'SimulationController@deleteComment');
@@ -35,6 +40,8 @@ Route::middleware(['web'])->group(function () {
             Route::post('/editSim', 'SimulationController@editSimulation');
             Route::post('/deleteSim', 'SimulationController@deleteSimulation');
             Route::post('/uploadSim', 'SimulationController@uploadSimulation');
+            Route::post('/read', 'SimulationController@read');
+            Route::post('/mark', 'SimulationController@mark');
 
 //            Route::get('/getMySimulations', 'SimulationController@getMySimulations')->name('getMySimulations');
 //            Route::post('/uploadSimulation', 'SimulationController@uploadSimulation')->name('uploadSimulation');
@@ -59,6 +66,7 @@ Route::middleware(['web'])->group(function () {
         Route::post('/getHisSims', 'ListController@getSimulations')->name('getHisSims');
         Route::get('/getCats', 'ListController@getCategories')->name('getCats');
         Route::post('/getComs', 'ListController@getComments')->name('getComs');
+        Route::post('/searchUser', 'ListController@getUsers');
 
         Route::post('/getSim', 'SimulationController@getSimulation')->name('getSim');
 //        Route::get('/getPackage', 'SimulationController@getPackage')->name('getPackage');
