@@ -58,7 +58,7 @@
                 :current-page="current_page"
                 layout="prev, pager, next"
                 :hide-on-single-page="true"
-                :pager-count="11"
+                :pager-count="5"
                 :page-size="10"
                 :total="total_simulation_amount">
             </el-pagination>
