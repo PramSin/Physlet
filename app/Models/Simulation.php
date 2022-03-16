@@ -8,27 +8,18 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
-use Laravel\Scout\Searchable;
 
 class Simulation extends Model
 {
     use HasFactory;
-//    use Searchable;
 
     protected $fillable = [
         'user_id',
         'category_id',
         'slug',
-        'access'
+        'access',
+        'views'
     ];
-
-//    public function toSearchableArray(): array
-//    {
-//        return [
-//            'sname' => $this->version->name,
-//            'synopsis' => $this->version->synopsis
-//        ];
-//    }
 
     public function user(): BelongsTo
     {
