@@ -3,7 +3,7 @@
  1. `g`代表`get`方法，`p`代表`post`方法
  2. 加`*`的代表无需登录
  3. 所有API的返回数据`output`可以在前端使用`response.data.data`获取，状态码与状态信息为`response.data.code`和`response.data.message`
- 4. 外面加`[]`表示一个数组，返回数据类型为数组的API会在
+ 4. 外面加`[]`表示一个数组，返回数据类型为数组的API会在`response.data.number`中返回当前数组元素的个数
  5. `uid`代表用户id，`sid`代表模拟id，`cid`代表种类id，`coid`代表评论id
 
 ### 小头像
@@ -31,20 +31,20 @@
 ### 主页
 * **推荐模拟/getSims\* (p):**
   input: `opt(可选，如果空或0则默认前10个，1代表10-20个，2代表20-30), sort(可选, 如果空或0则默认按点赞降序，1点赞升序，2代表按时间降序，3代表按时间升序)`
-  output: `[sid, sname, cid, cname, synopsis, likes, uid, uname, create_time]`
+  output: `[sid, sname, cid, cname, synopsis, views, likes, uid, uname, create_time]`
 * **搜索模拟/search\* (p)**
   input: `key, opt(可选，如果空或0则默认前10个，1代表10-20个，2代表20-30), sort(可选, 如果空或0则默认按点赞降序，1点赞升序，2代表按时间降序，3代表按时间升序)`
-  output: `[sid, sname, cid, cname, synopsis, likes, uid, uname, create_time]`
+  output: `[sid, sname, cid, cname, synopsis, views, likes, uid, uname, create_time]`
 * **筛选模拟/filter\* (p)**
   input: `cid, opt(可选，如果空或0则默认前10个，1代表10-20个，2代表20-30), sort(可选, 如果空或0则默认按点赞降序，1点赞升序，2代表按时间降序，3代表按时间升序)`
-  output: `[sid, sname, cid, cname, synopsis, likes, uid, uname, create_time]`
+  output: `[sid, sname, cid, cname, synopsis, views, likes, uid, uname, create_time]`
 * **所有类别/getCats\* (g)**
   output: `[cid, cname]`
 
 ### 模拟页面
 * **模拟信息/getSim\* (p)**
   input: `sid`
-  output: `sid, sname, cid, cname, synopsis, likes, uid, uname, url, create_time`
+  output: `sid, sname, cid, cname, synopsis, views, likes, uid, uname, url, create_time`
 * **获取评论/getComs\* (p)**
   input: `sid, opt(可选，如果空或0则默认前10个，1代表10-20个，2代表20-30)`
   output: `[coid, create_time, content, uid, uname, avatar, sid, pid(上一级评论，如果是0，则代表是主评论)]`
@@ -67,12 +67,12 @@
 ### 个人页面
 * **获取自己模拟/getMySims (p)**
   input: `opt(可选，如果空或0则默认前10个，1代表10-20个，2代表20-30), sort(可选, 如果空或0则默认按点赞降序，1点赞升序，2代表按时间降序，3代表按时间升序)`
-  output: `[sid, sname, cid, cname, synopsis, likes, uid, uname, access, create_time]`
+  output: `[sid, sname, cid, cname, synopsis, views, likes, uid, uname, access, create_time]`
 
 ### 关注页面
 * **获取已关注的模拟/getFollowings (p)**
   input: `opt(可选，如果空或0则默认前10个，1代表10-20个，2代表20-30), sort(可选, 如果空或0则默认按点赞降序，1点赞升序，2代表按时间降序，3代表按时间升序)`
-  output: `[sid, sname, cid, cname, synopsis, likes, uid, uname, create_time]`
+  output: `[sid, sname, cid, cname, synopsis, views, likes, uid, uname, create_time]`
 
 ### 他人页面
 * **用户信息/userInfo\* (p)**
@@ -80,8 +80,8 @@
   output: `uid, uname, avatar(一个url), sims(模拟的数量), likes(模拟的点赞总数)`
 * **获取该用户模拟/getHisSims\*  (p)**
   input: `uid, opt(可选，如果空或0则默认前10个，1代表10-20个，2代表20-30), sort(可选, 如果空或0则默认按点赞降序，1点赞升序，2代表按时间降序，3代表按时间升序)`
-  output: `[sid, sname, cid, cname, synopsis, uid, uname, likes, create_time]`
-* **关注与否/follow (g)**
+  output: `[sid, sname, cid, cname, synopsis, uid, uname, views, likes, create_time]`
+* **关注与否/follow (p)**
   input: `uid`
   output: `null`
 
@@ -99,11 +99,11 @@
 ### 用户列表
 * **关注列表/followingList (p)**
   input: `uid`
-  output: `[uid, uname, avatar(一个url), sims(模拟的数量), likes(模拟的点赞总数)]`
+  ouput: `[uid, uname, avatar(一个url), sims(模拟的数量), likes(模拟的点赞总数)]`
 * **粉丝列表/followerList (p)**
   input: `uid`
-  output: `[uid, uname, avatar(一个url), sims(模拟的数量), likes(模拟的点赞总数)]`
-* **搜索用户/searchUser (p)**
+  ouput: `[uid, uname, avatar(一个url), sims(模拟的数量), likes(模拟的点赞总数)]`
+* **搜索用户/searchUser\* (p)**
   input: `key`
   output: `[uid, uname, avatar(一个url), sims(模拟的数量), likes(模拟的点赞总数)]`
 
@@ -114,3 +114,11 @@
   input: `mids(数组)`
 * **标记未读/mark (p)**
   input: `mids(数组)`
+
+### 计数器功能
+* **主页浏览数/mainViews\* (g)**
+  output: `counts(总浏览数)`
+* **总浏览时长/addTime\* (g)**
+  output: `time(网站目前总浏览时长)`
+* **用户浏览时长/addUserTime (g)**
+  output: `time(当前用户网站总浏览时长)`

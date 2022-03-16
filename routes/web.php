@@ -30,7 +30,7 @@ Route::middleware(['web'])->group(function () {
             Route::post('/getFollowings', 'ListController@getSimulations');
             Route::post('/followingList', 'ListController@getUsers');
             Route::post('/followerList', 'ListController@getUsers');
-            Route::post('/messageList', 'ListController@getMessages');
+            Route::get('/messageList', 'ListController@getMessages');
 
             Route::post('/sendCom', 'SimulationController@sendComment');
             Route::post('/deleteCom', 'SimulationController@deleteComment');
@@ -43,6 +43,7 @@ Route::middleware(['web'])->group(function () {
             Route::post('/read', 'SimulationController@read');
             Route::post('/mark', 'SimulationController@mark');
 
+            Route::get('/addUserTime', 'OtherController@addUserTime');
 //            Route::get('/getMySimulations', 'SimulationController@getMySimulations')->name('getMySimulations');
 //            Route::post('/uploadSimulation', 'SimulationController@uploadSimulation')->name('uploadSimulation');
 //            Route::post('/editSimulation', 'SimulationController@editSimulation')->name('editSimulation');
@@ -69,7 +70,9 @@ Route::middleware(['web'])->group(function () {
         Route::post('/searchUser', 'ListController@getUsers');
 
         Route::post('/getSim', 'SimulationController@getSimulation')->name('getSim');
-//        Route::get('/getPackage', 'SimulationController@getPackage')->name('getPackage');
+
+        Route::get('/mainViews', 'OtherController@mainViews');
+        Route::get('/addTime', 'OtherController@addTime');
     });
 
     /** Physlet [View] */
