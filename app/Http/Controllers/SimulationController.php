@@ -178,12 +178,17 @@ class SimulationController extends Controller
                     'cid' => $sim->category_id,
                     'cname' => $sim->category->name,
                     'synopsis' => $sim->version->synopsis,
+                    'views' => $sim->views,
                     'likes' => $sim->likes,
                     'uid' => $sim->user_id,
                     'uname' => $sim->user->username,
                     'url' => Storage::url($sim->version->root_path),
                     'create_time' => $sim->created_at
                 ];
+                if ($sim->access) {
+                    $sim->views += 1;
+                    $sim->save();
+                }
                 $this->r['code'] = 200;
                 $this->r['message'] = "获取模拟成功";
             } else {

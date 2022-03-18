@@ -94,6 +94,7 @@ namespace App\Models{
  * @property-read \App\Models\User|null $send
  * @property-read \App\Models\Simulation|null $simulation
  * @property-read \App\Models\User|null $user
+ * @method static \Database\Factories\MessageFactory factory(...$parameters)
  * @method static \Illuminate\Database\Eloquent\Builder|Message newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Message newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Message query()
@@ -124,6 +125,7 @@ namespace App\Models{
  * @property int $shares
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property int $views
  * @property-read \App\Models\Category|null $category
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Comment[] $comments
  * @property-read int|null $comments_count
@@ -146,6 +148,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Simulation whereSlug($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Simulation whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Simulation whereUserId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Simulation whereViews($value)
  */
 	class Simulation extends \Eloquent {}
 }
@@ -200,6 +203,7 @@ namespace App\Models{
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property int $time
  * @property-read \Illuminate\Database\Eloquent\Collection|\OwenIt\Auditing\Models\Audit[] $audits
  * @property-read int|null $audits_count
  * @property-read \Illuminate\Database\Eloquent\Collection|User[] $followers
@@ -229,6 +233,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|User wherePhoneNumber($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereRememberToken($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereSlug($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereTime($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereUsername($value)
  * @method static \Illuminate\Database\Query\Builder|User withTrashed()
