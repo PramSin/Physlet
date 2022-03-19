@@ -1,5 +1,5 @@
 <template>
-    <el-container style="padding: 0; margin: 0">
+    <el-container style="padding: 0; margin: 0" v-if="!loading_top_bar">
         <!--   电脑客户端情况  -->
         <el-header>
             <el-menu :default-active="current_path_name" @select="jump_to" class="el-menu-demo" mode="horizontal">
@@ -22,16 +22,20 @@
                                 <el-option label="搜索模拟" value="1"></el-option>
                                 <el-option label="搜索用户" value="2"></el-option>
                             </el-select>
-                            <el-button slot="append" @click="submit_search" >搜索</el-button>
+                            <el-button slot="append" @click="submit_search">搜索</el-button>
                         </el-input>
                     </template>
                 </el-menu-item>
-                <el-menu-item style="float: right" index="message">
-                    <el-button size="medium" round icon="el-icon-message-solid" v-if="authorized">通知</el-button>
+                <el-menu-item index="message" style="float: right" v-if="authorized">
+                    <el-button size="medium" type="text" style="margin-right: 10px" @click="drawer = true">
+                        <el-badge :value="unread_message_number" class="item" :hidden="!message_unread">
+                            <i class="el-icon-message-solid" style="font-size: x-large"></i>
+                        </el-badge>
+                    </el-button>
                 </el-menu-item>
                 <el-submenu index="user_information" style="float: right" v-if="authorized">
                     <template slot="title">
-                        <el-avatar style="margin-right: 0px" v-loading="loading_small_avatar"
+                        <el-avatar style="margin-right: 0" v-loading="loading_small_avatar"
                                    :src="small_avatar_url"></el-avatar>
                     </template>
                     <el-menu-item index="user_info">账户信息</el-menu-item>
@@ -44,6 +48,27 @@
             </el-menu>
         </el-header>
         <el-main>
+            <el-drawer
+                title="消息列表"
+                :visible.sync="drawer">
+                <div v-for="message in message_list" :key="message.message_id">
+                   <span v-if="message.message_class === 1">
+                            系统消息: {{ message.message_content }}
+                   </span>
+                    <span v-else-if="message.message_class === 2">
+                            {{ message.message_user_name }}点赞了你的模拟{{ message.message_simulation_name }}
+                    </span>
+                    <span v-else-if="message.message_class === 3">
+                            {{ message.message_user_name }}评论: {{ message.message_content }}
+                    </span>
+                    <span v-else-if="message.message_class === 4">
+                            {{ message.message_user_name }}回复了你的评论: {{ message.message_content }}
+                    </span>
+                    <span v-else-if="message.message_class === 5">
+                            {{ message.message_user_name }}: {{ message.message_content }}
+                    </span>
+                </div>
+            </el-drawer>
             <el-container>
                 <el-aside style="width: 150px"></el-aside>
                 <el-main>
@@ -62,6 +87,7 @@ export default {
     name: 'App',
     data() {
         return {
+            drawer: false,
             componentKey: 0,
             jumpto: true,
             current_path_name: "",
@@ -70,6 +96,10 @@ export default {
             small_avatar_url: "",
             authorized: false,
             search_type: "",
+            message_list: [],
+            unread_message_number: 0,
+            message_unread: false,
+            loading_top_bar: false
         }
     },
     mounted() {
@@ -84,10 +114,35 @@ export default {
                                 this.small_avatar_url = response.data.data.avatar
                                 this.loading_small_avatar = false
                             })
+                        this.$api
+                            .get("/physlet_api/messageList")
+                            .then(response => {
+                                let data = response.data.data
+                                for (let syn = 0; syn < data.length; syn++) {
+                                    let message = {};
+                                    message.message_id = data[syn].mid;
+                                    message.message_state = data[syn].state;
+                                    if (message.message_state) this.unread_message_number++;
+                                    message.message_class = data[syn].class;
+                                    message.message_user_id = data[syn].uid;
+                                    message.message_user_name = data[syn].uname;
+                                    message.message_simulation_id = data[syn].sid;
+                                    message.message_simulation_name = data[syn].sname;
+                                    message.message_comment_id = data[syn].coid;
+                                    message.message_comment_cotent = data[syn].content;
+                                    message.message_create_time = data[syn].create_time;
+                                    this.message_list.push(message);
+                                }
+                                if (this.unread_message_number !== 0) this.message_unread = true;
+                            })
                     }
                 }
             )
         this.current_path_name = this.$route.path.substring(1)
+        if (this.$route.path === "/search_page") {
+            this.search_keywords = this.$route.query.key;
+            this.search_type = this.$route.query.type
+        }
     },
     watch: {
         "$route"() {
@@ -106,7 +161,10 @@ export default {
         },
         submit_search() {
             this.componentKey = !this.componentKey
-            this.$router.push({path: "/search_page", query: {key: this.search_keywords, type: this.search_type}}).catch(() => {
+            this.$router.push({
+                path: "/search_page",
+                query: {key: this.search_keywords, type: this.search_type}
+            }).catch(() => {
             })
         },
         to_login() {
@@ -131,10 +189,9 @@ export default {
                             message: response.data.message,
                         });
                     } else {
-                        location.reload()
                         this.$message('注销成功！');
-                        this.$router.replace({path: '/portal'})
-
+                        this.$router.replace({path: '/portal'});
+                        this.authorized = false;
                     }
                 })
                 .catch()
