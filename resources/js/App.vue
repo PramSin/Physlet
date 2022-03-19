@@ -143,6 +143,14 @@ export default {
             this.search_keywords = this.$route.query.key;
             this.search_type = this.$route.query.type
         }
+        setInterval(() => {
+            this.$api
+                .get('/physlet_api/addTime')
+            if (this.authorized) {
+                this.$api
+                    .get('/physlet_api/addTime')
+            }
+        }, 300000)
     },
     watch: {
         "$route"() {
