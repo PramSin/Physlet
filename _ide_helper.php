@@ -4,7 +4,7 @@
 
 /**
  * A helper file for Laravel, to provide autocomplete information to your IDE
- * Generated for Laravel 8.83.0.
+ * Generated for Laravel 8.83.3.
  *
  * This file should not be included in your code, only analyzed by your IDE!
  *
@@ -8947,7 +8947,7 @@
                     /**
          * Push a new job onto the queue.
          *
-         * @param string $job
+         * @param string|object $job
          * @param mixed $data
          * @param string|null $queue
          * @return mixed 
@@ -8976,7 +8976,7 @@
          * Push a new job onto the queue after a delay.
          *
          * @param \DateTimeInterface|\DateInterval|int $delay
-         * @param string $job
+         * @param string|object $job
          * @param mixed $data
          * @param string|null $queue
          * @return mixed 
@@ -8991,7 +8991,7 @@
          * Push a new job onto the queue.
          *
          * @param string $queue
-         * @param string $job
+         * @param string|object $job
          * @param mixed $data
          * @return mixed 
          * @static 
@@ -9006,7 +9006,7 @@
          *
          * @param string $queue
          * @param \DateTimeInterface|\DateInterval|int $delay
-         * @param string $job
+         * @param string|object $job
          * @param mixed $data
          * @return mixed 
          * @static 
@@ -16055,58 +16055,7 @@
      
 }
 
-        namespace Elhebert\SubresourceIntegrity { 
-            /**
-     * 
-     *
-     */ 
-        class SriFacade {
-                    /**
-         * 
-         *
-         * @static 
-         */ 
-        public static function html($path, $useCredentials = false)
-        {
-                        /** @var \Elhebert\SubresourceIntegrity\Sri $instance */
-                        return $instance->html($path, $useCredentials);
-        }
-                    /**
-         * 
-         *
-         * @static 
-         */ 
-        public static function hash($path)
-        {
-                        /** @var \Elhebert\SubresourceIntegrity\Sri $instance */
-                        return $instance->hash($path);
-        }
-                    /**
-         * 
-         *
-         * @static 
-         */ 
-        public static function mix($path, $useCredentials = false, $attributes = '')
-        {
-                        /** @var \Elhebert\SubresourceIntegrity\Sri $instance */
-                        return $instance->mix($path, $useCredentials, $attributes);
-        }
-                    /**
-         * 
-         *
-         * @static 
-         */ 
-        public static function asset($path, $useCredentials = false, $attributes = '')
-        {
-                        /** @var \Elhebert\SubresourceIntegrity\Sri $instance */
-                        return $instance->asset($path, $useCredentials, $attributes);
-        }
-         
-    }
-     
-}
-
-    namespace Facade\Ignition\Facades { 
+        namespace Facade\Ignition\Facades { 
             /**
      * Class Flare.
      *
@@ -19932,7 +19881,6 @@ namespace  {
             class URL extends \Illuminate\Support\Facades\URL {}
             class Validator extends \Illuminate\Support\Facades\Validator {}
             class View extends \Illuminate\Support\Facades\View {}
-            class Sri extends \Elhebert\SubresourceIntegrity\SriFacade {}
             class Flare extends \Facade\Ignition\Facades\Flare {}
      
 }

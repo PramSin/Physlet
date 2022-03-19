@@ -118,7 +118,11 @@
 ### 计数器功能
 * **主页浏览数/mainViews\* (g)**
   output: `counts(总浏览数)`
-* **总浏览时长/addTime\* (g)**
+* **增加浏览时长/addTime\* (g)**
   output: `time(网站目前总浏览时长)`
+* **获取总时长/getTime\* (g)**
+  output: `time`
 * **用户浏览时长/addUserTime (g)**
   output: `time(当前用户网站总浏览时长)`
+* **获取用户时长/getUserTime (g)**
+  output: `time`
