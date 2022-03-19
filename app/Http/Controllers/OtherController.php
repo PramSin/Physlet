@@ -31,11 +31,13 @@ class OtherController extends Controller
         return $this->r;
     }
 
-    protected function addTime()
+    protected function addTime(Request $request)
     {
         try {
             $user = User::findOrFail(1);
-            $user->time += 1;
+            if (str_ends_with($request->url(), 'addTime')) {
+                $user->time += 1;
+            }
             $data = [
                 "time" => $user->time
             ];
@@ -55,8 +57,10 @@ class OtherController extends Controller
     {
         try {
             $user = $request->user();
-            if ($user->id != 1) {
-                $user->time += 1;
+            if (str_ends_with($request->url(), 'addUserTime')) {
+                if ($user->id != 1) {
+                    $user->time += 1;
+                }
             }
             $data = [
                 "time" => $user->time
