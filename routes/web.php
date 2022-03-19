@@ -44,6 +44,7 @@ Route::middleware(['web'])->group(function () {
             Route::post('/mark', 'SimulationController@mark');
 
             Route::get('/addUserTime', 'OtherController@addUserTime');
+            Route::get('/getUserTime', 'OtherController@addUserTime');
 //            Route::get('/getMySimulations', 'SimulationController@getMySimulations')->name('getMySimulations');
 //            Route::post('/uploadSimulation', 'SimulationController@uploadSimulation')->name('uploadSimulation');
 //            Route::post('/editSimulation', 'SimulationController@editSimulation')->name('editSimulation');
@@ -73,6 +74,7 @@ Route::middleware(['web'])->group(function () {
 
         Route::get('/mainViews', 'OtherController@mainViews');
         Route::get('/addTime', 'OtherController@addTime');
+        Route::get('/getTime', 'OtherController@addTime');
     });
 
     /** Physlet [View] */
