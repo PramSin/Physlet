@@ -1,51 +1,43 @@
 <template>
     <el-container class="background-wrapper">
-        <div class="background"></div>
-        <div class="form-wrapper">
-            <h2 class="form-title">注册</h2>
-            <el-form :model="registerForm" :rules="rules" ref="registerForm" style="width: 50%">
-                <el-form-item label="用户名" prop="username">
-                    <el-input v-model="registerForm.username"
-                              clearable
-                    ></el-input>
-                </el-form-item>
-                <el-form-item :inline="true" label="邮箱" prop="email">
-                    <el-input v-model="registerForm.email"
-                              clearable
-                    ></el-input>
-                    <!--      <el-button type="text">验证邮箱</el-button>-->
-                </el-form-item>
-                <!--    <el-form-item label="邮箱验证码" prop="email_check">
-                      <el-input
-                          v-model.trim="registerForm.feedback"
-                          clearable
-                      ></el-input>
-                    </el-form-item>-->
-                <el-form-item label="手机号" prop="phone_number">
-                    <el-input v-model.number="registerForm.phone_number"
-                              clearable
-                    ></el-input>
-                </el-form-item>
-                <el-form-item label="密码" prop="password">
-                    <el-input v-model="registerForm.password" clearable
-                              show-password
-                    ></el-input>
-                </el-form-item>
-                <el-form-item label="确认密码" prop="password_twice">
-                    <el-input v-model="registerForm.password_twice" clearable
-                              show-password
-                              @keyup.enter.native="submitForm"
-                    ></el-input>
-
-                    <!--      <br/>
-                          <el-button type="text" >未收到邮件？</el-button>
-                          <br/>-->
-                </el-form-item>
-                <el-form-item>
-                    <el-button type="primary" @click="submitForm('registerForm') " v-loading="loading">立即注册</el-button>
-                </el-form-item>
-            </el-form>
-        </div>
+        <el-aside></el-aside>
+        <el-main>
+            <div class="form-wrapper">
+                <h2 class="form-title">注册</h2>
+                <el-form :model="registerForm" :rules="rules" ref="registerForm" style="width: 50%">
+                    <el-form-item label="用户名" prop="username">
+                        <el-input v-model="registerForm.username"
+                                  clearable
+                        ></el-input>
+                    </el-form-item>
+                    <el-form-item :inline="true" label="邮箱" prop="email">
+                        <el-input v-model="registerForm.email"
+                                  clearable
+                        ></el-input>
+                    </el-form-item>
+                    <el-form-item label="手机号" prop="number">
+                        <el-input v-model.number="registerForm.number"
+                                  clearable
+                        ></el-input>
+                    </el-form-item>
+                    <el-form-item label="密码" prop="password">
+                        <el-input v-model="registerForm.password" clearable
+                                  show-password
+                        ></el-input>
+                    </el-form-item>
+                    <el-form-item label="确认密码" prop="password_check">
+                        <el-input v-model="password_check" clearable
+                                  show-password
+                                  @keyup.enter.native="submitForm"
+                        ></el-input>
+                    </el-form-item>
+                    <el-form-item>
+                        <el-button type="primary" @click="submitForm('registerForm') " v-loading="loading">立即注册</el-button>
+                    </el-form-item>
+                </el-form>
+            </div>
+        </el-main>
+        <el-aside></el-aside>
     </el-container>
 </template>
 <script>
@@ -53,7 +45,7 @@ export default {
     name: 'Register',
     data() {
         let if_email_legal = (rule, value, callback) => {
-            let reg = /^([a-z0-9_.-]+)@fudan.edu.cn$/;
+            let reg = /^([a-z0-9_.-]+)@([a-z0-9_.-]+)$/;
             if (value === '') {
                 return callback(new Error('请输入邮箱！'))
             } else if (!reg.test(value)) {
@@ -88,10 +80,10 @@ export default {
             registerForm: {
                 email: '',
                 username: '',
-                phone_number: '',
+                number: '',
                 password: '',
-                feedback: '',
             },
+            password_check: "",
             rules: {
                 email: [
                     {required: true, validator: if_email_legal, trigger: 'blur'}
@@ -102,7 +94,7 @@ export default {
                 username: [
                     {required: true, message: '请输入用户名', trigger: 'blur'}
                 ],
-                phone_number: [
+                number: [
                     {required: true, validator: phone_check, trigger: 'blur'}
                 ],
                 password: [
@@ -116,7 +108,7 @@ export default {
     },
     methods: {
         submitForm() {
-            this.$refs.form.validate((valid) => {
+            this.$refs["registerForm"].validate((valid) => {
                 if (valid) {
                     this.loading = true;
                     this.$api
