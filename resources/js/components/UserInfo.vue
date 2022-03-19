@@ -134,6 +134,9 @@ export default {
                                 this.loading_avatar = false
                             })
                     }
+                    else {
+                        this.$router.replace({path: "/login"})
+                    }
                 }
             )
     },
