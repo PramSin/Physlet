@@ -66,7 +66,7 @@ export default {
             if (!value) {
                 callback(new Error('手机号不能为空！'));
             } else {
-                const reg = /^1[34578][0-9]\d{8}$/;
+                const reg = /^1(3\d|4[5-9]|5[0-35-9]|6[2567]|7[0-8]|8\d|9[0-35-9])\d{8}$/;
                 if (reg.test(value)) {
                     callback();
                 } else {
@@ -114,7 +114,7 @@ export default {
                     this.$api
                         .post('/physlet_api/register', this.registerForm)
                         .then(response => {
-                            if (response.data.code !== 0) {
+                            if (response.data.code !== 200) {
                                 this.$notify.error({
                                     title: '错误',
                                     message: response.data.message,
