@@ -1,7 +1,7 @@
 <template>
     <el-container>
         <el-aside></el-aside>
-        <el-main v-if="!loading_my_simulations">
+        <el-main>
             <h3>我的模拟 (共{{ my_simulation_amount }}个)</h3>
             <el-card style="border-radius: 15px" v-loading="loading_my_simulations"
                      v-for="simulation in my_simulation_list"
@@ -37,10 +37,11 @@
             </el-card>
             <el-pagination
                 style="display:table; margin:0 auto; "
-                @current-change="current_page"
+                @current-change="current_change"
+                :current-page="current_page"
                 layout="prev, pager, next"
                 :hide-on-single-page="true"
-                :pager-count="11"
+                :pager-count="5"
                 :page-size="10"
                 :total="my_simulation_amount">
             </el-pagination>
@@ -153,6 +154,7 @@ export default {
     name: "Me",
     data() {
         return {
+            current_page: 1,
             my_simulation_amount: 0,
             loading_my_simulations: true,
             my_simulation_list: [],
@@ -202,7 +204,6 @@ export default {
     computed: {
         user() {
             return this.$store.state.user;
-            console.log(this.$store.state.user)
         },
         tree: {
             get() {
@@ -217,7 +218,7 @@ export default {
         },
     },
     methods: {
-        current_page(current) {
+        current_change(current) {
             this.my_simulation_list.splice(0, this.my_simulation_list.length)
             this.loading_my_simulations = true
             this.$api
@@ -236,6 +237,7 @@ export default {
                         simulation_list.create_time = data[syn].create_time
                         this.my_simulation_list.push(simulation_list)
                     }
+                    console.log(this.my_simulation_list)
                     this.loading_my_simulations = false
                 })
         },
