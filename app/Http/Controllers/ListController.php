@@ -49,6 +49,9 @@ class ListController extends Controller
                     ->where('category_id', $request->post('cid'));
             } else {
                 $sims = Simulation::where("access", "=", 1);
+                $sim = Simulation::whereSlug('fake_sim')->first();
+                $sim->views += 1;
+                $sim->save();
             }
 
             if ($request->post('sort') == 1) {

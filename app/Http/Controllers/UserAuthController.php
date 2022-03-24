@@ -94,6 +94,7 @@ class UserAuthController extends Controller
             $user->email = $email;
             $user->phone_number = $number;
             $user->password = Hash::make($password);
+            $user->avatar = 'public/avatar/default.png';
             $user->save();
 
             Mail::to($user)->send(new RegisteredMail($user));
@@ -247,7 +248,7 @@ class UserAuthController extends Controller
         try {
             if ($request->hasFile('image')) {
                 $user = $request->user();
-                if (Storage::exists($user->avatar)) {
+                if (Storage::exists($user->avatar) && $user->avatar != "public/avatar/default.png") {
                     Storage::delete($user->avatar);
                 }
                 $avatar = $request->file('image')
