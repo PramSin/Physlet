@@ -18,7 +18,7 @@ class OtherController extends Controller
     {
         try {
             $data = [
-                "counts" => Simulation::sum("views")
+                "counts" => Simulation::whereSlug('fake_sim')->first()->views
             ];
             $this->r['code'] = 200;
             $this->r['message'] = "获取模拟数量成功";
@@ -34,7 +34,7 @@ class OtherController extends Controller
     protected function addTime(Request $request)
     {
         try {
-            $user = User::findOrFail(1);
+            $user = User::whereUsername('fake_user')->first();
             if (str_ends_with($request->url(), 'addTime')) {
                 $user->time += 1;
             }
@@ -43,7 +43,7 @@ class OtherController extends Controller
             ];
             $user->save();
             $this->r['code'] = 200;
-            $this->r['message'] = "获取模拟数量成功";
+            $this->r['message'] = "Succeed!";
             $this->r['data'] = $data;
         } catch (Exception $e) {
             $this->r['code'] = 400;
@@ -67,7 +67,7 @@ class OtherController extends Controller
             ];
             $user->save();
             $this->r['code'] = 200;
-            $this->r['message'] = "获取模拟数量成功";
+            $this->r['message'] = "Succeed!";
             $this->r['data'] = $data;
         } catch (Exception $e) {
             $this->r['code'] = 400;
