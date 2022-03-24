@@ -171,7 +171,7 @@ class SimulationController extends Controller
         try {
             $sim = Simulation::find($request->post('sid'));
 
-            if (Storage::exists($sim->version->root_path)) {
+            if ($sim->access || $sim->user_id === $request->user()->id) {
                 $data = [
                     'sid' => $sim->id,
                     'sname' => $sim->version->name,
@@ -189,25 +189,18 @@ class SimulationController extends Controller
                     $sim->views += 1;
                     $sim->save();
                 }
-                $this->r['code'] = 200;
-                $this->r['message'] = "获取模拟成功";
+                if (Storage::exists($sim->version->root_path)) {
+                    $this->r['code'] = 200;
+                    $this->r['message'] = "获取模拟成功";
+                } else {
+                    $this->r['code'] = 404;
+                    $this->r['message'] = "找不到相应的模拟文件";
+                }
+                $this->r['data'] = $data;
             } else {
-                $data = [
-                    'sid' => $sim->id,
-                    'sname' => $sim->version->name,
-                    'cid' => $sim->category_id,
-                    'cname' => $sim->category->name,
-                    'synopsis' => $sim->version->synopsis,
-                    'likes' => $sim->likes,
-                    'uid' => $sim->user_id,
-                    'uname' => $sim->user->username,
-                    'url' => Storage::url($sim->version->root_path),
-                    'create_time' => $sim->created_at
-                ];
-                $this->r['code'] = 404;
-                $this->r['message'] = "找不到相应的模拟文件";
+                $this->r['code'] = 403;
+                $this->r['message'] = "没有权限查看该模拟";
             }
-            $this->r['data'] = $data;
         } catch (Exception $e) {
             $this->r['code'] = 400;
             $this->r['message'] = $e->getMessage();
